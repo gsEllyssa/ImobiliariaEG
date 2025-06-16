@@ -1,0 +1,29 @@
+.topbar {
+    background-color: $white;
+    padding: 15px 20px;
+    border-bottom: 1px solid $gray;
+  
+    .topbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      .breadcrumbs {
+        font-weight: 600;
+        color: $text-dark;
+      }
+  
+      .top-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+  
+        .search {
+          border: 1px solid $gray;
+          border-radius: $border-radius;
+          padding: 6px 12px;
+        }
+      }
+    }
+  }
+  

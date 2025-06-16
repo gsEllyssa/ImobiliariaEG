@@ -1,0 +1,88 @@
+.login-page {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-box {
+  background-color: $gray-light;
+  padding: 2.5rem 3rem;
+  border-radius: $border-radius;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  max-width: 450px;
+  width: 100%;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: $text-dark;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.login-subtitle {
+  font-size: 15px;
+  color: $text-muted;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: $text-dark;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: $border-radius;
+  font-size: 14px;
+  background: $white;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: $primary;
+    outline: none;
+  }
+}
+
+.forgot-link {
+  display: block;
+  font-size: 14px;
+  color: $text-dark;
+  text-decoration: underline;
+  margin-bottom: 25px;
+}
+
+.btn {
+  background-color: $primary;
+  color: $black;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 30px;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+  width: fit-content;
+  min-width: 160px;
+  display: block;
+  margin: 0 auto;
+
+  &:hover {
+    background-color: $primary-hover;
+  }
+}
+
+.btn-block {
+  width: 100%;
+}

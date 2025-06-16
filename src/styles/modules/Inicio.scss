@@ -1,0 +1,35 @@
+.filtro {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  
+    input, select {
+      padding: 6px 10px;
+      border-radius: $border-radius;
+      border: 1px solid $gray;
+    }
+  }
+  
+  .secao {
+    margin-bottom: 40px;
+  
+    h1 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+  
+    .tabela {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 12px 10px;
+        border-bottom: 1px solid $gray;
+      }
+  
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+  

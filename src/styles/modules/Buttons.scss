@@ -1,0 +1,21 @@
+.btn {
+    display: inline-block;
+    background-color: $primary;
+    color: $black;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 30px;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    @include transition(background-color);
+  
+    &:hover {
+      background-color: $primary-hover;
+    }
+  
+    &.btn-block {
+      width: 100%;
+    }
+  }
+  
