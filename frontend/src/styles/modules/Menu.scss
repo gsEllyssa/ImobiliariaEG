@@ -1,0 +1,93 @@
+.menu-container {
+  width: 250px;
+  transition: width 0.3s ease;
+  min-height: 100vh;
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+
+.menu-container.collapsed {
+  width: 60px;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.menu-section {
+  flex: 1;
+  padding: 8px;
+}
+
+.menu-group {
+  margin-bottom: 10px;
+}
+
+.menu-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
+}
+
+.menu-label i {
+  margin-right: 8px;
+}
+
+.menu-item {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.submenu.open {
+  margin-top: 4px;
+}
+
+.menu-footer {
+  padding: 10px;
+  border-top: 1px solid #eee;
+}

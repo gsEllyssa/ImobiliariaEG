@@ -4,7 +4,7 @@ import '@/styles/modules/Inicio.scss';
 
 export default function Inicio() {
   return (
-    <>
+    <div className="layout-container">
       <Menu />
       <div className="content">
         <form className="filtro">
@@ -60,6 +60,6 @@ export default function Inicio() {
           </table>
         </section>
       </div>
-    </>
+    </div>
   );
 }

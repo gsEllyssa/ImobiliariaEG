@@ -1,24 +1,27 @@
 import React from 'react';
+import Menu from '@/components/Menu.jsx';
+import '@/styles/modules/Pagamento.scss';
 
 function Pagamento() {
   return (
-    <>
-      <header className="topbar" role="banner">
-        <div className="topbar-content">
-          <nav className="breadcrumbs" aria-label="Navegação de localização">
-            <i className="fas fa-dollar-sign" aria-hidden="true"></i>
-            <span className="current">Pagamentos</span>
-          </nav>
-          <div className="top-actions">
-            <input type="text" className="search" placeholder="Pesquisar" disabled aria-disabled="true" />
-            <i className="fas fa-sun" aria-hidden="true"></i>
-            <i className="fas fa-bell" aria-hidden="true"></i>
-            <i className="fas fa-window-restore" aria-hidden="true"></i>
-          </div>
-        </div>
-      </header>
-
+    <div className="layout-container">
+      <Menu />
       <main className="content" id="content">
+        <header className="topbar" role="banner">
+          <div className="topbar-content">
+            <nav className="breadcrumbs" aria-label="Navegação de localização">
+              <i className="fas fa-dollar-sign" aria-hidden="true"></i>
+              <span className="current">Pagamentos</span>
+            </nav>
+            <div className="top-actions">
+              <input type="text" className="search" placeholder="Pesquisar" disabled aria-disabled="true" />
+              <i className="fas fa-sun" aria-hidden="true"></i>
+              <i className="fas fa-bell" aria-hidden="true"></i>
+              <i className="fas fa-window-restore" aria-hidden="true"></i>
+            </div>
+          </div>
+        </header>
+
         <div className="progress-container" role="group" aria-label="Etapas do pagamento">
           <div className="step completed" data-step="1">
             <div className="circle">
@@ -81,7 +84,7 @@ function Pagamento() {
           </div>
         </section>
       </main>
-    </>
+    </div>
   );
 }
 

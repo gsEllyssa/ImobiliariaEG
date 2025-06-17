@@ -14,6 +14,7 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/inicio" element={<Inicio />} />
         <Route path="/pagamento" element={<Pagamento />} />
+        <Route path="/historico-pagamentos" element={<h1>Histórico de pagamentos (em construção)</h1>} />
       </Routes>
     </Router>
   );

@@ -25,8 +25,11 @@ export default function Menu() {
     {
       key: "pagamentos",
       icon: "fa-dollar-sign",
-      label: "Pagamentos",
-      path: "/pagamentos",
+      label: "Pagamento",
+      submenu: [
+        { to: "/pagamento", label: "💸 Realizar Pagamento" },
+        { to: "/historico-pagamentos", label: "📜 Histórico" },
+      ],
     },
     {
       key: "contrato",
