@@ -7,7 +7,7 @@ import Pagamento from '@/pages/Pagamento.jsx';
 import '@/styles/layout/layout.scss';
 import '@/styles/main.scss';
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
@@ -18,5 +18,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;

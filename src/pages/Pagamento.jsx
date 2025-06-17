@@ -1,18 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function Pagamento() {
-  useEffect(() => {
-    fetch('/menu.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('menu-container').innerHTML = html;
-      });
-  }, []);
-
   return (
     <>
-      <div id="menu-container"></div>
-
       <header className="topbar" role="banner">
         <div className="topbar-content">
           <nav className="breadcrumbs" aria-label="Navegação de localização">
@@ -51,54 +41,24 @@ function Pagamento() {
         </div>
 
         <section className="search-tenant-section">
-          <input
-            type="text"
-            className="tenant-search"
-            placeholder="Pesquisar pelo nome"
-            aria-label="Pesquisar inquilino"
-          />
+          <input type="text" className="tenant-search" placeholder="Pesquisar pelo nome" aria-label="Pesquisar inquilino" />
           <ul className="tenant-list">
-            <li className="tenant-item active">
-              <i className="fas fa-clock"></i>
-              <span>Roberto Carvalho Cunha</span>
-            </li>
-            <li className="tenant-item disabled">
-              <i className="fas fa-clock"></i>
-              <span>Yara Lacerda Oliveira</span>
-            </li>
-            <li className="tenant-item disabled">
-              <i className="fas fa-clock"></i>
-              <span>Sabrina Vasconcelos Souza</span>
-            </li>
-            <li className="tenant-item disabled">
-              <i className="fas fa-clock"></i>
-              <span>Ellyssa Pereira Castro</span>
-            </li>
+            <li className="tenant-item active"><i className="fas fa-clock"></i><span>Roberto Carvalho Cunha</span></li>
+            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Yara Lacerda Oliveira</span></li>
+            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Sabrina Vasconcelos Souza</span></li>
+            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Ellyssa Pereira Castro</span></li>
           </ul>
         </section>
 
         <section className="payment-summary">
           <h3>Resumo</h3>
           <p>Aluguel comercial.</p>
-          <p>
-            Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>,
-            a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.
-          </p>
-          <p>
-            Proveniente do aluguel de <br />
-            Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />
-            Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.
-          </p>
+          <p>Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>, a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.</p>
+          <p>Proveniente do aluguel de <br />Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.</p>
 
           <div className="payment-boxes">
-            <div className="box">
-              <span className="label">Método de Pagamento</span>
-              <strong>Dinheiro</strong>
-            </div>
-            <div className="box">
-              <span className="label">Valor Total</span>
-              <strong>R$ 1.700,00</strong>
-            </div>
+            <div className="box"><span className="label">Método de Pagamento</span><strong>Dinheiro</strong></div>
+            <div className="box"><span className="label">Valor Total</span><strong>R$ 1.700,00</strong></div>
           </div>
 
           <div className="btn-container">
@@ -115,15 +75,8 @@ function Pagamento() {
           <div className="receipt-content">
             <h3>Recibo de Aluguel</h3>
             <p>Aluguel comercial.</p>
-            <p>
-              Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>,
-              a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.
-            </p>
-            <p>
-              Proveniente do aluguel de <br />
-              Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />
-              Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.
-            </p>
+            <p>Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>, a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.</p>
+            <p>Proveniente do aluguel de <br />Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.</p>
             <p>Assinatura: Cleia Maria Oliveira</p>
           </div>
         </section>
