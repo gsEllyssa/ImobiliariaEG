@@ -6,7 +6,7 @@ const ContratoSchema = new mongoose.Schema({
   dataInicio: Date,
   dataFim: Date,
   valorMensal: Number,
-  ativo: { type: Boolean, default: true },
-});
+  ativo: { type: Boolean, default: true }
+}, { timestamps: true });
 
 export default mongoose.model('Contrato', ContratoSchema);

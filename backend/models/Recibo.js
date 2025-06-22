@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
-const reciboSchema = new mongoose.Schema({
-  pagamento: { type: mongoose.Schema.Types.ObjectId, ref: 'Pagamento', required: true },
-  contrato: { type: mongoose.Schema.Types.ObjectId, ref: 'Contrato', required: true },
-  inquilino: { type: mongoose.Schema.Types.ObjectId, ref: 'Inquilino', required: true },
-  dataEmissao: { type: Date, default: Date.now }
-});
+const ReciboSchema = new mongoose.Schema({
+  pagamentoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Pagamento' },
+  dataEmissao: { type: Date, default: Date.now },
+  descricao: String,
+}, { timestamps: true });
 
-export default mongoose.model('Recibo', reciboSchema);
+export default mongoose.model('Recibo', ReciboSchema);

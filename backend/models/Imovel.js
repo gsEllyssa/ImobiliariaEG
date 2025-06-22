@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const ImovelSchema = new mongoose.Schema({
   endereco: String,
-  tipo: String,
-  valorAluguel: Number,
-  ativo: { type: Boolean, default: true },
-});
+  tipo: String, // Casa, Apto...
+  valor: Number,
+  disponivel: { type: Boolean, default: true },
+}, { timestamps: true });
 
 export default mongoose.model('Imovel', ImovelSchema);
