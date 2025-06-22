@@ -1,4 +1,3 @@
-cat > NovoInquilino.jsx << 'EOF'
 import React, { useState } from 'react';
 import { criarInquilino } from '../services/inquilinoService';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ export default function NovoInquilino() {
     email: '',
     telefone: '',
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -41,4 +41,3 @@ export default function NovoInquilino() {
     </div>
   );
 }
-EOF

@@ -1,5 +1,4 @@
-cat > services/inquilinoService.js << 'EOF'
-import api from './api';
+import api from '../services/api';
 
 export const criarInquilino = async (dados) => {
   const response = await api.post('/inquilinos', dados);
@@ -10,4 +9,3 @@ export const listarInquilinos = async () => {
   const response = await api.get('/inquilinos');
   return response.data;
 };
-EOF
