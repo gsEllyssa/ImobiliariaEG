@@ -2,7 +2,15 @@ import Inquilino from '../models/Inquilino.js';
 
 export const listarInquilinos = async (req, res) => {
   try {
-    const lista = await Inquilino.find();
+    const lista = await Inquilino.find()
+      .populate({
+        path: 'contrato',
+        populate: {
+          path: 'imovel',
+          model: 'Imovel'
+        }
+      });
+
     res.json(lista);
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao listar inquilinos' });

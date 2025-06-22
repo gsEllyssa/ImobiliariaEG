@@ -1,91 +1,157 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import removeAccents from 'remove-accents';
 import '../styles/modules/Pagamento.scss';
-import Menu from '../components/Menu.jsx';
+import Menu from '../components/Menu';
+import StepProgress from '../components/StepProgress';
+import { listarInquilinos } from '../services/inquilinoService';
+import { criarPagamento } from '../services/pagamentoService';
 
-function Pagamento() {
+export default function Pagamento() {
+  const [etapa, setEtapa] = useState(1);
+  const [inquilinos, setInquilinos] = useState([]);
+  const [busca, setBusca] = useState('');
+  const [selecionado, setSelecionado] = useState(null);
+  const [pagamento, setPagamento] = useState(null);
+
+  useEffect(() => {
+    async function carregar() {
+      const dados = await listarInquilinos();
+      setInquilinos(dados);
+    }
+    carregar();
+  }, []);
+
+  const normalizar = (texto) =>
+    removeAccents(texto.toLowerCase().trim());
+
+  const filtrados = busca
+    ? inquilinos.filter((i) =>
+        normalizar(i.nome).includes(normalizar(busca))
+      )
+    : inquilinos;
+
+  const handleReceber = async () => {
+    if (!selecionado?.contrato?._id) return alert('Contrato não encontrado');
+
+    const dados = {
+      inquilinoId: selecionado._id,
+      contratoId: selecionado.contrato._id,
+      valor: selecionado.contrato.valor,
+      vencimento: selecionado.contrato.vencimento,
+      metodo: 'Dinheiro',
+    };
+
+    const resultado = await criarPagamento(dados);
+    setPagamento(resultado);
+    setEtapa(3);
+  };
+
   return (
     <div className="layout-container">
       <Menu />
-      <main className="content" id="content">
-        <header className="topbar" role="banner">
-          <div className="topbar-content">
-            <nav className="breadcrumbs" aria-label="Navegação de localização">
-              <i className="fas fa-dollar-sign" aria-hidden="true"></i>
-              <span className="current">Pagamentos</span>
-            </nav>
-            <div className="top-actions">
-              <input type="text" className="search" placeholder="Pesquisar" disabled aria-disabled="true" />
-              <i className="fas fa-sun" aria-hidden="true"></i>
-              <i className="fas fa-bell" aria-hidden="true"></i>
-              <i className="fas fa-window-restore" aria-hidden="true"></i>
+      <main className="content">
+        <StepProgress etapaAtual={etapa} />
+
+        {etapa === 1 && (
+          <section className="search-tenant-section">
+            <input
+              type="text"
+              className="tenant-search"
+              placeholder="Pesquisar pelo nome"
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+            <ul className="tenant-list">
+              {filtrados.length === 0 && (
+                <li className="tenant-item disabled">
+                  Nenhum inquilino encontrado
+                </li>
+              )}
+              {filtrados.map((i) => (
+                <li
+                  key={i._id}
+                  className={`tenant-item ${selecionado?._id === i._id ? 'active' : ''}`}
+                  onClick={() => {
+                    setSelecionado(i);
+                    setEtapa(2);
+                  }}
+                >
+                  <i className="far fa-clock"></i>
+                  <span>{i.nome}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {etapa === 2 && selecionado?.contrato && (
+          <section className="payment-summary">
+            <h3>Resumo</h3>
+            <p>{selecionado.contrato.imovel?.descricao || 'Imóvel'}</p>
+            <p>
+              Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
+              <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>.
+            </p>
+            <p>
+              Proveniente do aluguel de <br />
+              {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
+              Referente ao contrato ativo.{' '}
+              <strong>
+                Vencimento em{' '}
+                {new Date(selecionado.contrato.vencimento).toLocaleDateString('pt-BR')}
+              </strong>.
+            </p>
+
+            <div className="payment-boxes">
+              <div className="box">
+                <span className="label">Método de Pagamento</span>
+                <strong>Dinheiro</strong>
+              </div>
+              <div className="box">
+                <span className="label">Valor Total</span>
+                <strong>
+                  R$ {Number(selecionado.contrato.valor).toFixed(2)}
+                </strong>
+              </div>
             </div>
-          </div>
-        </header>
 
-        <div className="progress-container" role="group" aria-label="Etapas do pagamento">
-          <div className="step completed" data-step="1">
-            <div className="circle">
-              <i className="fas fa-check" aria-hidden="true"></i>
+            <div className="btn-container">
+              <button className="btn-cancelar" onClick={() => setEtapa(1)}>
+                Cancelar
+              </button>
+              <button className="btn-receber" onClick={handleReceber}>
+                Receber
+              </button>
             </div>
-            <span className="label">Inquilino</span>
-          </div>
-          <div className="step completed" data-step="2">
-            <div className="circle">
-              <i className="fas fa-check" aria-hidden="true"></i>
+          </section>
+        )}
+
+        {etapa === 3 && pagamento && (
+          <section className="receipt-container">
+            <div className="receipt-actions">
+              <i className="fas fa-download" title="Download"></i>
+              <i className="fas fa-print" title="Imprimir"></i>
             </div>
-            <span className="label">Pagamento</span>
-          </div>
-          <div className="step completed" data-step="3">
-            <div className="circle">
-              <i className="fas fa-check" aria-hidden="true"></i>
+            <div className="receipt-content">
+              <h3>Recibo de Aluguel</h3>
+              <p>{selecionado.contrato.imovel?.descricao || 'Aluguel comercial'}</p>
+              <p>
+                Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
+                <strong>R$ {Number(pagamento.valor).toFixed(2)}</strong>.
+              </p>
+              <p>
+                Referente ao imóvel: <br />
+                {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
+                Vencimento em{' '}
+                <strong>
+                  {new Date(pagamento.vencimento).toLocaleDateString('pt-BR')}
+                </strong>.
+              </p>
+              <p>Assinatura: Cleia Maria Oliveira</p>
             </div>
-            <span className="label">Comprovante</span>
-          </div>
-        </div>
-
-        <section className="search-tenant-section">
-          <input type="text" className="tenant-search" placeholder="Pesquisar pelo nome" aria-label="Pesquisar inquilino" />
-          <ul className="tenant-list">
-            <li className="tenant-item active"><i className="fas fa-clock"></i><span>Roberto Carvalho Cunha</span></li>
-            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Yara Lacerda Oliveira</span></li>
-            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Sabrina Vasconcelos Souza</span></li>
-            <li className="tenant-item disabled"><i className="fas fa-clock"></i><span>Ellyssa Pereira Castro</span></li>
-          </ul>
-        </section>
-
-        <section className="payment-summary">
-          <h3>Resumo</h3>
-          <p>Aluguel comercial.</p>
-          <p>Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>, a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.</p>
-          <p>Proveniente do aluguel de <br />Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.</p>
-
-          <div className="payment-boxes">
-            <div className="box"><span className="label">Método de Pagamento</span><strong>Dinheiro</strong></div>
-            <div className="box"><span className="label">Valor Total</span><strong>R$ 1.700,00</strong></div>
-          </div>
-
-          <div className="btn-container">
-            <button type="button" className="btn-cancelar">Cancelar</button>
-            <button type="button" className="btn-receber">Receber</button>
-          </div>
-        </section>
-
-        <section className="receipt-container">
-          <div className="receipt-actions">
-            <i className="fas fa-download" title="Download"></i>
-            <i className="fas fa-print" title="Imprimir"></i>
-          </div>
-          <div className="receipt-content">
-            <h3>Recibo de Aluguel</h3>
-            <p>Aluguel comercial.</p>
-            <p>Recebi (emos) de <strong>Padaria Lanchonete Braz Machado LTDA</strong>, a importância de <strong>um mil e cinquenta e cinco reais</strong>. Valor pactuado entre as partes.</p>
-            <p>Proveniente do aluguel de <br />Sítio à Rua Estados Unidos, número 21, bairro Cariru. <br />Referente ao período de 10/Out a 10/Nov/24 <strong>Vencido em 10/Nov/2024</strong>.</p>
-            <p>Assinatura: Cleia Maria Oliveira</p>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
     </div>
   );
 }
-
-export default Pagamento;
