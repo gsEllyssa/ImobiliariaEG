@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
 
-const contratoSchema = new mongoose.Schema({
-  inquilino: { type: mongoose.Schema.Types.ObjectId, ref: 'Inquilino', required: true },
-  imovel: { type: mongoose.Schema.Types.ObjectId, ref: 'Imovel', required: true },
-  tipo: { type: String, enum: ['aluguel', 'compra', 'venda'], required: true },
-  status: { type: String, enum: ['ativo', 'encerrado', 'pendente'], default: 'ativo' },
-  dataInicio: { type: Date, required: true },
-  dataFim: { type: Date },
-  valor: { type: Number, required: true }
+const ContratoSchema = new mongoose.Schema({
+  inquilinoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Inquilino' },
+  imovelId: { type: mongoose.Schema.Types.ObjectId, ref: 'Imovel' },
+  dataInicio: Date,
+  dataFim: Date,
+  valorMensal: Number,
+  ativo: { type: Boolean, default: true },
 });
 
-export default mongoose.model('Contrato', contratoSchema);
+export default mongoose.model('Contrato', ContratoSchema);

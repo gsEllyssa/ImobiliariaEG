@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-const pagamentoSchema = new mongoose.Schema({
-  contrato: { type: mongoose.Schema.Types.ObjectId, ref: 'Contrato', required: true },
-  inquilino: { type: mongoose.Schema.Types.ObjectId, ref: 'Inquilino', required: true },
-  dataPagamento: { type: Date, required: true },
-  valor: { type: Number, required: true },
-  metodo: { type: String, enum: ['pix', 'dinheiro', 'cartao'], required: true },
-  status: { type: String, enum: ['pago', 'pendente', 'atrasado'], default: 'pago' }
+const PagamentoSchema = new mongoose.Schema({
+  contratoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Contrato' },
+  inquilinoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Inquilino' },
+  valor: Number,
+  dataPagamento: { type: Date, default: Date.now },
+  status: { type: String, enum: ['pendente', 'pago'], default: 'pendente' },
+  mesReferencia: String, // Exemplo: "06/2025"
 });
 
-export default mongoose.model('Pagamento', pagamentoSchema);
+export default mongoose.model('Pagamento', PagamentoSchema);

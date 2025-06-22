@@ -1,14 +1,15 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import contratoRotas from './routes/contratoRotas.js';
+import pagamentoRotas from './routes/pagamentoRotas.js';
+import imovelRotas from './routes/imovelRotas.js';
+import reciboRotas from './routes/reciboRotas.js';
+import inquilinoRotas from './routes/inquilinoRotas.js';
 
-import propertyRoutes from './routes/propertyRoutes.js';
-import contractRoutes from './routes/contractRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
-import receiptRoutes from './routes/receiptRoutes.js';
-import tenantRoutes from './routes/tenantRoutes.js';
-import debugRoutes from './routes/debugRoutes.js';
+app.use('/api/contratos', contratoRotas);
+app.use('/api/pagamentos', pagamentoRotas);
+app.use('/api/imoveis', imovelRotas);
+app.use('/api/recibos', reciboRotas);
+app.use('/api/inquilinos', inquilinoRotas);
+
 app.use(debugRoutes);
 
 
