@@ -1,4 +1,4 @@
-import Tenant from '../models/Tenant.js';
+import Tenant from '../models/Inquilino.js';
 
 export const getAllTenants = async (req, res) => {
   const tenants = await Tenant.find();

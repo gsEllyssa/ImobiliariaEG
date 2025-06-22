@@ -1,4 +1,4 @@
-import Payment from '../models/Payment.js';
+import Payment from '../models/Pagamento.js';
 
 export const getAllPayments = async (req, res) => {
   const payments = await Payment.find().populate('contratoId');

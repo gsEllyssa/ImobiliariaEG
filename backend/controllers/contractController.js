@@ -1,4 +1,4 @@
-import Contract from '../models/Contract.js';
+import Contract from '../models/Contrato.js';
 
 export const getAllContracts = async (req, res) => {
   const contracts = await Contract.find().populate('tenantId propertyId');

@@ -8,6 +8,9 @@ import contractRoutes from './routes/contractRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import receiptRoutes from './routes/receiptRoutes.js';
 import tenantRoutes from './routes/tenantRoutes.js';
+import debugRoutes from './routes/debugRoutes.js';
+app.use(debugRoutes);
+
 
 dotenv.config();
 const app = express();

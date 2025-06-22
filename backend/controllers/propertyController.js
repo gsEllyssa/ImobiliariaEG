@@ -1,4 +1,4 @@
-import Property from '../models/Property.js';
+import Property from '../models/Imovel.js';
 
 export const getAllProperties = async (req, res) => {
   const properties = await Property.find();

@@ -1,4 +1,4 @@
-import Receipt from '../models/Receipt.js';
+import Receipt from '../models/Recibo.js';
 
 export const getAllReceipts = async (req, res) => {
   const receipts = await Receipt.find().populate('pagamentoId');
