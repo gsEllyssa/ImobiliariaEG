@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 
-const InquilinoSchema = new mongoose.Schema({
-  nome: String,
-  cpf: String,
-  email: String,
-  telefone: String,
-  dataCadastro: { type: Date, default: Date.now },
-});
+const inquilinoSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  cpf: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
+  telefone: { type: String, required: true },
+}, { timestamps: true });
 
-export default mongoose.model('Inquilino', InquilinoSchema);
+export default mongoose.model('Inquilino', inquilinoSchema);

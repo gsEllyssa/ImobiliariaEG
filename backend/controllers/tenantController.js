@@ -1,12 +1,20 @@
-import Tenant from '../models/Inquilino.js';
+import Inquilino from '../models/Inquilino.js';
 
-export const getAllTenants = async (req, res) => {
-  const tenants = await Tenant.find();
-  res.json(tenants);
+export const listarInquilinos = async (req, res) => {
+  try {
+    const lista = await Inquilino.find();
+    res.json(lista);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao listar inquilinos' });
+  }
 };
 
-export const createTenant = async (req, res) => {
-  const tenant = new Tenant(req.body);
-  await tenant.save();
-  res.status(201).json(tenant);
+export const criarInquilino = async (req, res) => {
+  try {
+    const inquilino = new Inquilino(req.body);
+    await inquilino.save();
+    res.status(201).json(inquilino);
+  } catch (err) {
+    res.status(400).json({ erro: 'Erro ao criar inquilino', detalhes: err.message });
+  }
 };
