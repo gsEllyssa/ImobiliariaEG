@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Inicio from './pages/Inicio.jsx';
 import Login from './pages/Login.jsx';
 import Pagamento from './pages/Pagamento.jsx';
+import NovoInquilino from './pages/NovoInquilino.jsx';
 
 import './styles/layout/layout.scss';
 import './styles/main.scss';
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/inicio" element={<Inicio />} />
         <Route path="/pagamento" element={<Pagamento />} />
         <Route path="/historico-pagamentos" element={<h1>Histórico de pagamentos (em construção)</h1>} />
+        <Route path="/novo-inquilino" element={<NovoInquilino />} />
       </Routes>
     </Router>
   );
