@@ -1,6 +1,6 @@
 import React from 'react';
-import Menu from '@/components/Menu.jsx';
-import '@/styles/modules/Inicio.scss';
+import Menu from '../components/Menu.jsx';
+import '../styles/modules/Inicio.scss';
 
 export default function Inicio() {
   return (

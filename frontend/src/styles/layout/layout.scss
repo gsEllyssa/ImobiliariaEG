@@ -1,3 +1,7 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "../base/utilities" as *;
+
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

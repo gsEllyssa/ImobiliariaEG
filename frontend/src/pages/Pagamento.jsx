@@ -1,6 +1,6 @@
 import React from 'react';
-import Menu from '@/components/Menu.jsx';
-import '@/styles/modules/Pagamento.scss';
+import '../styles/modules/Pagamento.scss';
+import Menu from '../components/Menu.jsx';
 
 function Pagamento() {
   return (

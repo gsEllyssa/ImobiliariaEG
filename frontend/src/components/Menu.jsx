@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
-import "@/styles/modules/Menu.scss";
+import "../styles/modules/Menu.scss";
 
 export default function Menu() {
   const location = useLocation();
@@ -69,11 +69,7 @@ export default function Menu() {
           </div>
         )}
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? (
-            <i className="fa-solid fa-angle-left"></i>
-          ) : (
-            <i className="fa-solid fa-bars"></i>
-          )}
+          <i className={`fa-solid ${menuOpen ? "fa-angle-left" : "fa-bars"}`}></i>
         </button>
       </div>
 
@@ -98,7 +94,7 @@ export default function Menu() {
                 </div>
                 {menuOpen && openSubmenus[item.key] && (
                   <div className="submenu open">
-                    {item.submenu.map((sub) => (
+                    {(item.submenu || []).map((sub) => (
                       <Link key={sub.to} to={sub.to} className="menu-item">
                         {sub.label}
                       </Link>
