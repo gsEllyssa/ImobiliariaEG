@@ -5,6 +5,7 @@ import Menu from '../components/Menu';
 import StepProgress from '../components/StepProgress';
 import { listarInquilinos } from '../services/inquilinoService';
 import { criarPagamento } from '../services/pagamentoService';
+import { criarRecibo } from '../services/reciboService';
 
 export default function Pagamento() {
   const [etapa, setEtapa] = useState(1);
@@ -12,6 +13,7 @@ export default function Pagamento() {
   const [busca, setBusca] = useState('');
   const [selecionado, setSelecionado] = useState(null);
   const [pagamento, setPagamento] = useState(null);
+  const [recibo, setRecibo] = useState(null);
 
   useEffect(() => {
     async function carregar() {
@@ -21,28 +23,39 @@ export default function Pagamento() {
     carregar();
   }, []);
 
-  const normalizar = (texto) =>
-    removeAccents(texto.toLowerCase().trim());
+  const normalizar = (texto) => removeAccents(texto.toLowerCase().trim());
 
   const filtrados = busca
-    ? inquilinos.filter((i) =>
-        normalizar(i.nome).includes(normalizar(busca))
-      )
+    ? inquilinos.filter((i) => normalizar(i.nome).includes(normalizar(busca)))
     : inquilinos;
 
   const handleReceber = async () => {
     if (!selecionado?.contrato?._id) return alert('Contrato não encontrado');
 
-    const dados = {
-      inquilinoId: selecionado._id,
-      contratoId: selecionado.contrato._id,
-      valor: selecionado.contrato.valor,
-      vencimento: selecionado.contrato.vencimento,
-      metodo: 'Dinheiro',
+    const dadosPagamento = {
+      tenantId: selecionado._id,
+      contractId: selecionado.contrato._id,
+      amount: selecionado.contrato.valor,
+      method: 'Cash',
+      paymentDate: new Date().toISOString()
     };
 
-    const resultado = await criarPagamento(dados);
-    setPagamento(resultado);
+    const novoPagamento = await criarPagamento(dadosPagamento);
+    setPagamento(novoPagamento);
+
+    const dadosRecibo = {
+      tenantId: selecionado._id,
+      contractId: selecionado.contrato._id,
+      propertyId: selecionado.contrato.imovel?._id,
+      paymentId: novoPagamento._id,
+      amount: novoPagamento.amount,
+      paymentDate: novoPagamento.createdAt,
+      method: novoPagamento.method,
+      status: 'Paid'
+    };
+
+    const novoRecibo = await criarRecibo(dadosRecibo);
+    setRecibo(novoRecibo);
     setEtapa(3);
   };
 
@@ -63,9 +76,7 @@ export default function Pagamento() {
             />
             <ul className="tenant-list">
               {filtrados.length === 0 && (
-                <li className="tenant-item disabled">
-                  Nenhum inquilino encontrado
-                </li>
+                <li className="tenant-item disabled">Nenhum inquilino encontrado</li>
               )}
               {filtrados.map((i) => (
                 <li
@@ -109,9 +120,7 @@ export default function Pagamento() {
               </div>
               <div className="box">
                 <span className="label">Valor Total</span>
-                <strong>
-                  R$ {Number(selecionado.contrato.valor).toFixed(2)}
-                </strong>
+                <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>
               </div>
             </div>
 
@@ -126,7 +135,7 @@ export default function Pagamento() {
           </section>
         )}
 
-        {etapa === 3 && pagamento && (
+        {etapa === 3 && recibo && (
           <section className="receipt-container">
             <div className="receipt-actions">
               <i className="fas fa-download" title="Download"></i>
@@ -137,14 +146,14 @@ export default function Pagamento() {
               <p>{selecionado.contrato.imovel?.descricao || 'Aluguel comercial'}</p>
               <p>
                 Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
-                <strong>R$ {Number(pagamento.valor).toFixed(2)}</strong>.
+                <strong>R$ {Number(recibo.amount).toFixed(2)}</strong>.
               </p>
               <p>
                 Referente ao imóvel: <br />
                 {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
                 Vencimento em{' '}
                 <strong>
-                  {new Date(pagamento.vencimento).toLocaleDateString('pt-BR')}
+                  {new Date(selecionado.contrato.vencimento).toLocaleDateString('pt-BR')}
                 </strong>.
               </p>
               <p>Assinatura: Cleia Maria Oliveira</p>

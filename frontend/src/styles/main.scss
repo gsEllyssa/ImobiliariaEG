@@ -1,6 +1,7 @@
 @use "./base/variables" as *;
 @use "./base/mixins" as *;
 @use "./base/utilities" as *;
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 * {
   box-sizing: border-box;
