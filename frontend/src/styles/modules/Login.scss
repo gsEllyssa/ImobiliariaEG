@@ -1,6 +1,7 @@
 @use "../base/variables" as *;
 @use "../base/mixins" as *;
 @use "../base/utilities" as *;
+@use "sass:color";
 
 .login-page {
   width: 100%;
@@ -83,6 +84,6 @@ form input {
   width: 100%;
 
   &:hover {
-    background-color: darken(#7AC383, 5%);
+    background-color: color.adjust(#7AC383, $lightness: -5%);
   }
 }

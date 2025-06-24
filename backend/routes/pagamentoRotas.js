@@ -1,9 +1,9 @@
 import express from 'express';
-import { listarPagamentos, criarPagamento } from '../controllers/paymentController.js';
+import { listarPayments, criarPayment } from '../controllers/paymentController.js';
 
 const router = express.Router();
 
-router.get('/', listarPagamentos);
-router.post('/', criarPagamento);
+router.get('/', listarPayments);
+router.post('/', criarPayment);
 
 export default router;

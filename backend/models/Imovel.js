@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const ImovelSchema = new mongoose.Schema({
   endereco: String,
   tipo: String, // Casa, Apto...
-  valor: Number,
+  amount: Number,
   disponivel: { type: Boolean, default: true },
 }, { timestamps: true });
 

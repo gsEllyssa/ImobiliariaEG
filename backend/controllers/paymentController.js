@@ -1,16 +1,18 @@
-import Payment from '../models/Pagamento.js';
+import Payment from '../models/Payment.js';
 import Contract from '../models/Contrato.js';
 
-export const listarPagamentos = async (req, res) => {
+export const listarPayments = async (req, res) => {
   try {
-    const payments = await Payment.find().populate('tenantId contractId');
+    const payments = await Payment.find()
+      .populate('tenantId')
+      .populate('contractId');
     res.json(payments);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar pagamentos.' });
   }
 };
 
-export const criarPagamento = async (req, res) => {
+export const criarPayment = async (req, res) => {
   try {
     const { tenantId, contractId, amount, method } = req.body;
 

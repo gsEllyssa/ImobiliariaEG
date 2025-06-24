@@ -2,7 +2,7 @@ import express from 'express';
 import Inquilino from '../models/Inquilino.js';
 import Imovel from '../models/Imovel.js';
 import Contrato from '../models/Contrato.js';
-import Pagamento from '../models/Pagamento.js';
+import Payment from '../models/Payment.js';
 import Recibo from '../models/Recibo.js';
 
 const router = express.Router();
@@ -36,7 +36,7 @@ router.get('/debug/contratos', async (req, res) => {
 
 router.get('/debug/pagamentos', async (req, res) => {
   try {
-    const dados = await Pagamento.find();
+    const dados = await Payment.find();
     res.json(dados);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar pagamentos' });

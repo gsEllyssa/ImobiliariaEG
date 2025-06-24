@@ -24,7 +24,7 @@ app.use('/api/debug', debugRoutes);
 mongoose.connect('mongodb://localhost:27017/imobiliaria')
   .then(() => {
     console.log('🟢 Conectado ao MongoDB');
-    const PORT = 5000;
+    const PORT = 5050;
     app.listen(PORT, () =>
       console.log(`🚀 Servidor rodando na porta ${PORT}`)
     );

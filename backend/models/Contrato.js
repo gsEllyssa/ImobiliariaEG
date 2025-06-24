@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const ContratoSchema = new mongoose.Schema({
-  valor: Number,
+  amount: Number,
   dataInicio: Date,
   dataFim: Date,
   vencimento: Date,
