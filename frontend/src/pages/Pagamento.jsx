@@ -20,15 +20,19 @@ export default function Pagamento() {
   useEffect(() => {
     async function carregar() {
       const dados = await listarInquilinos();
+      console.log('Inquilinos recebidos:', dados); // debug opcional
       setInquilinos(dados);
     }
     carregar();
   }, []);
 
-  const normalizar = (texto) => removeAccents(texto.toLowerCase().trim());
+  const normalizar = (texto) =>
+    typeof texto === 'string'
+      ? removeAccents(texto.toLowerCase().trim())
+      : '';
 
   const filtrados = busca
-    ? inquilinos.filter((i) => normalizar(i.nome).includes(normalizar(busca)))
+    ? inquilinos.filter((i) => normalizar(i?.nome).includes(normalizar(busca)))
     : inquilinos;
 
   const handleReceber = async () => {

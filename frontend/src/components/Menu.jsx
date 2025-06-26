@@ -34,8 +34,11 @@ export default function Menu() {
     {
       key: "contrato",
       icon: "fa-file-contract",
-      label: "Contrato",
-      submenu: [{ to: "/novo-contrato", label: "📝 Novo Contrato" }],
+      label: "Contratos",
+      submenu: [
+        { to: "/contratos", label: "📑 Listar Contratos" },
+        { to: "/modelos", label: "📂 Modelos de Contrato" },
+      ],
     },
     {
       key: "imoveis",
