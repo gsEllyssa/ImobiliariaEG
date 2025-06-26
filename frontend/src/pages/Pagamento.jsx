@@ -3,6 +3,8 @@ import removeAccents from 'remove-accents';
 import '../styles/modules/Pagamento.scss';
 import Menu from '../components/Menu';
 import StepProgress from '../components/StepProgress';
+import Topbar from '../components/Topbar';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { listarInquilinos } from '../services/inquilinoService';
 import { criarPagamento } from '../services/pagamentoService';
 import { criarRecibo } from '../services/reciboService';
@@ -62,105 +64,108 @@ export default function Pagamento() {
   return (
     <div className="layout-container">
       <Menu />
-      <main className="content">
-        <StepProgress etapaAtual={etapa} />
+      <div className="page-content-area">
+        <Topbar icon={faDollarSign} title="Pagamentos" subtitle="Novo Pagamento" />
+        <main className="content">
+          <StepProgress etapaAtual={etapa} />
 
-        {etapa === 1 && (
-          <section className="search-tenant-section">
-            <input
-              type="text"
-              className="tenant-search"
-              placeholder="Pesquisar pelo nome"
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-            />
-            <ul className="tenant-list">
-              {filtrados.length === 0 && (
-                <li className="tenant-item disabled">Nenhum inquilino encontrado</li>
-              )}
-              {filtrados.map((i) => (
-                <li
-                  key={i._id}
-                  className={`tenant-item ${selecionado?._id === i._id ? 'active' : ''}`}
-                  onClick={() => {
-                    setSelecionado(i);
-                    setEtapa(2);
-                  }}
-                >
-                  <i className="far fa-clock"></i>
-                  <span>{i.nome}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+          {etapa === 1 && (
+            <section className="search-tenant-section">
+              <input
+                type="text"
+                className="tenant-search"
+                placeholder="Pesquisar pelo nome"
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+              />
+              <ul className="tenant-list">
+                {filtrados.length === 0 && (
+                  <li className="tenant-item disabled">Nenhum inquilino encontrado</li>
+                )}
+                {filtrados.map((i) => (
+                  <li
+                    key={i._id}
+                    className={`tenant-item ${selecionado?._id === i._id ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelecionado(i);
+                      setEtapa(2);
+                    }}
+                  >
+                    <i className="far fa-clock"></i>
+                    <span>{i.nome}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
-        {etapa === 2 && selecionado?.contrato && (
-          <section className="payment-summary">
-            <h3>Resumo</h3>
-            <p>{selecionado.contrato.imovel?.descricao || 'Imóvel'}</p>
-            <p>
-              Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
-              <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>.
-            </p>
-            <p>
-              Proveniente do aluguel de <br />
-              {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
-              Referente ao contrato ativo.{' '}
-              <strong>
-                Vencimento em{' '}
-                {new Date(selecionado.contrato.vencimento).toLocaleDateString('pt-BR')}
-              </strong>.
-            </p>
-
-            <div className="payment-boxes">
-              <div className="box">
-                <span className="label">Método de Pagamento</span>
-                <strong>Dinheiro</strong>
-              </div>
-              <div className="box">
-                <span className="label">Valor Total</span>
-                <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>
-              </div>
-            </div>
-
-            <div className="btn-container">
-              <button className="btn-cancelar" onClick={() => setEtapa(1)}>
-                Cancelar
-              </button>
-              <button className="btn-receber" onClick={handleReceber}>
-                Receber
-              </button>
-            </div>
-          </section>
-        )}
-
-        {etapa === 3 && recibo && (
-          <section className="receipt-container">
-            <div className="receipt-actions">
-              <i className="fas fa-download" title="Download"></i>
-              <i className="fas fa-print" title="Imprimir"></i>
-            </div>
-            <div className="receipt-content">
-              <h3>Recibo de Aluguel</h3>
-              <p>{selecionado.contrato.imovel?.descricao || 'Aluguel comercial'}</p>
+          {etapa === 2 && selecionado?.contrato && (
+            <section className="payment-summary">
+              <h3>Resumo</h3>
+              <p>{selecionado.contrato.imovel?.descricao || 'Imóvel'}</p>
               <p>
                 Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
-                <strong>R$ {Number(recibo.amount).toFixed(2)}</strong>.
+                <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>.
               </p>
               <p>
-                Referente ao imóvel: <br />
+                Proveniente do aluguel de <br />
                 {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
-                Vencimento em{' '}
+                Referente ao contrato ativo.{' '}
                 <strong>
+                  Vencimento em{' '}
                   {new Date(selecionado.contrato.vencimento).toLocaleDateString('pt-BR')}
                 </strong>.
               </p>
-              <p>Assinatura: Cleia Maria Oliveira</p>
-            </div>
-          </section>
-        )}
-      </main>
+
+              <div className="payment-boxes">
+                <div className="box">
+                  <span className="label">Método de Pagamento</span>
+                  <strong>Dinheiro</strong>
+                </div>
+                <div className="box">
+                  <span className="label">Valor Total</span>
+                  <strong>R$ {Number(selecionado.contrato.valor).toFixed(2)}</strong>
+                </div>
+              </div>
+
+              <div className="btn-container">
+                <button className="btn-cancelar" onClick={() => setEtapa(1)}>
+                  Cancelar
+                </button>
+                <button className="btn-receber" onClick={handleReceber}>
+                  Receber
+                </button>
+              </div>
+            </section>
+          )}
+
+          {etapa === 3 && recibo && (
+            <section className="receipt-container">
+              <div className="receipt-actions">
+                <i className="fas fa-download" title="Download"></i>
+                <i className="fas fa-print" title="Imprimir"></i>
+              </div>
+              <div className="receipt-content">
+                <h3>Recibo de Aluguel</h3>
+                <p>{selecionado.contrato.imovel?.descricao || 'Aluguel comercial'}</p>
+                <p>
+                  Recebi de <strong>{selecionado.nome}</strong> a importância de{' '}
+                  <strong>R$ {Number(recibo.amount).toFixed(2)}</strong>.
+                </p>
+                <p>
+                  Referente ao imóvel: <br />
+                  {selecionado.contrato.imovel?.endereco || 'Endereço não disponível'} <br />
+                  Vencimento em{' '}
+                  <strong>
+                    {new Date(selecionado.contrato.vencimento).toLocaleDateString('pt-BR')}
+                  </strong>.
+                </p>
+                <p>Assinatura: Cleia Maria Oliveira</p>
+              </div>
+            </section>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

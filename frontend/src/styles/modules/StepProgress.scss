@@ -1,11 +1,12 @@
-@use "../styles/base/variables" as *;
-@use "../styles/base/mixins" as *;
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "../base/utilities" as *;
 
 .step-progress {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
+  align-items: center;
+  gap: 0;
   margin-bottom: 2.5rem;
   position: relative;
 }
@@ -15,15 +16,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 
   .circle {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 2px solid #dcdcdc;
     background-color: #fff;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: all 0.3s ease;
+
+    .check {
+      font-size: 16px;
+      color: white;
+    }
   }
 
   .label {
@@ -34,22 +44,26 @@
 
   .line {
     position: absolute;
-    width: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
     height: 2px;
+    width: 100px; // ajuste conforme necessário
     background-color: #dcdcdc;
-    top: 12px;
-    left: 35px;
     z-index: 0;
-  }
+  
+    &.completed {
+      background-color: $primary;
+    }
+  }  
 
   &.completed .circle {
     background-color: $primary;
     border-color: $primary;
   }
 
-  .circle.completed {
+  &.completed .line {
     background-color: $primary;
-    border-color: $primary;
   }
 
   .circle.current {

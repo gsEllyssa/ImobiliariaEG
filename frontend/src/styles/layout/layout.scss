@@ -1,26 +1,19 @@
-@use "../base/variables" as *;
-@use "../base/mixins" as *;
-@use "../base/utilities" as *;
-
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  color: $text-dark;
-}
-
 .layout-container {
   display: flex;
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
 }
 
-.menu-container {
-  width: 250px;
-  flex-shrink: 0;
+.page-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
-  padding: 24px;
+  padding: 1.5rem;
   overflow-y: auto;
+  background-color: #f6f6f6;
 }

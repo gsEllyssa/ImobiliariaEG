@@ -1,20 +1,29 @@
 import React from 'react';
-import './StepProgress.scss';
+import '../styles/modules/StepProgress.scss';
 
 export default function StepProgress({ etapaAtual = 1 }) {
   const etapas = ['Inquilino', 'Pagamento', 'Comprovante'];
 
   return (
     <div className="step-progress">
-      {etapas.map((etapa, index) => (
-        <div className="step-wrapper" key={etapa}>
+      {etapas.map((etapa, index) => {
+        const completed = etapaAtual > index + 1;
+        const current = etapaAtual === index + 1;
+        const isLast = index === etapas.length - 1;
+
+        return (
           <div
-            className={`circle ${etapaAtual > index ? 'completed' : ''} ${etapaAtual === index + 1 ? 'current' : ''}`}
-          ></div>
-          <span className="label">{etapa}</span>
-          {index < etapas.length - 1 && <div className="line" />}
-        </div>
-      ))}
+            key={index}
+            className={`step-wrapper ${completed ? 'completed' : ''} ${current ? 'current' : ''}`}
+          >
+            <div className="circle">
+              {completed ? <i className="fas fa-check check" /> : null}
+            </div>
+            {!isLast && <div className="line" />}
+            <div className="label">{etapa}</div>
+          </div>
+        );
+      })}
     </div>
   );
 }
