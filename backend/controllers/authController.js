@@ -26,19 +26,29 @@ export const registrarUsuario = async (req, res) => {
 // Login
 export const loginUsuario = async (req, res) => {
   try {
+    console.log('📥 Requisição recebida no login:', req.body); // <- Aqui
+
     const { email, senha } = req.body;
 
     const usuario = await Usuario.findOne({ email });
-    if (!usuario) return res.status(401).json({ erro: 'Credenciais inválidas.' });
+    if (!usuario) {
+      console.warn('⚠️ Usuário não encontrado:', email);
+      return res.status(401).json({ erro: 'Credenciais inválidas.' });
+    }
 
     const senhaValida = await usuario.compararSenha(senha);
-    if (!senhaValida) return res.status(401).json({ erro: 'Credenciais inválidas.' });
+    if (!senhaValida) {
+      console.warn('⚠️ Senha incorreta para o e-mail:', email);
+      return res.status(401).json({ erro: 'Credenciais inválidas.' });
+    }
 
     const token = jwt.sign(
       { id: usuario._id, email: usuario.email, role: usuario.role },
       JWT_SECRET,
       { expiresIn: '3h' }
     );
+
+    console.log('✅ Login bem-sucedido! Token gerado:', token); // <- Aqui
 
     res.json({
       mensagem: '✅ Login realizado com sucesso!',
@@ -50,7 +60,7 @@ export const loginUsuario = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Erro no login:', error);
+    console.error('❌ Erro no login:', error);
     res.status(500).json({ erro: 'Erro ao fazer login.' });
   }
 };

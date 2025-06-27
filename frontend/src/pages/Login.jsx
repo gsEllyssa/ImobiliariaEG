@@ -19,8 +19,15 @@ export default function Login() {
       localStorage.setItem('usuarioEmail', res.data.usuario.email);
       localStorage.setItem('usuarioRole', res.data.usuario.role);
 
-      navigate('/inicio');
+      console.log('✅ Login efetuado!');
+      console.log('🔐 Token salvo:', res.data.token);
+
+      // Pequeno delay para garantir persistência no localStorage
+      setTimeout(() => {
+        navigate('/inicio');
+      }, 50);
     } catch (err) {
+      console.error('❌ Erro no login:', err);
       setErro('E-mail ou senha inválidos. Tente novamente.');
     }
   };
@@ -40,6 +47,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="username"
           />
 
           <label htmlFor="senha">SENHA</label>
@@ -50,6 +58,7 @@ export default function Login() {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
+            autoComplete="current-password"
           />
 
           {erro && <p className="login-error">{erro}</p>}
