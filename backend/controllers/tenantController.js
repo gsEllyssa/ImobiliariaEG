@@ -2,27 +2,19 @@ import Inquilino from '../models/Inquilino.js';
 
 export const listarInquilinos = async (req, res) => {
   try {
-    const lista = await Inquilino.find()
-      .populate({
-        path: 'contrato',
-        populate: {
-          path: 'imovel',
-          model: 'Imovel'
-        }
-      });
-
-    res.json(lista);
-  } catch (err) {
-    res.status(500).json({ erro: 'Erro ao listar inquilinos' });
+    const inquilinos = await Inquilino.find();
+    res.json(inquilinos);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao listar inquilinos.' });
   }
 };
 
 export const criarInquilino = async (req, res) => {
   try {
-    const inquilino = new Inquilino(req.body);
-    await inquilino.save();
-    res.status(201).json(inquilino);
-  } catch (err) {
-    res.status(400).json({ erro: 'Erro ao criar inquilino', detalhes: err.message });
+    const novoInquilino = new Inquilino(req.body);
+    await novoInquilino.save();
+    res.status(201).json(novoInquilino);
+  } catch (error) {
+    res.status(400).json({ error: 'Erro ao criar inquilino.' });
   }
 };

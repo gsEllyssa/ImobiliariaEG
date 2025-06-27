@@ -1,76 +1,108 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
 .topbar {
-  width: 100%;
-  height: 64px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  position: relative;
+  padding: 16px 24px;
+  background-color: $white;
+  border-bottom: 1px solid $gray-light;
+  position: sticky;
+  top: 0;
   z-index: 10;
 
   .topbar-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 
     .topbar-icon {
       font-size: 18px;
-      color: #000;
+      color: $primary;
     }
 
     .topbar-title {
       font-weight: 600;
-      color: #000;
+      color: $text-dark;
     }
 
     .topbar-separator {
-      color: #aaa;
+      color: $text-muted;
     }
 
     .topbar-subtitle {
-      color: #777;
-      font-weight: 400;
+      color: $text-muted;
     }
   }
 
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 
     .search-box {
-      display: flex;
-      align-items: center;
-      background-color: #f4f4f4;
-      padding: 4px 10px;
-      border-radius: 10px;
-
-      input {
-        border: none;
-        outline: none;
-        background: transparent;
-        margin-left: 6px;
-        font-size: 14px;
-        color: #333;
-        width: 100px;
-      }
+      position: relative;
 
       .search-icon {
-        color: #888;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: $text-muted;
+      }
+
+      input {
+        padding: 8px 10px 8px 32px;
+        border: 1px solid $gray;
+        border-radius: $border-radius;
+        font-size: 14px;
+        min-width: 180px;
+
+        &:focus {
+          outline: none;
+          border-color: $primary;
+        }
       }
     }
 
     .topbar-action {
       font-size: 16px;
-      color: #666;
       cursor: pointer;
-      transition: 0.2s;
+      color: $text-muted;
 
       &:hover {
-        color: #000;
+        color: $primary;
+      }
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: $text-dark;
+
+      .user-icon {
+        font-size: 18px;
+        color: $primary;
+      }
+
+      .user-name {
+        font-weight: 500;
+      }
+    }
+
+    .logout-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: $text-muted;
+      font-size: 16px;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $red;
       }
     }
   }

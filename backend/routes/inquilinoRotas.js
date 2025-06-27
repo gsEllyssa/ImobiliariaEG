@@ -6,4 +6,4 @@ const router = express.Router();
 router.get('/', listarInquilinos);
 router.post('/', criarInquilino);
 
-export default router;
+export default router; // ✅ ESSENCIAL

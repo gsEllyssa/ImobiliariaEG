@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Menu from '../components/Menu.jsx';
+import api from '../services/api';
 import '../styles/modules/Inicio.scss';
 
 export default function Inicio() {
+  const [pagamentos, setPagamentos] = useState([]);
+
+  useEffect(() => {
+    const carregar = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const resposta = await api.get('/pagamentos', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setPagamentos(resposta.data);
+      } catch (erro) {
+        console.error('Erro ao buscar pagamentos:', erro);
+      }
+    };
+    carregar();
+  }, []);
+
+  const formatarData = (data) => {
+    if (!data) return '';
+    const d = new Date(data);
+    return d.toLocaleDateString('pt-BR') + ', ' + d.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getStatusLabel = (status) => {
+    if (status === 'Paid') return <><i className="fa-solid fa-circle-check text-green" /> <span>Aprovada</span></>;
+    if (status === 'Pending') return <><i className="fa-solid fa-clock text-yellow" /> <span>Pendente</span></>;
+    return <><i className="fa-solid fa-circle-minus text-red" /> <span>Vencido</span></>;
+  };
+
   return (
     <div className="layout-container">
       <Menu />
@@ -14,6 +47,7 @@ export default function Inicio() {
           <select><option>Imóvel</option></select>
           <input type="text" placeholder="Pesquisar" />
         </form>
+
         <section className="secao">
           <h1>Pagamentos</h1>
           <table className="tabela">
@@ -25,37 +59,24 @@ export default function Inicio() {
                 <th>VALOR</th>
                 <th>M. PAGAMENTO</th>
                 <th>DATA</th>
-                <td></td>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>Padaria Braz LTDA</td>
-                <td><i className="fa-solid fa-circle-check"></i> <span>Aprovada</span></td>
-                <td>R$1.500,00</td>
-                <td>Dinheiro</td>
-                <td>31/Out/2024, 16:00 PM</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>Yara Lacerda Moraes</td>
-                <td><i className="fa-solid fa-clock"></i> <span>Pendente</span></td>
-                <td>R$1.500,00</td>
-                <td>Dinheiro</td>
-                <td>31/Out/2024, 16:00 PM</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>Cauan Oliveira Castro</td>
-                <td><i className="fa-solid fa-circle-minus"></i> <span>Vencido</span></td>
-                <td>R$1.500,00</td>
-                <td>Dinheiro</td>
-                <td>31/Out/2024, 16:00 PM</td>
-                <td></td>
-              </tr>
+              {pagamentos.map((p) => (
+                <tr key={p._id}>
+                  <td><input type="checkbox" /></td>
+                  <td>{p.tenantId?.nome || '---'}</td>
+                  <td>{getStatusLabel(p.status)}</td>
+                  <td>{p.amount.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  })}</td>
+                  <td>{p.method}</td>
+                  <td>{formatarData(p.paymentDate)}</td>
+                  <td></td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </section>

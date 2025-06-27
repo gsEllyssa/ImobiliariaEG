@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import "../styles/modules/Menu.scss";
 
 export default function Menu() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [openSubmenus, setOpenSubmenus] = useState({});
   const [menuOpen, setMenuOpen] = useState(true);
+
+  const nomeUsuario = localStorage.getItem("usuarioNome") || "Usuário";
 
   const toggleSubmenu = (menu) => {
     setOpenSubmenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
 
   const isActive = (path) => location.pathname === path;
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   const menuItems = [
     { key: "inicio", icon: "fa-house", label: "Início", path: "/inicio" },
@@ -68,7 +76,10 @@ export default function Menu() {
               alt="User"
               className="user-avatar"
             />
-            <span className="user-name">Cleia Maria</span>
+            <div className="user-details">
+              <span className="user-name">Olá, {nomeUsuario.split(" ")[0]}</span>
+              <span className="user-role">Admin</span>
+            </div>
           </div>
         )}
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
@@ -81,10 +92,7 @@ export default function Menu() {
           <div key={item.key} className="menu-group">
             {item.submenu ? (
               <>
-                <div
-                  className="menu-label"
-                  onClick={() => toggleSubmenu(item.key)}
-                >
+                <div className="menu-label" onClick={() => toggleSubmenu(item.key)}>
                   <i className={`fa-solid ${item.icon}`}></i>
                   {menuOpen && <span>{item.label}</span>}
                   {menuOpen && (
@@ -97,8 +105,14 @@ export default function Menu() {
                 </div>
                 {menuOpen && openSubmenus[item.key] && (
                   <div className="submenu open">
-                    {(item.submenu || []).map((sub) => (
-                      <Link key={sub.to} to={sub.to} className="menu-item">
+                    {item.submenu.map((sub) => (
+                      <Link
+                        key={sub.to}
+                        to={sub.to}
+                        className={classNames("menu-item", {
+                          active: isActive(sub.to),
+                        })}
+                      >
                         {sub.label}
                       </Link>
                     ))}
@@ -129,6 +143,10 @@ export default function Menu() {
           <i className="fa-solid fa-circle-question"></i>
           {menuOpen && <span>Ajuda</span>}
         </Link>
+        <button className="menu-item logout" onClick={handleLogout}>
+          <i className="fa-solid fa-right-from-bracket"></i>
+          {menuOpen && <span>Sair</span>}
+        </button>
       </div>
     </div>
   );
