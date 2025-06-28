@@ -12,17 +12,16 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post('/login', { email, senha });
+      const res = await api.post('/auth/login', { email, senha });
 
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('usuarioNome', res.data.usuario.nome);
-      localStorage.setItem('usuarioEmail', res.data.usuario.email);
-      localStorage.setItem('usuarioRole', res.data.usuario.role);
+      localStorage.setItem('usuarioNome', res.data.nome);
+      localStorage.setItem('usuarioEmail', email);
+      localStorage.setItem('usuarioRole', res.data.tipo);
 
       console.log('✅ Login efetuado!');
       console.log('🔐 Token salvo:', res.data.token);
 
-      // Pequeno delay para garantir persistência no localStorage
       setTimeout(() => {
         navigate('/inicio');
       }, 50);

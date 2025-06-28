@@ -1,40 +1,55 @@
-import Usuario from '../models/usuarioModel.js';
+// backend/controllers/userController.js
+import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'chave-secreta';
 
-export async function registrar(req, res) {
+// Registro de novo usuário
+export async function register(req, res) {
   try {
-    const { nome, email, senha, tipo } = req.body;
+    const { name, email, password, role } = req.body;
 
-    const usuarioExistente = await Usuario.findOne({ email });
-    if (usuarioExistente) return res.status(400).json({ erro: 'E-mail já cadastrado' });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already registered' });
+    }
 
-    const senhaHash = await bcrypt.hash(senha, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const novoUsuario = new Usuario({ nome, email, senhaHash, tipo });
-    await novoUsuario.save();
+    const newUser = new User({ name, email, password: hashedPassword, role });
+    await newUser.save();
 
-    res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso' });
+    res.status(201).json({ message: 'User successfully registered' });
   } catch (error) {
-    res.status(500).json({ erro: 'Erro ao registrar usuário' });
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Error registering user' });
   }
 }
 
+// Login do usuário
 export async function login(req, res) {
   try {
-    const { email, senha } = req.body;
-    const usuario = await Usuario.findOne({ email });
+    const { email, password } = req.body;
 
-    if (!usuario || !(await usuario.validarSenha(senha))) {
-      return res.status(401).json({ erro: 'Credenciais inválidas' });
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: usuario._id, tipo: usuario.tipo }, JWT_SECRET, { expiresIn: '8h' });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '8h' }
+    );
 
-    res.json({ token, nome: usuario.nome, tipo: usuario.tipo });
+    res.json({
+      token,
+      name: user.name,
+      role: user.role
+    });
   } catch (error) {
-    res.status(500).json({ erro: 'Erro ao fazer login' });
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Error logging in' });
   }
 }

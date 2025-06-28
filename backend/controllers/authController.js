@@ -1,9 +1,10 @@
+// backend/controllers/authController.js
 import jwt from 'jsonwebtoken';
-import Usuario from '../models/Usuario.js';
+import Usuario from '../models/User.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo-super-seguro';
 
-// Registro de novo usuário (opcional)
+// Registro de novo usuário
 export const registrarUsuario = async (req, res) => {
   try {
     const { nome, email, senha, role } = req.body;
@@ -13,7 +14,13 @@ export const registrarUsuario = async (req, res) => {
       return res.status(400).json({ erro: 'E-mail já cadastrado.' });
     }
 
-    const novoUsuario = new Usuario({ nome, email, senha, role });
+    const novoUsuario = new Usuario({
+      name: nome,
+      email,
+      password: senha, // agora está correto com o model
+      role
+    });
+
     await novoUsuario.save();
 
     res.status(201).json({ mensagem: '✅ Usuário registrado com sucesso!' });
@@ -26,7 +33,7 @@ export const registrarUsuario = async (req, res) => {
 // Login
 export const loginUsuario = async (req, res) => {
   try {
-    console.log('📥 Requisição recebida no login:', req.body); // <- Aqui
+    console.log('📥 Requisição recebida no login:', req.body);
 
     const { email, senha } = req.body;
 
@@ -36,7 +43,7 @@ export const loginUsuario = async (req, res) => {
       return res.status(401).json({ erro: 'Credenciais inválidas.' });
     }
 
-    const senhaValida = await usuario.compararSenha(senha);
+    const senhaValida = await usuario.comparePassword(senha);
     if (!senhaValida) {
       console.warn('⚠️ Senha incorreta para o e-mail:', email);
       return res.status(401).json({ erro: 'Credenciais inválidas.' });
@@ -48,13 +55,13 @@ export const loginUsuario = async (req, res) => {
       { expiresIn: '3h' }
     );
 
-    console.log('✅ Login bem-sucedido! Token gerado:', token); // <- Aqui
+    console.log('✅ Login bem-sucedido! Token gerado:', token);
 
     res.json({
       mensagem: '✅ Login realizado com sucesso!',
       token,
       usuario: {
-        nome: usuario.nome,
+        nome: usuario.name,
         email: usuario.email,
         role: usuario.role
       }
