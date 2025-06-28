@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { webhookStripe } from './controllers/paymentController.js'; // ✅ Importado corretamente
 
 // Importa todas as rotas padronizadas
 import * as routes from './routes/index.js';
@@ -9,6 +10,8 @@ import * as routes from './routes/index.js';
 dotenv.config();
 
 const app = express();
+
+// Middleware para rotas normais com JSON
 app.use(cors());
 app.use(express.json());
 
@@ -22,6 +25,8 @@ app.use('/api/receipts', routes.receiptRoutes);
 app.use('/api/users', routes.userRoutes);
 app.use('/api/templates', routes.templateRoutes);
 app.use('/api/debug', routes.debugRoutes);
+
+// Middleware especial para webhook (sem express.json)
 app.post('/webhook', express.raw({ type: 'application/json' }), webhookStripe);
 
 // Conexão com MongoDB
