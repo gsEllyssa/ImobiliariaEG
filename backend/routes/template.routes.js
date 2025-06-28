@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Modelo from '../models/Modelo.js';
+
 const router = express.Router();
-const Modelo = require('../models/Modelo');
 
 router.get('/', async (req, res) => {
   const modelos = await Modelo.find().sort({ updatedAt: -1 });
@@ -23,4 +24,4 @@ router.put('/:id', async (req, res) => {
   res.json(atualizado);
 });
 
-module.exports = router;
+export default router;

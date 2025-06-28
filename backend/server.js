@@ -3,14 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-// Importação das rotas
-import contratoRotas from './routes/contratoRotas.js';
-import pagamentoRotas from './routes/pagamentoRotas.js';
-import imovelRotas from './routes/imovelRotas.js';
-import reciboRotas from './routes/reciboRotas.js';
-import inquilinoRotas from './routes/inquilinoRotas.js';
-import debugRoutes from './routes/debugRoutes.js';
-import authRoutes from './routes/authRoutes.js'; // 👈 Rotas de autenticação
+// Importa todas as rotas padronizadas
+import * as routes from './routes/index.js';
 
 dotenv.config();
 
@@ -18,16 +12,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rotas da API
-app.use('/api/contratos', contratoRotas);
-app.use('/api/pagamentos', pagamentoRotas);
-app.use('/api/imoveis', imovelRotas);
-app.use('/api/recibos', reciboRotas);
-app.use('/api/inquilinos', inquilinoRotas);
-app.use('/api/debug', debugRoutes);
-app.use('/api', authRoutes); // 👈 /api/login e /api/registro
+// Rotas da API com nomes em inglês
+app.use('/api/auth', routes.authRoutes); // login e registro
+app.use('/api/contracts', routes.contractRoutes);
+app.use('/api/properties', routes.propertyRoutes);
+app.use('/api/tenants', routes.tenantRoutes);
+app.use('/api/payments', routes.paymentRoutes);
+app.use('/api/receipts', routes.receiptRoutes);
+app.use('/api/users', routes.userRoutes);
+app.use('/api/templates', routes.templateRoutes);
+app.use('/api/debug', routes.debugRoutes);
 
-// Conexão com o MongoDB
+// Conexão com MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/imobiliaria')
   .then(() => {
     console.log('🟢 Conectado ao MongoDB');
