@@ -1,3 +1,4 @@
+// StepProgress.jsx
 import React from 'react';
 import '../styles/modules/StepProgress.scss';
 
@@ -19,7 +20,11 @@ export default function StepProgress({ etapaAtual = 1 }) {
             <div className="circle">
               {completed ? <i className="fas fa-check check" /> : null}
             </div>
-            {!isLast && <div className="line" />}
+
+            {!isLast && (
+              <div className={`line ${completed ? 'completed' : ''}`} />
+            )}
+
             <div className="label">{etapa}</div>
           </div>
         );
