@@ -22,6 +22,7 @@ app.use('/api/receipts', routes.receiptRoutes);
 app.use('/api/users', routes.userRoutes);
 app.use('/api/templates', routes.templateRoutes);
 app.use('/api/debug', routes.debugRoutes);
+app.post('/webhook', express.raw({ type: 'application/json' }), webhookStripe);
 
 // Conexão com MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/imobiliaria')

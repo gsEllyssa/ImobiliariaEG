@@ -4,16 +4,35 @@
 
 .menu-container {
   width: 250px;
-  transition: width 0.3s ease;
   min-height: 100vh;
   background-color: #fff;
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  transition: width 0.3s ease;
   z-index: 100;
   flex-shrink: 0;
+  overflow-y: auto;
 
   &.collapsed {
+    width: 60px;
+
+    .user-info {
+      display: none;
+    }
+
+    .menu-label span,
+    .menu-item span,
+    .menu-footer span {
+      display: none;
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
     width: 60px;
 
     .user-info {
@@ -98,8 +117,10 @@
         margin-right: 10px;
       }
 
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: #f7f7f7;
+        outline: none;
       }
     }
 
@@ -110,9 +131,15 @@
         padding: 8px 30px;
         font-size: 0.95rem;
         color: #444;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s ease;
 
-        &:hover {
+        &:hover,
+        &:focus {
           background-color: #f0f0f0;
+          color: #000;
         }
 
         &.active {
@@ -132,9 +159,11 @@
     text-decoration: none;
     color: #555;
     font-size: 0.95rem;
+    cursor: pointer;
     transition: background-color 0.2s ease;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: #f5f5f5;
       color: #000;
     }
@@ -164,7 +193,8 @@
     text-align: left;
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: #f0f0f0;
       color: #000;
     }
@@ -176,7 +206,8 @@
     &.logout {
       color: #c0392b;
 
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: #fbeaea;
         color: #a00;
       }

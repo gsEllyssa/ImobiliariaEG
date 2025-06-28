@@ -1,0 +1,62 @@
+.historico-pagamentos {
+    .input-busca {
+      width: 100%;
+      max-width: 300px;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  
+    .tabela-pagamentos {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+  
+      thead {
+        background-color: #f8f8f8;
+  
+        th {
+          text-align: left;
+          padding: 12px;
+          font-weight: 600;
+          color: #333;
+          border-bottom: 1px solid #ddd;
+        }
+      }
+  
+      tbody {
+        tr {
+          &:hover {
+            background-color: #f3f3f3;
+          }
+  
+          td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+            color: #555;
+  
+            .link-recibo {
+              color: #3498db;
+              text-decoration: none;
+              font-weight: 500;
+  
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+  
+        tr:last-child td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  

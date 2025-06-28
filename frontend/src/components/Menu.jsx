@@ -23,7 +23,12 @@ export default function Menu() {
   };
 
   const menuItems = [
-    { key: "inicio", icon: "fa-house", label: "Início", path: "/inicio" },
+    {
+      key: "inicio",
+      icon: "fa-house",
+      label: "Início",
+      path: "/inicio",
+    },
     {
       key: "inquilino",
       icon: "fa-users",
@@ -36,7 +41,8 @@ export default function Menu() {
       label: "Pagamento",
       submenu: [
         { to: "/pagamento", label: "💸 Realizar Pagamento" },
-        { to: "/historico-pagamentos", label: "📜 Histórico" },
+        { to: "/historico-pagamentos", label: "📜 Histórico de Pagamentos" },
+        { to: "/configurar-pagamento", label: "⚙️ Configurar Pagamento" },
       ],
     },
     {
@@ -46,6 +52,14 @@ export default function Menu() {
       submenu: [
         { to: "/contratos", label: "📑 Listar Contratos" },
         { to: "/modelos", label: "📂 Modelos de Contrato" },
+      ],
+    },
+    {
+      key: "recibo",
+      icon: "fa-receipt",
+      label: "Recibos",
+      submenu: [
+        { to: "/recibo/1", label: "🧾 Visualizar Recibo (Exemplo)" },
       ],
     },
     {
@@ -68,6 +82,7 @@ export default function Menu() {
 
   return (
     <div className={classNames("menu-container", { collapsed: !menuOpen })}>
+      {/* Header */}
       <div className="menu-header">
         {menuOpen && (
           <div className="user-info">
@@ -77,28 +92,38 @@ export default function Menu() {
               className="user-avatar"
             />
             <div className="user-details">
-              <span className="user-name">Olá, {nomeUsuario.split(" ")[0]}</span>
+              <span className="user-name">
+                Olá, {nomeUsuario.split(" ")[0]}
+              </span>
               <span className="user-role">Admin</span>
             </div>
           </div>
         )}
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          <i className={`fa-solid ${menuOpen ? "fa-angle-left" : "fa-bars"}`}></i>
+          <i
+            className={`fa-solid ${menuOpen ? "fa-angle-left" : "fa-bars"}`}
+          ></i>
         </button>
       </div>
 
+      {/* Itens do Menu */}
       <div className="menu-section">
         {menuItems.map((item) => (
           <div key={item.key} className="menu-group">
             {item.submenu ? (
               <>
-                <div className="menu-label" onClick={() => toggleSubmenu(item.key)}>
+                <div
+                  className="menu-label"
+                  onClick={() => toggleSubmenu(item.key)}
+                >
                   <i className={`fa-solid ${item.icon}`}></i>
                   {menuOpen && <span>{item.label}</span>}
                   {menuOpen && (
                     <i
                       className={`fa-solid ${
-                        openSubmenus[item.key] ? "fa-angle-up" : "fa-angle-down"
+                        openSubmenus[item.key]
+                          ? "fa-angle-up"
+                          : "fa-angle-down"
                       } arrow`}
                     ></i>
                   )}
@@ -134,6 +159,7 @@ export default function Menu() {
         ))}
       </div>
 
+      {/* Rodapé */}
       <div className="menu-footer">
         <Link to="/configuracoes" className="menu-item">
           <i className="fa-solid fa-gear"></i>
