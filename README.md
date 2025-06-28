@@ -119,5 +119,3 @@ git push
 Feito com 💙 para o projeto da Imobiliária.
 
 ```
-
-kjjj
