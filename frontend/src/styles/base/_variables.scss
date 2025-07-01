@@ -1,11 +1,28 @@
-$gray-light: #f6f9fb;
-$text-dark: #1e272e;
-$text-muted: #6c757d;
-$primary: #8fc98f;
-$primary-hover: #7ab87a;
-$white: #ffffff;
-$black: #000000;
-$border-radius: 14px;
-$gray: #dcdcdc;
-$white: #ffffff;
-$red: #ff6b6b;
+// base/variables.scss
+
+// 🎨 Cores principais
+$primary:        #8fc98f;
+$primary-hover:  #7ab87a;
+$red:            #ff6b6b;
+
+// 🎨 Cores neutras
+$white:          #ffffff;
+$black:          #000000;
+$gray-light:     #f6f9fb;
+$gray:           #dcdcdc;
+$gray-medium:    #cccccc; // (opcional para hover ou bordas suaves)
+
+// 🖋️ Cores de texto
+$text-dark:      #1e272e;
+$text-muted:     #6c757d;
+
+// 📐 Estilo global
+$border-radius:  14px;
+$shadow-soft:    0 4px 12px rgba(0, 0, 0, 0.06);
+$transition:     0.2s ease-in-out;
+
+// 📏 Breakpoints (se desejar responsividade)
+$breakpoint-sm:  576px;
+$breakpoint-md:  768px;
+$breakpoint-lg:  992px;
+$breakpoint-xl:  1200px;

@@ -1,41 +1,42 @@
-// backend/routes/user.routes.js
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { userController } from '../controllers/index.js';
 import { proteger } from '../middlewares/auth.middleware.js';
-import User from '../models/User.js'; // modelo do usuário
+import User from '../models/User.js';
 
 const router = express.Router();
 
-// Rota de registro e login
+// Public authentication routes
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 
-// Rota protegida de perfil
-router.get('/perfil', proteger, (req, res) => {
-  res.json({ mensagem: 'Perfil do usuário autenticado', usuario: req.usuario });
+// Protected route - User profile
+router.get('/profile', proteger, (req, res) => {
+  res.json({ message: 'Authenticated user profile', user: req.usuario });
 });
 
-// 🚨 ROTA TEMPORÁRIA PARA CRIAR O PRIMEIRO USUÁRIO ADMIN
-router.post('/criar-admin', async (req, res) => {
+// 🚨 TEMPORARY route to create the first admin user
+router.post('/create-admin', async (req, res) => {
   try {
-    const existe = await User.findOne({ email: 'admin@meusistema.com' });
-    if (existe) return res.status(400).json({ erro: 'Usuário já existe' });
+    const existingUser = await User.findOne({ email: 'admin@meusistema.com' });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
 
-    const senhaCriptografada = await bcrypt.hash('senhaSuperSecreta123!', 10);
+    const hashedPassword = await bcrypt.hash('senhaSuperSecreta123!', 10);
 
-    const novoAdmin = new User({
-      nome: 'Admin',
+    const newAdmin = new User({
+      name: 'Admin',
       email: 'admin@meusistema.com',
-      senha: senhaCriptografada,
-      role: 'admin'
+      password: hashedPassword,
+      role: 'admin',
     });
 
-    await novoAdmin.save();
-    res.status(201).json({ mensagem: 'Usuário admin criado com sucesso!' });
+    await newAdmin.save();
+    res.status(201).json({ message: '✅ Admin user created successfully!' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ erro: 'Erro ao criar admin' });
+    console.error('❌ Error creating admin user:', error);
+    res.status(500).json({ error: 'Error creating admin user' });
   }
 });
 

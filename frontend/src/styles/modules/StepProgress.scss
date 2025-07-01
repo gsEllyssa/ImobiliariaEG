@@ -1,6 +1,7 @@
 @use "../base/variables" as *;
 @use "../base/mixins" as *;
 @use "../base/utilities" as *;
+@use "sass:color";
 
 .step-progress {
   margin: 1.5rem auto 2rem auto; // Centraliza horizontalmente

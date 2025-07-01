@@ -1,7 +1,11 @@
+// main.scss
+
+@use "sass:color";
 @use "./base/variables" as *;
 @use "./base/mixins" as *;
 @use "./base/utilities" as *;
 
+// Font Awesome (ícones)
 @font-face {
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
@@ -19,42 +23,121 @@
   -webkit-font-smoothing: antialiased;
 }
 
-
+// Reset básico e estrutura global
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  background-color: $gray-light;
+  color: $text-dark;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: $text-dark;
-  background-color: $gray-light;
-  margin: 0;
-  padding: 0;
+  overflow-x: hidden;
 }
 
-.form-container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: white;
+// Layout principal centralizado
+.main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+// Container reutilizável para formulários e blocos
+.card-container {
+  background-color: #fff;
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: $shadow-soft;
+  margin-bottom: 2rem;
+}
 
-  input, button {
-    display: block;
-    width: 100%;
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    font-size: 1rem;
+// Títulos e tipografia
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: $text-dark;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: $text-muted;
+}
+
+// Botões genéricos
+button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background $transition;
+
+  &.btn-primary {
+    background-color: $primary;
+    color: #fff;
+
+    &:hover {
+      background-color: color.adjust($primary, $lightness: -10%);
+    }
   }
 
-  button {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
+  &.btn-secondary {
+    background-color: $gray-medium;
+    color: #fff;
+
+    &:hover {
+      background-color: color.adjust($gray-medium, $lightness: -10%);
+    }
   }
 }
+
+// Campos de formulário
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 14px;
+  border: 1px solid $gray-medium;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 2px rgba($primary, 0.1);
+  }
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: $text-dark;
+}
+
+// Utilitários de espaçamento (opcional)
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }

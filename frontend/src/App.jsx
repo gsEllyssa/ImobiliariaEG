@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Rotas públicas
+// Public route
 import Login from './pages/Login.jsx';
 
-// Rotas protegidas
+// Protected routes
 import Inicio from './pages/Inicio.jsx';
-import Pagamento from './pages/Pagamento.jsx';
+import Payment from './pages/Payment.jsx'; // ✅ updated
 import NovoInquilino from './pages/NovoInquilino.jsx';
 import NovoContrato from './pages/NovoContrato.jsx';
 import ContratoVisualizacao from './pages/ContratoVisualizacao.jsx';
@@ -26,12 +26,12 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Rota pública */}
+        {/* Public route */}
         <Route path="/" element={<Login />} />
 
-        {/* Rotas protegidas */}
+        {/* Protected routes */}
         <Route path="/inicio" element={<RotaProtegida><Inicio /></RotaProtegida>} />
-        <Route path="/pagamento" element={<RotaProtegida><Pagamento /></RotaProtegida>} />
+        <Route path="/payment" element={<RotaProtegida><Payment /></RotaProtegida>} /> {/* ✅ updated */}
         <Route path="/novo-inquilino" element={<RotaProtegida><NovoInquilino /></RotaProtegida>} />
         <Route path="/novo-contrato" element={<RotaProtegida><NovoContrato /></RotaProtegida>} />
         <Route path="/contratos" element={<RotaProtegida><Contratos /></RotaProtegida>} />

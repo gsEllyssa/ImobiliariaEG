@@ -1,20 +1,22 @@
 import Receipt from "../models/Receipt.js";
 
-export const listarRecibos = async (req, res) => {
+// List all receipts
+export const listReceipts = async (req, res) => {
   try {
     const receipts = await Receipt.find().populate("paymentId");
     res.json(receipts);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar recibos." });
+    res.status(500).json({ error: "Failed to fetch receipts." });
   }
 };
 
-export const criarRecibo = async (req, res) => {
+// Create a new receipt
+export const createReceipt = async (req, res) => {
   try {
     const receipt = new Receipt(req.body);
     await receipt.save();
     res.status(201).json(receipt);
   } catch (error) {
-    res.status(400).json({ error: "Erro ao criar recibo." });
+    res.status(400).json({ error: "Failed to create receipt." });
   }
 };

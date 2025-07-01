@@ -1,10 +1,23 @@
+// routes/payment.routes.js
+
 import express from 'express';
-import { paymentController } from '../controllers/index.js';
+import { listPayments, createPayment } from '../controllers/payment.controller.js';
 import { proteger } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.get('/', proteger, paymentController.listarPayments);
-router.post('/', proteger, paymentController.criarPayment);
+/**
+ * @route   GET /api/pagamentos
+ * @desc    Lista todos os pagamentos realizados
+ * @access  Privado (token necessário)
+ */
+router.get('/', proteger, listPayments);
+
+/**
+ * @route   POST /api/pagamentos
+ * @desc    Registra um novo pagamento (etapa: Receber Pagamento)
+ * @access  Privado (token necessário)
+ */
+router.post('/', proteger, createPayment);
 
 export default router;

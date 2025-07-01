@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Menu from '../components/Menu';
 import Topbar from '../components/Topbar';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import '../styles/modules/Pagamento.scss';
+import '../styles/modules/Payment.scss';
 
 export default function ConfigurarPagamento() {
   const [etapa, setEtapa] = useState(1);

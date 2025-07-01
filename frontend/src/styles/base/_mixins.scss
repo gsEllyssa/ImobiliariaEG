@@ -1,5 +1,57 @@
+// base/mixins.scss
+
+// 📦 Centralização Flexível
 @mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+// 📦 Centralização Horizontal
+@mixin flex-x-center {
+  display: flex;
+  justify-content: center;
+}
+
+// 📦 Centralização Vertical
+@mixin flex-y-center {
+  display: flex;
+  align-items: center;
+}
+
+// 📱 Media Queries
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: 576px) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: 768px) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: 992px) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: 1200px) { @content; }
+  }
+}
+
+// 🧩 Botão padrão com hover
+@mixin button-style($bg-color, $text-color: #fff) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: $border-radius;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: darken($bg-color, 10%);
+  }
+}
+
+// 🧩 Card padrão
+@mixin card {
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-soft;
+  padding: 1.5rem;
 }
