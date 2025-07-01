@@ -3,61 +3,53 @@ import User from '../models/User.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secure-secret';
 
-// Register new user
+// ▶️ Registro de novo usuário
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    // Verifica se já existe um usuário com o mesmo e-mail
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered.' });
+      return res.status(400).json({ error: 'E-mail já registrado.' });
     }
 
-    const newUser = new User({
-      name,
-      email,
-      password,
-      role
-    });
-
+    const newUser = new User({ name, email, password, role });
     await newUser.save();
 
-    res.status(201).json({ message: '✅ User registered successfully!' });
+    res.status(201).json({ message: '✅ Usuário registrado com sucesso!' });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Error registering user.' });
+    console.error('❌ Erro no registro:', error);
+    res.status(500).json({ error: 'Erro ao registrar usuário.' });
   }
 };
 
-// User login
+// ▶️ Login do usuário
 export const loginUser = async (req, res) => {
   try {
-    console.log('📥 Login request received:', req.body);
-
     const { email, password } = req.body;
 
+    // Busca o usuário e garante que o campo senha seja retornado
     const user = await User.findOne({ email }).select('+password');
-    if (!user) {
-      console.warn('⚠️ User not found:', email);
-      return res.status(401).json({ error: 'Invalid credentials.' });
+    if (!user || !user.password) {
+      return res.status(401).json({ error: 'Credenciais inválidas.' });
     }
 
+    // Compara a senha fornecida com a salva
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      console.warn('⚠️ Incorrect password for email:', email);
-      return res.status(401).json({ error: 'Invalid credentials.' });
+      return res.status(401).json({ error: 'Credenciais inválidas.' });
     }
 
+    // Gera token JWT
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: '3h' }
     );
 
-    console.log('✅ Login successful! Token generated:', token);
-
-    res.json({
-      message: '✅ Login successful!',
+    res.status(200).json({
+      message: '✅ Login realizado com sucesso!',
       token,
       user: {
         name: user.name,
@@ -66,7 +58,7 @@ export const loginUser = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('❌ Login error:', error);
-    res.status(500).json({ error: 'Error logging in.' });
+    console.error('❌ Erro no login:', error.message);
+    res.status(500).json({ error: 'Erro ao realizar login.' });
   }
 };

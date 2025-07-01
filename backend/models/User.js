@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Criptografa a senha antes de salvar
+// 🔐 Criptografa a senha antes de salvar
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   try {
@@ -38,9 +38,10 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-// Método para comparar senha digitada com a armazenada
-UserSchema.methods.comparePassword = function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+// ✅ Método seguro para comparar senha digitada com a armazenada
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+  if (!candidatePassword || !this.password) return false;
+  return await bcrypt.compare(candidatePassword, this.password);
 };
 
 export default mongoose.model('User', UserSchema);
