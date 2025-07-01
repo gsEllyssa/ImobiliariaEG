@@ -1,4 +1,3 @@
-// backend/models/User.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -17,7 +16,8 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Password is required']
+    required: [true, 'Password is required'],
+    select: false // 🚨 Protege o campo de ser retornado por padrão
   },
   role: {
     type: String,
@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Encrypt password before saving
+// Criptografa a senha antes de salvar
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   try {
@@ -38,7 +38,7 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-// Method to compare password
+// Método para comparar senha digitada com a armazenada
 UserSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };

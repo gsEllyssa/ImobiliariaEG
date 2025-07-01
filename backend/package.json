@@ -7,7 +7,8 @@
     "dev": "nodemon server.js",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "node scripts/seedAdmin.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",

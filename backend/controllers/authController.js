@@ -1,4 +1,3 @@
-// backend/controllers/authController.js
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/User.js';
 
@@ -17,7 +16,7 @@ export const registrarUsuario = async (req, res) => {
     const novoUsuario = new Usuario({
       name: nome,
       email,
-      password: senha, // agora está correto com o model
+      password: senha,
       role
     });
 
@@ -37,7 +36,9 @@ export const loginUsuario = async (req, res) => {
 
     const { email, senha } = req.body;
 
-    const usuario = await Usuario.findOne({ email });
+    // ✅ Força a seleção do campo password, que está com select: false no model
+    const usuario = await Usuario.findOne({ email }).select('+password');
+
     if (!usuario) {
       console.warn('⚠️ Usuário não encontrado:', email);
       return res.status(401).json({ erro: 'Credenciais inválidas.' });
