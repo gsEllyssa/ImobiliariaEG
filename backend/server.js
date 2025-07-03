@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// ✅ Carrega variáveis de ambiente
+// ✅ Carrega variáveis de ambiente do arquivo .env
 dotenv.config();
 
 // ✅ Importação das rotas
@@ -23,21 +23,21 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/imobiliari
 app.use(cors());
 app.use(express.json());
 
-// ✅ Rotas principais
-app.use('/auth', authRoutes);
+// ✅ Rotas organizadas com prefixo /api
+app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', userRoutes);
 app.use('/api/inquilinos', tenantRoutes);
 app.use('/api/contratos', contractRoutes);
 app.use('/api/pagamentos', paymentRoutes);
 app.use('/api/recibos', receiptRoutes);
-app.use('/api/debug', debugRoutes); // Apenas em ambiente de desenvolvimento
+app.use('/api/debug', debugRoutes); // Apenas para testes e dev
 
-// ✅ Conexão com o MongoDB (modo moderno e profissional)
+// ✅ Conexão com o banco MongoDB (modo profissional)
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('🟢 Conectado ao MongoDB com sucesso');
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor rodando na porta ${PORT}`);
+      console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
     });
   })
   .catch((error) => {

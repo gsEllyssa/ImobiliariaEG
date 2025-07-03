@@ -8,7 +8,6 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
-    // Verifica se já existe um usuário com o mesmo e-mail
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'E-mail já registrado.' });
@@ -29,19 +28,16 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Busca o usuário e garante que o campo senha seja retornado
     const user = await User.findOne({ email }).select('+password');
     if (!user || !user.password) {
       return res.status(401).json({ error: 'Credenciais inválidas.' });
     }
 
-    // Compara a senha fornecida com a salva
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Credenciais inválidas.' });
     }
 
-    // Gera token JWT
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       JWT_SECRET,
@@ -61,4 +57,45 @@ export const loginUser = async (req, res) => {
     console.error('❌ Erro no login:', error.message);
     res.status(500).json({ error: 'Erro ao realizar login.' });
   }
+};
+
+// ▶️ Acesso rápido (apenas para ambiente de desenvolvimento)
+export const acessoRapido = async (req, res) => {
+  try {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({ error: 'Acesso rápido desativado em produção.' });
+    }
+
+    const user = await User.findOne({ email: 'admin@meusistema.com' });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário de acesso rápido não encontrado.' });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({
+      message: '✅ Acesso rápido autorizado!',
+      token,
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error('❌ Erro no acesso rápido:', error);
+    res.status(500).json({ error: 'Erro ao realizar acesso rápido.' });
+  }
+};
+
+// ✅ Exportação agrupada
+export const authController = {
+  registerUser,
+  loginUser,
+  acessoRapido,
 };
