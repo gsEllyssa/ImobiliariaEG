@@ -1,11 +1,11 @@
 // backend/scripts/criarAdmin.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import Usuario from '../models/Usuario.js';
 
 dotenv.config();
 
-// Verifica se a variável de ambiente está definida
 if (!process.env.MONGO_URI) {
   console.error('❌ Erro: MONGO_URI não está definido no arquivo .env');
   process.exit(1);
@@ -22,11 +22,13 @@ async function criarAdmin() {
       process.exit(0);
     }
 
+    const senhaCriptografada = await bcrypt.hash('senhaSuperSecreta123!', 10);
+
     const novoAdmin = new Usuario({
       nome: 'Administrador Master',
       email: 'admin@meusistema.com',
-      senha: 'senhaSuperSecreta123!',
-      role: 'admin' // Certifique-se que o campo no schema se chama 'role'
+      senha: senhaCriptografada,
+      role: 'admin'
     });
 
     await novoAdmin.save();

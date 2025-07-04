@@ -12,25 +12,15 @@ export default function Inicio() {
       try {
         const token = localStorage.getItem('token');
 
-        if (!token) {
-          console.warn('⚠️ Token ausente. Redirecionando...');
-          window.location.href = '/';
-          return;
-        }
-
-        console.log('🔐 Token presente. Buscando pagamentos...');
         const resposta = await api.get('/pagamentos', {
           headers: { Authorization: `Bearer ${token}` }
         });
 
         setPagamentos(resposta.data);
-        console.log('✅ Pagamentos recebidos:', resposta.data);
       } catch (erro) {
         console.error('❌ Erro ao buscar pagamentos:', erro);
         if (erro.response?.status === 401) {
-          console.warn('⚠️ Token inválido. Redirecionando...');
-          localStorage.clear();
-          window.location.href = '/';
+          localStorage.clear(); // ❗ Apenas limpa o token, sem redirecionar
         }
       } finally {
         setCarregando(false);
