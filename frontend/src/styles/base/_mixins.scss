@@ -1,6 +1,6 @@
 // base/mixins.scss
 
-// 📦 Centralização Flexível
+// 📦 Centralização Flexível (eixo X e Y)
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-// 📱 Media Queries
+// 📱 Media Queries por breakpoint
 @mixin respond-to($breakpoint) {
   @if $breakpoint == sm {
     @media (max-width: 576px) { @content; }
@@ -32,7 +32,7 @@
   }
 }
 
-// 🧩 Botão padrão com hover
+// 🧩 Botão padrão com hover dinâmico
 @mixin button-style($bg-color, $text-color: #fff) {
   background-color: $bg-color;
   color: $text-color;
@@ -48,9 +48,9 @@
   }
 }
 
-// 🧩 Card padrão
+// 🧩 Card visual reutilizável
 @mixin card {
-  background: $white;
+  background-color: $white;
   border-radius: $border-radius;
   box-shadow: $shadow-soft;
   padding: 1.5rem;

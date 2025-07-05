@@ -1,6 +1,3 @@
-// main.scss
-
-@use "sass:color";
 @use "./base/variables" as *;
 @use "./base/mixins" as *;
 @use "./base/utilities" as *;
@@ -23,7 +20,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-// Reset básico e estrutura global
+// Reset básico
 * {
   margin: 0;
   padding: 0;
@@ -45,14 +42,14 @@ body {
   overflow-x: hidden;
 }
 
-// Layout principal centralizado
+// Estrutura central
 .main-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-// Container reutilizável para formulários e blocos
+// Cartões e containers reutilizáveis
 .card-container {
   background-color: #fff;
   padding: 2rem;
@@ -61,7 +58,7 @@ body {
   margin-bottom: 2rem;
 }
 
-// Títulos e tipografia
+// Tipografia
 h1, h2, h3, h4 {
   font-weight: 600;
   color: $text-dark;
@@ -75,9 +72,23 @@ h2 {
   font-size: 1.5rem;
 }
 
+h3 {
+  font-size: 1.25rem;
+}
+
 p {
   margin-bottom: 1rem;
   color: $text-muted;
+}
+
+// Links
+a {
+  color: $primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // Botões genéricos
@@ -96,7 +107,7 @@ button {
     color: #fff;
 
     &:hover {
-      background-color: color.adjust($primary, $lightness: -10%);
+      background-color: darken($primary, 10%);
     }
   }
 
@@ -105,13 +116,29 @@ button {
     color: #fff;
 
     &:hover {
-      background-color: color.adjust($gray-medium, $lightness: -10%);
+      background-color: darken($gray-medium, 10%);
     }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+
+    &:hover {
+      background-color: darken(#dc3545, 10%);
+    }
+  }
+
+  &.btn-light {
+    background-color: #f8f9fa;
+    color: #333;
   }
 }
 
-// Campos de formulário
-input, select, textarea {
+// Inputs e campos de formulário
+input,
+select,
+textarea {
   width: 100%;
   padding: 0.75rem;
   font-size: 14px;
@@ -134,10 +161,22 @@ label {
   color: $text-dark;
 }
 
-// Utilitários de espaçamento (opcional)
+// Utilitários rápidos
 .mt-2 { margin-top: 0.5rem; }
 .mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+
 .mb-2 { margin-bottom: 0.5rem; }
 .mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+
 .text-center { text-align: center; }
 .text-right { text-align: right; }
+
+.text-muted { color: $text-muted; }
+
+.bg-light { background-color: $gray-light; }
+.bg-white { background-color: #fff; }
+
+.rounded { border-radius: 8px; }
+.shadow-soft { box-shadow: $shadow-soft; }

@@ -9,7 +9,7 @@ export default function Menu() {
   const [openSubmenus, setOpenSubmenus] = useState({});
   const [menuOpen, setMenuOpen] = useState(true);
 
-  const nomeUsuario = localStorage.getItem("usuarioNome") || "Usuário";
+  const nomeUsuario = localStorage.getItem("usuarioNome") || "User";
 
   const toggleSubmenu = (menu) => {
     setOpenSubmenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
@@ -24,64 +24,64 @@ export default function Menu() {
 
   const menuItems = [
     {
-      key: "inicio",
+      key: "home",
       icon: "fa-house",
-      label: "Início",
+      label: "Home",
       path: "/inicio",
     },
     {
-      key: "inquilino",
+      key: "tenant",
       icon: "fa-users",
-      label: "Inquilino",
-      submenu: [{ to: "/novo-inquilino", label: "🧑‍💼 Novo Inquilino" }],
+      label: "Tenants",
+      submenu: [{ to: "/novo-inquilino", label: "🧑‍💼 New Tenant" }],
     },
     {
-      key: "pagamentos",
+      key: "payments",
       icon: "fa-dollar-sign",
-      label: "Receber Pagamento",
+      label: "Payments",
       submenu: [
-        { to: "/configurar-pagamento", label: "⚙️ Configurar Pagamento" },
-        { to: "/historico-pagamentos", label: "📜 Histórico de Pagamentos" },
+        { to: "/payment", label: "💳 New Payment" },
+        { to: "/historico-pagamentos", label: "📜 Payment History" },
       ],
     },
     {
-      key: "contrato",
+      key: "contracts",
       icon: "fa-file-contract",
-      label: "Contratos",
+      label: "Contracts",
       submenu: [
-        { to: "/contratos", label: "📑 Listar Contratos" },
-        { to: "/modelos", label: "📂 Modelos de Contrato" },
+        { to: "/contratos", label: "📑 List Contracts" },
+        { to: "/modelos", label: "📂 Contract Templates" },
       ],
     },
     {
-      key: "recibo",
+      key: "receipt",
       icon: "fa-receipt",
-      label: "Recibos",
+      label: "Receipts",
       submenu: [
-        { to: "/recibo/1", label: "🧾 Visualizar Recibo (Exemplo)" },
+        { to: "/recibo/1", label: "🧾 View Receipt (Example)" },
       ],
     },
     {
-      key: "imoveis",
+      key: "properties",
       icon: "fa-building",
-      label: "Imóveis",
-      submenu: [{ to: "/novo-imovel", label: "🏠 Novo Imóvel" }],
+      label: "Properties",
+      submenu: [{ to: "/novo-imovel", label: "🏠 New Property" }],
     },
     {
-      key: "relatorios",
+      key: "reports",
       icon: "fa-chart-pie",
-      label: "Relatórios",
+      label: "Reports",
       submenu: [
-        { to: "/relatorio-pagamentos", label: "📊 Pagamentos" },
-        { to: "/relatorio-contratos", label: "📄 Contratos" },
-        { to: "/relatorio-inquilinos", label: "🧑‍💼 Inquilinos" },
+        { to: "/relatorio-pagamentos", label: "📊 Payments Report" },
+        { to: "/relatorio-contratos", label: "📄 Contracts Report" },
+        { to: "/relatorio-inquilinos", label: "🧑‍💼 Tenants Report" },
       ],
     },
   ];
 
   return (
     <div className={classNames("menu-container", { collapsed: !menuOpen })}>
-      {/* Cabeçalho do Menu */}
+      {/* Header */}
       <div className="menu-header">
         {menuOpen && (
           <div className="user-info">
@@ -92,37 +92,30 @@ export default function Menu() {
             />
             <div className="user-details">
               <span className="user-name">
-                Olá, {nomeUsuario.split(" ")[0]}
+                Hello, {nomeUsuario.split(" ")[0]}
               </span>
               <span className="user-role">Admin</span>
             </div>
           </div>
         )}
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          <i
-            className={`fa-solid ${menuOpen ? "fa-angle-left" : "fa-bars"}`}
-          ></i>
+          <i className={`fa-solid ${menuOpen ? "fa-angle-left" : "fa-bars"}`}></i>
         </button>
       </div>
 
-      {/* Seção de Itens do Menu */}
+      {/* Menu Items */}
       <div className="menu-section">
         {menuItems.map((item) => (
           <div key={item.key} className="menu-group">
             {item.submenu ? (
               <>
-                <div
-                  className="menu-label"
-                  onClick={() => toggleSubmenu(item.key)}
-                >
+                <div className="menu-label" onClick={() => toggleSubmenu(item.key)}>
                   <i className={`fa-solid ${item.icon}`}></i>
                   {menuOpen && <span>{item.label}</span>}
                   {menuOpen && (
                     <i
                       className={`fa-solid ${
-                        openSubmenus[item.key]
-                          ? "fa-angle-up"
-                          : "fa-angle-down"
+                        openSubmenus[item.key] ? "fa-angle-up" : "fa-angle-down"
                       } arrow`}
                     ></i>
                   )}
@@ -158,19 +151,19 @@ export default function Menu() {
         ))}
       </div>
 
-      {/* Rodapé do Menu */}
+      {/* Footer */}
       <div className="menu-footer">
         <Link to="/configuracoes" className="menu-item">
           <i className="fa-solid fa-gear"></i>
-          {menuOpen && <span>Configurações</span>}
+          {menuOpen && <span>Settings</span>}
         </Link>
         <Link to="/ajuda" className="menu-item">
           <i className="fa-solid fa-circle-question"></i>
-          {menuOpen && <span>Ajuda</span>}
+          {menuOpen && <span>Help</span>}
         </Link>
         <button className="menu-item logout" onClick={handleLogout}>
           <i className="fa-solid fa-right-from-bracket"></i>
-          {menuOpen && <span>Sair</span>}
+          {menuOpen && <span>Logout</span>}
         </button>
       </div>
     </div>

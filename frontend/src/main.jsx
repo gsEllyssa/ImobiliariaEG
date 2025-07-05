@@ -1,9 +1,10 @@
+// src/main.jsx (ou src/index.jsx)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 
-import { AuthProvider } from './contexts/AuthContext'; // ✅ importa o contexto
+import { AuthProvider } from './contexts/AuthContext'; // ✅ Contexto de autenticação
 
 import './styles/layout/layout.scss';
 import './styles/main.scss';
