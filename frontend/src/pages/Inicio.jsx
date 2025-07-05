@@ -1,49 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Menu from '../components/Menu.jsx';
-import api from '../services/api';
 import '../styles/modules/Inicio.scss';
 
 export default function Inicio() {
-  const [pagamentos, setPagamentos] = useState([]);
-  const [carregando, setCarregando] = useState(true);
-
-  useEffect(() => {
-    const carregar = async () => {
-      try {
-        const token = localStorage.getItem('token');
-
-        const resposta = await api.get('/pagamentos', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        setPagamentos(resposta.data);
-      } catch (erro) {
-        console.error('❌ Erro ao buscar pagamentos:', erro);
-        if (erro.response?.status === 401) {
-          localStorage.clear(); // ❗ Apenas limpa o token, sem redirecionar
-        }
-      } finally {
-        setCarregando(false);
-      }
-    };
-
-    carregar();
-  }, []);
-
-  const formatarData = (data) => {
-    if (!data) return '';
-    const d = new Date(data);
-    return d.toLocaleDateString('pt-BR') + ', ' + d.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getStatusLabel = (status) => {
-    if (status === 'Paid') return <><i className="fa-solid fa-circle-check text-green" /> <span>Aprovada</span></>;
-    if (status === 'Pending') return <><i className="fa-solid fa-clock text-yellow" /> <span>Pendente</span></>;
-    return <><i className="fa-solid fa-circle-minus text-red" /> <span>Vencido</span></>;
-  };
+  const nome = localStorage.getItem('usuarioNome');
+  const email = localStorage.getItem('usuarioEmail');
+  const idade = localStorage.getItem('usuarioIdade');
 
   return (
     <div className="layout-container">
@@ -58,45 +20,10 @@ export default function Inicio() {
         </form>
 
         <section className="secao">
-          <h1>Pagamentos</h1>
-
-          {carregando ? (
-            <p>🔄 Carregando pagamentos...</p>
-          ) : (
-            <table className="tabela">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>NOME</th>
-                  <th>STATUS</th>
-                  <th>VALOR</th>
-                  <th>M. PAGAMENTO</th>
-                  <th>DATA</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {pagamentos.length === 0 ? (
-                  <tr><td colSpan="7">Nenhum pagamento encontrado.</td></tr>
-                ) : (
-                  pagamentos.map((p) => (
-                    <tr key={p._id}>
-                      <td><input type="checkbox" /></td>
-                      <td>{p.tenantId?.nome || '---'}</td>
-                      <td>{getStatusLabel(p.status)}</td>
-                      <td>{p.amount.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      })}</td>
-                      <td>{p.method}</td>
-                      <td>{formatarData(p.paymentDate)}</td>
-                      <td></td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          )}
+          <h1>Bem-vindo(a), {nome}!</h1>
+          <p><strong>Email:</strong> {email}</p>
+          <p><strong>Idade:</strong> {idade} anos</p>
+          <p>✅ Login efetuado com sucesso.</p>
         </section>
       </div>
     </div>

@@ -1,5 +1,3 @@
-// src/pages/Login.jsx
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -18,25 +16,26 @@ export default function Login() {
     try {
       console.log("🔐 Tentando login com:", { email, senha });
 
-      const res = await api.post("/auth/login", { email, senha });
+      const res = await api.post("/auth/login", {
+        email,
+        password: senha, // Enviar corretamente como 'password'
+      });
 
       console.log("✅ Resposta do login:", res.data);
 
-      const { token, user } = res.data;
+      const { usuario, message } = res.data;
 
-      // Verificação de segurança
-      if (!token || !user) {
+      if (!usuario) {
         throw new Error("Resposta do servidor inválida");
       }
 
-      // Armazenar no localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("usuarioNome", user.name);
-      localStorage.setItem("usuarioEmail", user.email);
-      localStorage.setItem("usuarioRole", user.role || "user");
+      // Armazenar dados no localStorage
+      localStorage.setItem("usuarioNome", usuario.name);
+      localStorage.setItem("usuarioEmail", usuario.email);
+      localStorage.setItem("usuarioIdade", usuario.idade);
 
-      // Redirecionar
-      navigate("/inicio");
+      alert(message); // Exibe mensagem de sucesso (opcional)
+      navigate("/inicio"); // Redireciona após login
     } catch (err) {
       console.error("❌ Erro no login:", err.response?.data || err.message);
       setErro("E-mail ou senha inválidos.");

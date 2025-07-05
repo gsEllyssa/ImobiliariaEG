@@ -1,42 +1,30 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
-import { userController } from '../controllers/index.js';
-import { proteger } from '../middlewares/auth.middleware.js';
-import User from '../models/User.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const router = express.Router();
 
-// Public authentication routes
-router.post('/register', userController.register);
-router.post('/login', userController.login);
+// 📁 Caminho absoluto do arquivo usuarios.json
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const caminhoArquivo = path.resolve(__dirname, '../usuarios.json');
 
-// Protected route - User profile
-router.get('/profile', proteger, (req, res) => {
-  res.json({ message: 'Authenticated user profile', user: req.usuario });
-});
-
-// 🚨 TEMPORARY route to create the first admin user
-router.post('/create-admin', async (req, res) => {
+// 🔍 Rota GET para listar todos os usuários
+router.get('/', (req, res) => {
   try {
-    const existingUser = await User.findOne({ email: 'admin@meusistema.com' });
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+    // Verifica se o arquivo existe
+    if (fs.existsSync(caminhoArquivo)) {
+      const dados = fs.readFileSync(caminhoArquivo, 'utf8');
+      const usuarios = JSON.parse(dados);
+      res.json(usuarios);
+    } else {
+      res.status(404).json({ mensagem: 'Nenhum usuário cadastrado ainda.' });
     }
-
-    const hashedPassword = await bcrypt.hash('senhaSuperSecreta123!', 10);
-
-    const newAdmin = new User({
-      name: 'Admin',
-      email: 'admin@meusistema.com',
-      password: hashedPassword,
-      role: 'admin',
-    });
-
-    await newAdmin.save();
-    res.status(201).json({ message: '✅ Admin user created successfully!' });
-  } catch (error) {
-    console.error('❌ Error creating admin user:', error);
-    res.status(500).json({ error: 'Error creating admin user' });
+  } catch (erro) {
+    console.error('❌ Erro ao ler usuários:', erro);
+    res.status(500).json({ erro: 'Erro ao ler os dados dos usuários.' });
   }
 });
 
