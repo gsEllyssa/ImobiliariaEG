@@ -38,11 +38,10 @@ export default function Menu() {
     {
       key: "pagamentos",
       icon: "fa-dollar-sign",
-      label: "Pagamento",
+      label: "Receber Pagamento",
       submenu: [
-        { to: "/pagamento", label: "💸 Realizar Pagamento" },
-        { to: "/historico-pagamentos", label: "📜 Histórico de Pagamentos" },
         { to: "/configurar-pagamento", label: "⚙️ Configurar Pagamento" },
+        { to: "/historico-pagamentos", label: "📜 Histórico de Pagamentos" },
       ],
     },
     {
@@ -82,12 +81,12 @@ export default function Menu() {
 
   return (
     <div className={classNames("menu-container", { collapsed: !menuOpen })}>
-      {/* Header */}
+      {/* Cabeçalho do Menu */}
       <div className="menu-header">
         {menuOpen && (
           <div className="user-info">
             <img
-              src="https://via.placeholder.com/40"
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(nomeUsuario)}&background=random`}
               alt="User"
               className="user-avatar"
             />
@@ -106,7 +105,7 @@ export default function Menu() {
         </button>
       </div>
 
-      {/* Itens do Menu */}
+      {/* Seção de Itens do Menu */}
       <div className="menu-section">
         {menuItems.map((item) => (
           <div key={item.key} className="menu-group">
@@ -159,7 +158,7 @@ export default function Menu() {
         ))}
       </div>
 
-      {/* Rodapé */}
+      {/* Rodapé do Menu */}
       <div className="menu-footer">
         <Link to="/configuracoes" className="menu-item">
           <i className="fa-solid fa-gear"></i>

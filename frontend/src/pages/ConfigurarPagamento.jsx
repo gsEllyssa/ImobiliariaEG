@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import Menu from '../components/Menu';
 import Topbar from '../components/Topbar';
-import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCreditCard,
+  faUser,
+  faDownload,
+  faEnvelope,
+} from '@fortawesome/free-solid-svg-icons';
 import '../styles/modules/Payment.scss';
 
 export default function ConfigurarPagamento() {
@@ -61,7 +67,7 @@ export default function ConfigurarPagamento() {
                     className={`tenant-item ${inquilinoSelecionado?.id === i.id ? 'active' : ''}`}
                     onClick={() => setInquilinoSelecionado(i)}
                   >
-                    <i className="fa fa-user"></i>
+                    <FontAwesomeIcon icon={faUser} className="icon" />
                     {i.nome}
                   </li>
                 ))}
@@ -97,8 +103,8 @@ export default function ConfigurarPagamento() {
           {etapa === 3 && (
             <section className="receipt-container">
               <div className="receipt-actions">
-                <i className="fa fa-download" title="Baixar PDF"></i>
-                <i className="fa fa-envelope" title="Enviar por e-mail"></i>
+                <FontAwesomeIcon icon={faDownload} title="Baixar PDF" className="icon-action" />
+                <FontAwesomeIcon icon={faEnvelope} title="Enviar por e-mail" className="icon-action" />
               </div>
               <div className="receipt-content">
                 <h3>Recibo de Pagamento</h3>

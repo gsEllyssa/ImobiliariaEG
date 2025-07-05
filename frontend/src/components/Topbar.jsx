@@ -46,7 +46,7 @@ export default function Topbar({ icon, title, subtitle }) {
           <span className="user-name">Olá, {nomeUsuario?.split(' ')[0] || 'Usuário'}</span>
         </div>
 
-        <button className="logout-button" onClick={handleLogout}>
+        <button className="logout-button" onClick={handleLogout} title="Sair">
           <FontAwesomeIcon icon={faRightFromBracket} />
         </button>
       </div>
