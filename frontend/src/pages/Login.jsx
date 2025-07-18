@@ -8,37 +8,47 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
+    setLoading(true);
 
     try {
       console.log("🔐 Tentando login com:", { email, senha });
 
       const res = await api.post("/auth/login", {
         email,
-        password: senha, // Enviar corretamente como 'password'
+        password: senha,
       });
 
       console.log("✅ Resposta do login:", res.data);
 
-      const { usuario, message } = res.data;
+      const { usuario, token, message } = res.data;
 
-      if (!usuario) {
+      if (!usuario || !token) {
         throw new Error("Resposta do servidor inválida");
       }
 
-      // Armazenar dados no localStorage
+      // ✅ Armazenar dados no localStorage
       localStorage.setItem("usuarioNome", usuario.name);
       localStorage.setItem("usuarioEmail", usuario.email);
       localStorage.setItem("usuarioIdade", usuario.idade);
+      localStorage.setItem("token", token);
 
-      alert(message); // Exibe mensagem de sucesso (opcional)
-      navigate("/inicio"); // Redireciona após login
+      // ✅ Mostrar mensagem de sucesso
+      setSucesso(true);
+      setTimeout(() => {
+        navigate("/inicio");
+      }, 1500); // Redireciona após 1.5s
+
     } catch (err) {
       console.error("❌ Erro no login:", err.response?.data || err.message);
       setErro("E-mail ou senha inválidos.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,8 +80,11 @@ export default function Login() {
           />
 
           {erro && <p className="login-error">{erro}</p>}
+          {sucesso && <p className="login-success">✅ Login realizado com sucesso!</p>}
 
-          <button type="submit" className="btn">Acessar</button>
+          <button type="submit" className="btn" disabled={loading}>
+            {loading ? "Carregando..." : "Acessar"}
+          </button>
         </form>
       </div>
     </div>

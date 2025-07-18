@@ -2,6 +2,19 @@
 @use "../base/mixins" as *;
 @use "../base/utilities" as *;
 
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $gray-light;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  background-color: $gray-light;
+  color: $text-dark;
+}
+
 .filtro {
   display: flex;
   flex-wrap: wrap;
@@ -32,13 +45,28 @@
 }
 
 .secao {
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  padding: 24px;
   margin-bottom: 48px;
 
   h1 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 16px;
     color: $text-dark;
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: $text-dark;
+  }
+
+  .sucesso {
+    color: $success;
+    font-weight: 500;
   }
 
   .tabela {
@@ -49,6 +77,7 @@
     border-radius: $border-radius;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     overflow: hidden;
+    margin-top: 16px;
 
     thead {
       background-color: $gray-light;

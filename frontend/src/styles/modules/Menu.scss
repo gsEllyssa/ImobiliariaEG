@@ -10,43 +10,25 @@
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
+  overflow-y: auto;
   z-index: 100;
   flex-shrink: 0;
-  overflow-y: auto;
 
   &.collapsed {
-    width: 60px;
+    width: 80px; // Aumentado de 60px para 80px
 
-    .user-info {
-      display: none;
-    }
-
+    .user-info,
     .menu-label span,
     .menu-item span,
-    .menu-footer span {
-      display: none;
-    }
-
+    .menu-footer span,
     .arrow {
-      display: none;
-    }
-  }
-
-  @media (max-width: 768px) {
-    width: 60px;
-
-    .user-info {
-      display: none;
+      display: none !important;
     }
 
-    .menu-label span,
-    .menu-item span,
-    .menu-footer span {
-      display: none;
-    }
-
-    .arrow {
-      display: none;
+    .menu-item,
+    .menu-label {
+      justify-content: center;
+      padding: 12px 0;
     }
   }
 }
@@ -61,9 +43,9 @@
   .menu-toggle {
     background: none;
     border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
+    font-size: 1.25rem;
     color: #555;
+    cursor: pointer;
   }
 
   .user-info {
@@ -83,14 +65,14 @@
       flex-direction: column;
 
       .user-name {
-        font-weight: bold;
+        font-weight: 600;
         font-size: 14px;
         color: #222;
       }
 
       .user-role {
         font-size: 12px;
-        color: #888;
+        color: #999;
       }
     }
   }
@@ -98,19 +80,19 @@
 
 .menu-section {
   flex: 1;
-  padding: 10px;
+  padding: 8px;
 
   .menu-group {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 
     .menu-label {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px;
+      padding: 10px 16px;
       font-weight: 500;
-      cursor: pointer;
       color: #333;
+      cursor: pointer;
       transition: background-color 0.2s ease;
 
       i {
@@ -125,15 +107,14 @@
     }
 
     .submenu.open {
-      margin-top: 5px;
-
       .menu-item {
-        padding: 8px 30px;
+        padding: 8px 32px;
         font-size: 0.95rem;
         color: #444;
-        cursor: pointer;
         display: flex;
         align-items: center;
+        gap: 10px;
+        cursor: pointer;
         transition: background-color 0.2s ease;
 
         &:hover,
@@ -143,9 +124,9 @@
         }
 
         &.active {
-          background-color: #e8e8e8;
-          color: #000;
-          font-weight: 500;
+          background-color: #e6f0ff;
+          color: #0056b3;
+          font-weight: 600;
         }
       }
     }
@@ -156,10 +137,9 @@
     align-items: center;
     gap: 10px;
     padding: 10px 20px;
+    font-size: 0.95rem;
     text-decoration: none;
     color: #555;
-    font-size: 0.95rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     &:hover,
@@ -171,7 +151,7 @@
     &.active {
       background-color: #eaeaea;
       color: #000;
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 }
@@ -179,12 +159,15 @@
 .menu-footer {
   padding: 12px 10px;
   border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
   .menu-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 15px;
+    padding: 8px 16px;
     font-size: 0.95rem;
     color: #666;
     background: none;
@@ -192,15 +175,16 @@
     width: 100%;
     text-align: left;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    i {
+      font-size: 1rem;
+    }
 
     &:hover,
     &:focus {
       background-color: #f0f0f0;
       color: #000;
-    }
-
-    i {
-      font-size: 1rem;
     }
 
     &.logout {
