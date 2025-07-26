@@ -1,5 +1,3 @@
-// models/User.js
-
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -27,7 +25,7 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
 }, {
-  timestamps: true, // cria automaticamente createdAt e updatedAt
+  timestamps: true,
 });
 
 export default mongoose.model('User', userSchema);

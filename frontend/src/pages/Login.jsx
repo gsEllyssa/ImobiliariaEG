@@ -5,50 +5,45 @@ import "../styles/modules/Login.scss";
 
 export default function Login() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sucesso, setSucesso] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro("");
+    setError("");
     setLoading(true);
+    console.log("🔐 Enviando login...");
 
     try {
-      console.log("🔐 Tentando login com:", { email, senha });
-
-      const res = await api.post("/auth/login", {
-        email,
-        password: senha,
-      });
+      const res = await api.post("/auth/login", { email, password });
 
       console.log("✅ Resposta do login:", res.data);
+      const { user, token } = res.data;
 
-      const { usuario, token, message } = res.data;
-
-      if (!usuario || !token) {
-        throw new Error("Resposta do servidor inválida");
+      if (!user || !token) {
+        throw new Error("Resposta do servidor inválida: Usuário ou token ausente");
       }
 
-      // ✅ Armazenar dados no localStorage
-      localStorage.setItem("usuarioNome", usuario.name);
-      localStorage.setItem("usuarioEmail", usuario.email);
-      localStorage.setItem("usuarioIdade", usuario.idade);
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
-      // ✅ Mostrar mensagem de sucesso
-      setSucesso(true);
+      setSuccess(true);
+      console.log("🔐 Login bem-sucedido, redirecionando...");
+
       setTimeout(() => {
         navigate("/inicio");
-      }, 1500); // Redireciona após 1.5s
+      }, 1500);
 
     } catch (err) {
-      console.error("❌ Erro no login:", err.response?.data || err.message);
-      setErro("E-mail ou senha inválidos.");
+      console.error("❌ Erro no login:", err.message);
+      setError(err.message || "Falha no login. Tente novamente.");
     } finally {
       setLoading(false);
+      console.log("🔐 Carregamento finalizado");
     }
   };
 
@@ -56,7 +51,7 @@ export default function Login() {
     <div className="login-page">
       <div className="login-box">
         <h2 className="login-title">Login</h2>
-        <p className="login-subtitle">Insira seu e-mail e senha:</p>
+        <p className="login-subtitle">Digite seu e-mail e senha:</p>
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">E-MAIL</label>
@@ -67,20 +62,24 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
 
-          <label htmlFor="senha">SENHA</label>
+          <label htmlFor="password">SENHA</label>
           <input
             type="password"
-            id="senha"
+            id="password"
             placeholder="Digite sua senha..."
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
 
-          {erro && <p className="login-error">{erro}</p>}
-          {sucesso && <p className="login-success">✅ Login realizado com sucesso!</p>}
+          {error && <p className="login-error">{error}</p>}
+          {success && (
+            <p className="login-success">✅ Login bem-sucedido! Redirecionando...</p>
+          )}
 
           <button type="submit" className="btn" disabled={loading}>
             {loading ? "Carregando..." : "Acessar"}
