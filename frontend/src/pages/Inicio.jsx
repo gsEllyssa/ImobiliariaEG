@@ -2,9 +2,10 @@ import React from 'react';
 import '../styles/modules/Inicio.scss';
 
 export default function Inicio() {
-  const nome = localStorage.getItem('usuarioNome') || 'Usuário';
-  const email = localStorage.getItem('usuarioEmail') || 'sem@email.com';
-  const idade = localStorage.getItem('usuarioIdade') || '--';
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+  const nome = user.name || 'Usuário';
+  const email = user.email || 'sem@email.com';
+  const idade = user.idade || '--';
 
   return (
     <main className="content">

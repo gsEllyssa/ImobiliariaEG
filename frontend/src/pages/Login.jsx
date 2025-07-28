@@ -1,51 +1,31 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
 import "../styles/modules/Login.scss";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
-    console.log("🔼 Enviando dados:", { email, password });
+    const user = {
+      name: "Dev Usuário",
+      email: email || "teste@dev.com",
+      idade: 25,
+      role: "admin",
+    };
 
-    try {
-      const res = await api.post("/auth/login", { email, password });
+    const token = "token-fake-dev";
 
-      console.log("🔽 RESPOSTA RECEBIDA:", res);
-      console.log("📦 res.data:", res.data);
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
 
-      const token = res.data?.token;
-      const user = res.data?.user;
-
-      if (!user || !token) {
-        console.warn("❌ Token ou user ausente!");
-        setError("Login inválido ou resposta incorreta do servidor");
-        return;
-      }
-
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", token);
-
-      console.log("✅ Token salvo:", token);
-      setSuccess(true);
-      navigate("/inicio", { replace: true });
-    } catch (err) {
-      console.error("❌ Erro no login:", err);
-      setError("Usuário ou senha inválidos");
-    } finally {
-      setLoading(false);
-    }
+    console.log("🔐 Login liberado no modo DEV");
+    navigate("/inicio", { replace: true });
   };
 
   return (
@@ -63,7 +43,6 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            autoComplete="email"
           />
 
           <label htmlFor="password">SENHA</label>
@@ -74,11 +53,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            autoComplete="current-password"
           />
-
-          {error && <p className="login-error">{error}</p>}
-          {success && <p className="login-success">✅ Login bem-sucedido!</p>}
 
           <button type="submit" className="btn" disabled={loading}>
             {loading ? "Carregando..." : "Acessar"}
