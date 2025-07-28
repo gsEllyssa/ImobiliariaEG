@@ -1,6 +1,5 @@
 import Property from "../models/Property.js";
 
-// List all properties
 export const listProperties = async (req, res) => {
   try {
     const properties = await Property.find();
@@ -11,7 +10,6 @@ export const listProperties = async (req, res) => {
   }
 };
 
-// Create a new property
 export const createProperty = async (req, res) => {
   try {
     const property = new Property(req.body);

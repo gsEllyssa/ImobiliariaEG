@@ -1,3 +1,4 @@
+// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -5,7 +6,6 @@ import "../styles/modules/Login.scss";
 
 export default function Login() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,34 +16,35 @@ export default function Login() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    console.log("🔐 Enviando login...");
+
+    console.log("🔼 Enviando dados:", { email, password });
 
     try {
       const res = await api.post("/auth/login", { email, password });
 
-      console.log("✅ Resposta do login:", res.data);
-      const { user, token } = res.data;
+      console.log("🔽 RESPOSTA RECEBIDA:", res);
+      console.log("📦 res.data:", res.data);
+
+      const token = res.data?.token;
+      const user = res.data?.user;
 
       if (!user || !token) {
-        throw new Error("Resposta do servidor inválida: Usuário ou token ausente");
+        console.warn("❌ Token ou user ausente!");
+        setError("Login inválido ou resposta incorreta do servidor");
+        return;
       }
 
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
+      console.log("✅ Token salvo:", token);
       setSuccess(true);
-      console.log("🔐 Login bem-sucedido, redirecionando...");
-
-      setTimeout(() => {
-        navigate("/inicio");
-      }, 1500);
-
+      navigate("/inicio", { replace: true });
     } catch (err) {
-      console.error("❌ Erro no login:", err.message);
-      setError(err.message || "Falha no login. Tente novamente.");
+      console.error("❌ Erro no login:", err);
+      setError("Usuário ou senha inválidos");
     } finally {
       setLoading(false);
-      console.log("🔐 Carregamento finalizado");
     }
   };
 
@@ -77,9 +78,7 @@ export default function Login() {
           />
 
           {error && <p className="login-error">{error}</p>}
-          {success && (
-            <p className="login-success">✅ Login bem-sucedido! Redirecionando...</p>
-          )}
+          {success && <p className="login-success">✅ Login bem-sucedido!</p>}
 
           <button type="submit" className="btn" disabled={loading}>
             {loading ? "Carregando..." : "Acessar"}

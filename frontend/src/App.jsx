@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Layout e proteção
 import Layout from './components/Layout.jsx';
@@ -28,10 +28,10 @@ import './styles/main.scss';
 export default function App() {
   return (
     <Routes>
-      {/* Rota pública: login */}
+      {/* Redirecionamento automático se a pessoa tentar acessar "/" logada */}
       <Route path="/" element={<Login />} />
 
-      {/* Rotas protegidas dentro do layout */}
+      {/* Layout com rotas protegidas */}
       <Route element={<Layout />}>
         <Route path="/inicio" element={<RotaProtegida><Inicio /></RotaProtegida>} />
         <Route path="/novo-inquilino" element={<RotaProtegida><NovoInquilino /></RotaProtegida>} />
@@ -44,6 +44,9 @@ export default function App() {
         <Route path="/recibo/:id" element={<RotaProtegida><ReciboVisualizacao /></RotaProtegida>} />
         <Route path="/historico-pagamentos" element={<RotaProtegida><HistoricoPagamentos /></RotaProtegida>} />
       </Route>
+
+      {/* Qualquer rota desconhecida leva pro login */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
