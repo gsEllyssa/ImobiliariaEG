@@ -30,27 +30,24 @@ import './styles/main.scss';
 export default function App() {
   return (
     <Routes>
-      {/* Public page */}
       <Route path="/" element={<Login />} />
 
-      {/* Protected layout */}
-      <Route element={<Layout />}>
-        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/tenants" element={<ProtectedRoute><Tenants /></ProtectedRoute>} />
-        <Route path="/new-tenant" element={<ProtectedRoute><NewTenant /></ProtectedRoute>} />
-        <Route path="/contracts" element={<ProtectedRoute><Contracts /></ProtectedRoute>} />
-        <Route path="/new-contract" element={<ProtectedRoute><NewContract /></ProtectedRoute>} />
-        <Route path="/contract-create" element={<ProtectedRoute><ContractCreate /></ProtectedRoute>} />
-        <Route path="/contract/:id" element={<ProtectedRoute><ContractView /></ProtectedRoute>} />
-        <Route path="/templates" element={<ProtectedRoute><ContractTemplates /></ProtectedRoute>} />
-        <Route path="/edit-template/:id" element={<ProtectedRoute><EditContractTemplate /></ProtectedRoute>} />
-        <Route path="/contract-form" element={<ProtectedRoute><ContractForm /></ProtectedRoute>} />
-        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-        <Route path="/receipt/:id" element={<ProtectedRoute><ReceiptView /></ProtectedRoute>} />
-        <Route path="/payment-history" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
+      <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route path="/home" element={<Home />} />
+        <Route path="/tenants" element={<Tenants />} />
+        <Route path="/new-tenant" element={<NewTenant />} />
+        <Route path="/contracts" element={<Contracts />} />
+        <Route path="/new-contract" element={<NewContract />} />
+        <Route path="/contract-create" element={<ContractCreate />} />
+        <Route path="/contract/:id" element={<ContractView />} />
+        <Route path="/templates" element={<ContractTemplates />} />
+        <Route path="/edit-template/:id" element={<EditContractTemplate />} />
+        <Route path="/contract-form" element={<ContractForm />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/receipt/:id" element={<ReceiptView />} />
+        <Route path="/payment-history" element={<PaymentHistory />} />
       </Route>
 
-      {/* Catch-all */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

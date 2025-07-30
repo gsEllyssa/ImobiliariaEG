@@ -4,20 +4,24 @@ import { listTenants } from "../services/tenantService";
 import "../styles/modules/Tenants.scss";
 
 export default function Tenants() {
-  const [tenants, setTenants] = useState([]);
-  const [search, setSearch] = useState("");
+  const [tenantList, setTenantList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function load() {
-      const data = await listTenants();
-      setTenants(data);
+    async function fetchTenants() {
+      try {
+        const data = await listTenants();
+        setTenantList(data);
+      } catch (error) {
+        console.error("Erro ao carregar inquilinos:", error);
+      }
     }
-    load();
+    fetchTenants();
   }, []);
 
-  const filteredTenants = tenants.filter((tenant) =>
-    tenant.name.toLowerCase().includes(search.toLowerCase())
+  const filteredTenants = tenantList.filter((tenant) =>
+    tenant.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -30,8 +34,8 @@ export default function Tenants() {
           <input
             type="text"
             placeholder="Nome, CPF, RG, E-mail"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button onClick={() => navigate("/new-tenant")}>
             Adicionar Novo Inquilino

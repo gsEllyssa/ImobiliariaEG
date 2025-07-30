@@ -30,14 +30,14 @@ export default function Menu() {
       key: "home",
       icon: "fa-house",
       label: "Início",
-      path: "/inicio",
+      path: "/home",
     },
     {
-      key: "tenant",
+      key: "tenants",
       icon: "fa-users",
       label: "Inquilinos",
-      path: "/inquilinos",
-      submenu: [{ to: "/novo-inquilino", label: "🧑‍💼 Novo Inquilino" }],
+      path: "/tenants",
+      submenu: [{ to: "/new-tenant", label: "🧑‍💼 Novo Inquilino" }],
     },
     {
       key: "payments",
@@ -45,7 +45,7 @@ export default function Menu() {
       label: "Pagamentos",
       submenu: [
         { to: "/payment", label: "💳 Novo Pagamento" },
-        { to: "/historico-pagamentos", label: "📜 Histórico de Pagamentos" },
+        { to: "/payment-history", label: "📜 Histórico de Pagamentos" },
       ],
     },
     {
@@ -53,30 +53,30 @@ export default function Menu() {
       icon: "fa-file-contract",
       label: "Contratos",
       submenu: [
-        { to: "/contratos", label: "📑 Listar Contratos" },
-        { to: "/modelos", label: "📂 Modelos de Contrato" },
+        { to: "/contracts", label: "📑 Listar Contratos" },
+        { to: "/templates", label: "📂 Modelos de Contrato" },
       ],
     },
     {
       key: "receipt",
       icon: "fa-receipt",
       label: "Recibos",
-      submenu: [{ to: "/recibo/1", label: "🧾 Visualizar Recibo (Exemplo)" }],
+      submenu: [{ to: "/receipt/1", label: "🧾 Visualizar Recibo (Exemplo)" }],
     },
     {
       key: "properties",
       icon: "fa-building",
       label: "Imóveis",
-      submenu: [{ to: "/novo-imovel", label: "🏠 Novo Imóvel" }],
+      submenu: [{ to: "/new-property", label: "🏠 Novo Imóvel" }],
     },
     {
       key: "reports",
       icon: "fa-chart-pie",
       label: "Relatórios",
       submenu: [
-        { to: "/relatorio-pagamentos", label: "📊 Pagamentos" },
-        { to: "/relatorio-contratos", label: "📄 Contratos" },
-        { to: "/relatorio-inquilinos", label: "🧑‍💼 Inquilinos" },
+        { to: "/report-payments", label: "📊 Pagamentos" },
+        { to: "/report-contracts", label: "📄 Contratos" },
+        { to: "/report-tenants", label: "🧑‍💼 Inquilinos" },
       ],
     },
   ];
@@ -87,7 +87,9 @@ export default function Menu() {
         {menuOpen && (
           <div className="user-info">
             <img
-              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(nomeUsuario)}&background=random`}
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                nomeUsuario
+              )}&background=random`}
               alt="Avatar do usuário"
               className="user-avatar"
             />
@@ -166,11 +168,11 @@ export default function Menu() {
       </nav>
 
       <footer className="menu-footer">
-        <Link to="/configuracoes" className="menu-item">
+        <Link to="/settings" className="menu-item">
           <i className="fa-solid fa-gear"></i>
           {menuOpen && <span>Configurações</span>}
         </Link>
-        <Link to="/ajuda" className="menu-item">
+        <Link to="/help" className="menu-item">
           <i className="fa-solid fa-circle-question"></i>
           {menuOpen && <span>Ajuda</span>}
         </Link>
