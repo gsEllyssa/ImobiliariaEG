@@ -1,51 +1,56 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// Layout e proteção
+// Layout and authentication
 import Layout from './components/Layout.jsx';
-import RotaProtegida from './components/RotaProtegida.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
-// Páginas públicas
+// Public page
 import Login from './pages/Login.jsx';
 
-// Páginas privadas
-import Inicio from './pages/Inicio.jsx';
-import NovoInquilino from './pages/NovoInquilino.jsx';
-import NovoContrato from './pages/NovoContrato.jsx';
-import Contratos from './pages/Contratos.jsx';
-import ContratoVisualizacao from './pages/ContratoVisualizacao.jsx';
-import ModelosContrato from './pages/ModelosContrato.jsx';
-import EditarModeloContrato from './pages/EditarModeloContrato.jsx';
+// Private pages
+import Home from './pages/Home.jsx';
+import Tenants from './pages/Tenants.jsx';
+import NewTenant from './pages/NewTenant.jsx';
+import Contracts from './pages/Contracts.jsx';
+import NewContract from './pages/NewContract.jsx';
+import ContractView from './pages/ContractView.jsx';
+import ContractTemplates from './pages/ContractTemplates.jsx';
+import EditContractTemplate from './pages/EditContractTemplate.jsx';
+import ContractForm from './pages/ContractForm.jsx';
+import ContractCreate from './pages/NewContract.jsx';
 import Payment from './pages/Payment.jsx';
-import ReciboVisualizacao from './pages/ReciboVisualizacao.jsx';
-import HistoricoPagamentos from './pages/HistoricoPagamentos.jsx';
+import ReceiptView from './pages/ReceiptView.jsx';
+import PaymentHistory from './pages/PaymentHistory.jsx';
 
-// Estilos globais
+// Global styles
 import './styles/layout/layout.scss';
 import './styles/main.scss';
 
 export default function App() {
   return (
     <Routes>
-      {/* Redirecionamento automático se a pessoa tentar acessar "/" logada */}
+      {/* Public page */}
       <Route path="/" element={<Login />} />
 
-      {/* Layout com rotas protegidas */}
+      {/* Protected layout */}
       <Route element={<Layout />}>
-        <Route path="/inicio" element={<RotaProtegida><Inicio /></RotaProtegida>} />
-        <Route path="/novo-inquilino" element={<RotaProtegida><NovoInquilino /></RotaProtegida>} />
-        <Route path="/novo-contrato" element={<RotaProtegida><NovoContrato /></RotaProtegida>} />
-        <Route path="/contratos" element={<RotaProtegida><Contratos /></RotaProtegida>} />
-        <Route path="/contrato/:id" element={<RotaProtegida><ContratoVisualizacao /></RotaProtegida>} />
-        <Route path="/modelos" element={<RotaProtegida><ModelosContrato /></RotaProtegida>} />
-        <Route path="/editar-modelo/:id" element={<RotaProtegida><EditarModeloContrato /></RotaProtegida>} />
-        <Route path="/payment" element={<RotaProtegida><Payment /></RotaProtegida>} />
-        <Route path="/recibo/:id" element={<RotaProtegida><ReciboVisualizacao /></RotaProtegida>} />
-        <Route path="/historico-pagamentos" element={<RotaProtegida><HistoricoPagamentos /></RotaProtegida>} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/tenants" element={<ProtectedRoute><Tenants /></ProtectedRoute>} />
+        <Route path="/new-tenant" element={<ProtectedRoute><NewTenant /></ProtectedRoute>} />
+        <Route path="/contracts" element={<ProtectedRoute><Contracts /></ProtectedRoute>} />
+        <Route path="/new-contract" element={<ProtectedRoute><NewContract /></ProtectedRoute>} />
+        <Route path="/contract-create" element={<ProtectedRoute><ContractCreate /></ProtectedRoute>} />
+        <Route path="/contract/:id" element={<ProtectedRoute><ContractView /></ProtectedRoute>} />
+        <Route path="/templates" element={<ProtectedRoute><ContractTemplates /></ProtectedRoute>} />
+        <Route path="/edit-template/:id" element={<ProtectedRoute><EditContractTemplate /></ProtectedRoute>} />
+        <Route path="/contract-form" element={<ProtectedRoute><ContractForm /></ProtectedRoute>} />
+        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+        <Route path="/receipt/:id" element={<ProtectedRoute><ReceiptView /></ProtectedRoute>} />
+        <Route path="/payment-history" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
       </Route>
 
-      {/* Qualquer rota desconhecida leva pro login */}
+      {/* Catch-all */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

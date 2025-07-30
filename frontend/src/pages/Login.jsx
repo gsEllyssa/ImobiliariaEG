@@ -25,7 +25,7 @@ export default function Login() {
     localStorage.setItem("token", token);
 
     console.log("🔐 Login liberado no modo DEV");
-    navigate("/inicio", { replace: true });
+    navigate("/home", { replace: true }); // ✅ Rota padronizada
   };
 
   return (

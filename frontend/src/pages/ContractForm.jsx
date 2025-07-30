@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { criarModelo } from "../services/modeloService";
+import { createTemplate } from "../services/contractTemplateService";
 import Menu from "../components/Menu";
 import Topbar from "../components/Topbar";
 import { faFileContract } from "@fortawesome/free-solid-svg-icons";
 
-export default function FormModeloContrato() {
+export default function ContractForm() {
   const navigate = useNavigate();
-  const [titulo, setTitulo] = useState("");
-  const [conteudo, setConteudo] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleSalvar = async () => {
-    if (!titulo || !conteudo) return alert("Preencha todos os campos");
-    await criarModelo({ titulo, conteudo });
-    navigate("/modelos");
+  const handleSave = async () => {
+    if (!title || !content) return alert("Preencha todos os campos");
+    await createTemplate({ name: title, content });
+    navigate("/templates");
   };
 
   return (
@@ -28,19 +28,19 @@ export default function FormModeloContrato() {
             <label>Título do Modelo</label>
             <input
               type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="form-control"
             />
           </div>
 
           <div className="form-group">
             <label>Conteúdo do Contrato</label>
-            <ReactQuill value={conteudo} onChange={setConteudo} />
+            <ReactQuill value={content} onChange={setContent} />
           </div>
 
           <div className="btn-container">
-            <button className="btn-salvar" onClick={handleSalvar}>
+            <button className="btn-salvar" onClick={handleSave}>
               Salvar Modelo
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Menu from '../components/Menu';
 import Topbar from '../components/Topbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,20 +8,33 @@ import {
   faDownload,
   faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
+import { listTenants } from '../services/tenantService';
 import '../styles/modules/Payment.scss';
 
 export default function Payment() {
   const [step, setStep] = useState(1);
   const [selectedTenant, setSelectedTenant] = useState(null);
+  const [tenants, setTenants] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    async function loadTenants() {
+      try {
+        const response = await listTenants();
+        setTenants(response);
+      } catch (error) {
+        console.error('Error loading tenants:', error);
+      }
+    }
+    loadTenants();
+  }, []);
 
   const next = () => setStep((s) => s + 1);
   const back = () => setStep((s) => s - 1);
 
-  const tenants = [
-    { id: 1, name: 'João Silva' },
-    { id: 2, name: 'Maria Oliveira' },
-    { id: 3, name: 'Pedro Souza' },
-  ];
+  const filteredTenants = tenants.filter((tenant) =>
+    tenant.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="layout-container">
@@ -55,16 +68,18 @@ export default function Payment() {
                 type="text"
                 className="tenant-search"
                 placeholder="Search tenant..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <ul className="tenant-list">
-                {tenants.map((i) => (
+                {filteredTenants.map((tenant) => (
                   <li
-                    key={i.id}
-                    className={`tenant-item ${selectedTenant?.id === i.id ? 'active' : ''}`}
-                    onClick={() => setSelectedTenant(i)}
+                    key={tenant._id}
+                    className={`tenant-item ${selectedTenant?._id === tenant._id ? 'active' : ''}`}
+                    onClick={() => setSelectedTenant(tenant)}
                   >
                     <FontAwesomeIcon icon={faUser} className="icon" />
-                    {i.name}
+                    {tenant.name}
                   </li>
                 ))}
               </ul>
@@ -84,7 +99,7 @@ export default function Payment() {
             <section className="payment-summary">
               <h3>Payment Summary</h3>
               <p><strong>Tenant:</strong> {selectedTenant?.name}</p>
-              <p><strong>Amount:</strong> R$ 1,200.00</p>
+              <p><strong>Amount:</strong> R$ 1.200,00</p>
               <p><strong>Date:</strong> {new Date().toLocaleDateString('pt-BR')}</p>
 
               <div className="btn-container">
@@ -103,7 +118,7 @@ export default function Payment() {
               <div className="receipt-content">
                 <h3>Payment Receipt</h3>
                 <p><strong>Tenant:</strong> {selectedTenant?.name}</p>
-                <p><strong>Amount:</strong> R$ 1,200.00</p>
+                <p><strong>Amount:</strong> R$ 1.200,00</p>
                 <p><strong>Date:</strong> {new Date().toLocaleDateString('pt-BR')}</p>
                 <p><strong>Method:</strong> Credit Card</p>
               </div>

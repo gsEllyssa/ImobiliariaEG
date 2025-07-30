@@ -3,18 +3,18 @@ import { useParams } from 'react-router-dom';
 import Menu from '../components/Menu';
 import Topbar from '../components/Topbar';
 import { faFileContract } from '@fortawesome/free-solid-svg-icons';
-import { obterContratoPorId } from '../services/contratoService';
+import { getContractById } from '../services/contractService';
 
-export default function ContratoVisualizacao() {
+export default function ContractView() {
   const { id } = useParams();
-  const [contrato, setContrato] = useState(null);
+  const [contract, setContract] = useState(null);
 
   useEffect(() => {
-    async function carregar() {
-      const dados = await obterContratoPorId(id);
-      setContrato(dados);
+    async function load() {
+      const data = await getContractById(id);
+      setContract(data);
     }
-    carregar();
+    load();
   }, [id]);
 
   return (
@@ -23,12 +23,12 @@ export default function ContratoVisualizacao() {
       <div className="page-content-area">
         <Topbar icon={faFileContract} title="Contrato" subtitle="Visualização de Contrato" />
         <main className="content">
-          {contrato ? (
+          {contract ? (
             <div className="contract-preview">
-              <h2>{contrato.modelo?.titulo || 'Contrato'}</h2>
+              <h2>{contract.template?.title || 'Contrato'}</h2>
               <div
                 className="contract-content"
-                dangerouslySetInnerHTML={{ __html: contrato.textoFinal }}
+                dangerouslySetInnerHTML={{ __html: contract.finalText }}
               />
             </div>
           ) : (

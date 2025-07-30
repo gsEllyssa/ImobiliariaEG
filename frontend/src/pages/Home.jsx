@@ -1,15 +1,15 @@
-import React from 'react';
-import '../styles/modules/Inicio.scss';
+import React from "react";
+import "../styles/modules/Home.scss";
 
-export default function Inicio() {
-  const user = JSON.parse(localStorage.getItem('user')) || {};
-  const nome = user.name || 'Usuário';
-  const email = user.email || 'sem@email.com';
-  const idade = user.idade || '--';
+export default function Home() {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const name = user.name || "Usuário";
+  const email = user.email || "sem@email.com";
+  const age = user.idade || "--";
 
   return (
     <main className="content">
-      <form className="filtro">
+      <form className="filters">
         <input type="date" aria-label="Data" />
         <select aria-label="Status">
           <option value="">Status</option>
@@ -27,14 +27,22 @@ export default function Inicio() {
           <option value="apto">Apartamento</option>
           <option value="casa">Casa</option>
         </select>
-        <input type="text" placeholder="Pesquisar por nome ou imóvel" aria-label="Pesquisar" />
+        <input
+          type="text"
+          placeholder="Pesquisar por nome ou imóvel"
+          aria-label="Pesquisar"
+        />
       </form>
 
-      <section className="secao">
-        <h1>Bem-vindo(a), {nome}!</h1>
-        <p><strong>Email:</strong> {email}</p>
-        <p><strong>Idade:</strong> {idade} anos</p>
-        <p className="sucesso">✅ Login efetuado com sucesso.</p>
+      <section className="welcome">
+        <h1>Bem-vindo(a), {name}!</h1>
+        <p>
+          <strong>Email:</strong> {email}
+        </p>
+        <p>
+          <strong>Idade:</strong> {age} anos
+        </p>
+        <p className="success">✅ Login efetuado com sucesso.</p>
       </section>
     </main>
   );

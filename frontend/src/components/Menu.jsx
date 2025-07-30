@@ -36,6 +36,7 @@ export default function Menu() {
       key: "tenant",
       icon: "fa-users",
       label: "Inquilinos",
+      path: "/inquilinos",
       submenu: [{ to: "/novo-inquilino", label: "🧑‍💼 Novo Inquilino" }],
     },
     {
@@ -82,7 +83,6 @@ export default function Menu() {
 
   return (
     <aside className={classNames("menu-container", { collapsed: !menuOpen })}>
-      {/* Cabeçalho do Menu */}
       <header className="menu-header">
         {menuOpen && (
           <div className="user-info">
@@ -106,7 +106,6 @@ export default function Menu() {
         </button>
       </header>
 
-      {/* Itens do Menu */}
       <nav className="menu-section">
         {menuItems.map((item) => (
           <div key={item.key} className="menu-group">
@@ -116,7 +115,10 @@ export default function Menu() {
                   className={classNames("menu-label", {
                     open: openSubmenus[item.key],
                   })}
-                  onClick={() => toggleSubmenu(item.key)}
+                  onClick={() => {
+                    if (item.path) navigate(item.path);
+                    else toggleSubmenu(item.key);
+                  }}
                 >
                   <i className={`fa-solid ${item.icon}`}></i>
                   {menuOpen && <span>{item.label}</span>}
@@ -125,6 +127,10 @@ export default function Menu() {
                       className={`fa-solid ${
                         openSubmenus[item.key] ? "fa-angle-up" : "fa-angle-down"
                       } arrow`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSubmenu(item.key);
+                      }}
                     ></i>
                   )}
                 </div>
@@ -159,7 +165,6 @@ export default function Menu() {
         ))}
       </nav>
 
-      {/* Rodapé */}
       <footer className="menu-footer">
         <Link to="/configuracoes" className="menu-item">
           <i className="fa-solid fa-gear"></i>

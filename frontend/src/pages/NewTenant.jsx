@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { criarInquilino } from '../services/inquilinoService';
+import { createTenant } from '../services/tenantService';
 import { useNavigate } from 'react-router-dom';
 
-export default function NovoInquilino() {
+export default function NewTenant() {
   const [form, setForm] = useState({
-    nome: '',
+    name: '',
     cpf: '',
     email: '',
-    telefone: '',
+    phone: '',
   });
 
   const navigate = useNavigate();
@@ -19,24 +19,24 @@ export default function NovoInquilino() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await criarInquilino(form);
-      alert('✅ Inquilino cadastrado com sucesso!');
-      navigate('/inicio');
+      await createTenant(form);
+      alert('✅ Tenant successfully registered!');
+      navigate('/tenants');
     } catch (err) {
-      alert('Erro ao cadastrar inquilino.');
+      alert('❌ Error registering tenant.');
       console.error(err);
     }
   };
 
   return (
     <div className="form-container">
-      <h2>Novo Inquilino</h2>
+      <h2>New Tenant</h2>
       <form onSubmit={handleSubmit}>
-        <input name="nome" placeholder="Nome" onChange={handleChange} required />
+        <input name="name" placeholder="Full name" onChange={handleChange} required />
         <input name="cpf" placeholder="CPF" onChange={handleChange} required />
         <input name="email" placeholder="E-mail" onChange={handleChange} />
-        <input name="telefone" placeholder="Telefone" onChange={handleChange} />
-        <button type="submit">Salvar</button>
+        <input name="phone" placeholder="Phone number" onChange={handleChange} />
+        <button type="submit">Save</button>
       </form>
     </div>
   );
