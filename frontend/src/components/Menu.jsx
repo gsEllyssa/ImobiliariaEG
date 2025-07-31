@@ -9,7 +9,8 @@ export default function Menu() {
   const [openSubmenus, setOpenSubmenus] = useState({});
   const [menuOpen, setMenuOpen] = useState(true);
 
-  const nomeUsuario = localStorage.getItem("usuarioNome") || "Usuário";
+  const user = JSON.parse(localStorage.getItem("user"));
+  const nomeUsuario = user?.name || "Usuário";
 
   const toggleSubmenu = (menuKey) => {
     setOpenSubmenus((prev) => ({
@@ -21,7 +22,8 @@ export default function Menu() {
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -43,6 +45,7 @@ export default function Menu() {
       key: "payments",
       icon: "fa-dollar-sign",
       label: "Pagamentos",
+      path: "/payments", // ✅ Corrigido para permitir clique no título
       submenu: [
         { to: "/payment", label: "💳 Novo Pagamento" },
         { to: "/payment-history", label: "📜 Histórico de Pagamentos" },

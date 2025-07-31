@@ -36,6 +36,9 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tenants" element={<Tenants />} />
         <Route path="/new-tenant" element={<NewTenant />} />
+        <Route path="/payment" element={<Payment />} /> {/* Página de novo pagamento */}
+        <Route path="/payments" element={<Payment />} /> {/* Página principal de pagamentos */}
+        <Route path="/payment-history" element={<PaymentHistory />} />
         <Route path="/contracts" element={<Contracts />} />
         <Route path="/new-contract" element={<NewContract />} />
         <Route path="/contract-create" element={<ContractCreate />} />
@@ -43,9 +46,7 @@ export default function App() {
         <Route path="/templates" element={<ContractTemplates />} />
         <Route path="/edit-template/:id" element={<EditContractTemplate />} />
         <Route path="/contract-form" element={<ContractForm />} />
-        <Route path="/payment" element={<Payment />} />
         <Route path="/receipt/:id" element={<ReceiptView />} />
-        <Route path="/payment-history" element={<PaymentHistory />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
