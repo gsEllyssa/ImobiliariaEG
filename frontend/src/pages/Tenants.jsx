@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { listTenants } from "../services/tenantService";
-import TopBar from "../components/TopBar";
 import "../styles/modules/Tenants.scss";
 
 export default function Tenants() {
   const [tenantList, setTenantList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchTenants() {
@@ -27,8 +27,6 @@ export default function Tenants() {
 
   return (
     <div className="tenants-page">
-      <TopBar title="Inquilinos" subtitle="Inquilinos Cadastrados" />
-
       <div className="tenants-search-section">
         <input
           type="text"

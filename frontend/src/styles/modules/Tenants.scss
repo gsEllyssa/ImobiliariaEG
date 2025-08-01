@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
+  background-color: #f9f9f9; // fundo igual ao top bar
+  min-height: calc(100vh - 70px); // abaixo da topbar
 }
 
 .tenants-search-section {
@@ -15,10 +17,21 @@
 
 .search-input {
   width: 280px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 999px;
   font-size: 14px;
+  background-color: white;
+  color: #333;
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
 }
 
 .btn-primary {
@@ -29,10 +42,19 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
 .tenants-table-container {
   overflow-x: auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #e0e0e0;
+  padding: 16px;
 }
 
 .tenants-table {
@@ -49,4 +71,11 @@
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #333;
+}
+
+.tenants-table th {
+  color: #666;
+  font-weight: 600;
 }

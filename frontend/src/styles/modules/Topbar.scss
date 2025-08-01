@@ -22,16 +22,10 @@
     padding: 1rem;
   }
 
-  /* Lado esquerdo (ícone, título, subtítulo) */
   .topbar-left {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-
-    .topbar-icon {
-      font-size: 1.25rem;
-      color: $primary;
-    }
 
     .topbar-title {
       font-weight: 600;
@@ -50,36 +44,52 @@
     }
   }
 
-  /* Lado direito (ações, usuário, logout) */
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1rem;
 
     @media (max-width: $breakpoint-sm) {
       flex-direction: column;
       align-items: flex-start;
+      width: 100%;
     }
 
     .search-box {
       display: flex;
       align-items: center;
       border: 1px solid $gray-light;
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background-color: #f9f9f9;
+      padding: 0.4rem 0.75rem;
+      transition: background-color 0.2s, border-color 0.2s;
+
+      &:focus-within {
+        border-color: $primary;
+        background-color: #fff;
+      }
+
+      .search-icon {
+        font-size: 1rem;
+        color: $text-muted;
+        margin-right: 0.5rem;
+      }
 
       input {
         border: none;
         outline: none;
         font-size: 0.875rem;
         background: transparent;
-        padding-left: 0.25rem;
         color: $text-dark;
-      }
+        width: 160px;
 
-      .search-icon {
-        color: $text-muted;
-        font-size: 1rem;
+        &::placeholder {
+          color: $text-muted;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
 
@@ -87,26 +97,10 @@
       font-size: 1rem;
       color: $text-muted;
       cursor: pointer;
+      transition: color 0.2s;
 
       &:hover {
         color: $primary;
-      }
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      color: $text-dark;
-
-      .user-icon {
-        font-size: 1.125rem;
-        color: $primary;
-      }
-
-      .user-name {
-        font-weight: 500;
       }
     }
 
@@ -114,7 +108,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: $text-muted;
       transition: color 0.2s;
 

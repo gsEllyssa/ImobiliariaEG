@@ -1,0 +1,127 @@
+@use "../base/variables" as *;
+
+.new-tenant-page {
+  background-color: #f9f9f9;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 0 0 1px #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tenant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+input {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  .btn-clear {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    color: #333;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e4e4e4;
+    }
+  }
+
+  .btn-save {
+    background-color: #d8ebfd;
+    border: 1px solid #a4d0f4;
+    color: #1e75d9;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c5e0fb;
+    }
+  }
+}
+
+.document-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.doc-item {
+  background-color: transparent;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #444;
+
+  .doc-icon {
+    font-size: 28px;
+    margin-top: 8px;
+    color: #8fc4f7;
+    cursor: pointer;
+
+    &:hover {
+      color: #007bff;
+    }
+  }
+}

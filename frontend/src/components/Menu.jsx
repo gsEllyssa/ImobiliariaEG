@@ -39,15 +39,14 @@ export default function Menu() {
       icon: "fa-users",
       label: "Inquilinos",
       path: "/tenants",
-      submenu: [{ to: "/new-tenant", label: "🧑‍💼 Novo Inquilino" }],
+      submenu: [],
     },
     {
       key: "payments",
       icon: "fa-dollar-sign",
       label: "Pagamentos",
-      path: "/payments", // ✅ Corrigido para permitir clique no título
+      path: "/payments",
       submenu: [
-        { to: "/payment", label: "💳 Novo Pagamento" },
         { to: "/payment-history", label: "📜 Histórico de Pagamentos" },
       ],
     },
@@ -139,7 +138,7 @@ export default function Menu() {
                     ></i>
                   )}
                 </div>
-                {menuOpen && openSubmenus[item.key] && (
+                {menuOpen && openSubmenus[item.key] && item.submenu.length > 0 && (
                   <div className="submenu">
                     {item.submenu.map((sub) => (
                       <Link

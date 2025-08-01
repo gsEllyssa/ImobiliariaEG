@@ -1,34 +1,17 @@
-@use "../base/variables" as *;
-@use "../base/mixins" as *;
-@use "../base/utilities" as *;
-@use "sass:color";
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
 
-.topbar-left {
+.page-content-area {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-
-  @media (max-width: $breakpoint-md) {
-    align-items: center;
-  }
 }
 
-.user-welcome {
-  font-size: 14px;
-  color: #555;
-
-  @media (max-width: $breakpoint-md) {
-    text-align: center;
-  }
-}
-
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-
-  @media (max-width: $breakpoint-md) {
-    margin-top: 0.5rem;
-  }
+.content {
+  padding: 100px 30px 30px;
+  flex: 1;
+  overflow-y: auto;
 }

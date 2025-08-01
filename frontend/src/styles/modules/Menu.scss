@@ -15,7 +15,7 @@
   flex-shrink: 0;
 
   &.collapsed {
-    width: 80px; // Aumentado de 60px para 80px
+    width: 80px;
 
     .user-info,
     .menu-label span,
@@ -29,6 +29,10 @@
     .menu-label {
       justify-content: center;
       padding: 12px 0;
+    }
+
+    .submenu {
+      display: none !important;
     }
   }
 }
@@ -46,6 +50,10 @@
     font-size: 1.25rem;
     color: #555;
     cursor: pointer;
+
+    &:hover {
+      color: #000;
+    }
   }
 
   .user-info {
@@ -97,6 +105,14 @@
 
       i {
         margin-right: 10px;
+        font-size: 1rem;
+        width: 18px;
+        text-align: center;
+      }
+
+      .arrow {
+        font-size: 0.85rem;
+        color: #999;
       }
 
       &:hover,
@@ -106,15 +122,21 @@
       }
     }
 
-    .submenu.open {
+    .submenu {
+      display: flex;
+      flex-direction: column;
+      padding-left: 36px;
+      gap: 4px;
+      margin-top: 4px;
+
       .menu-item {
-        padding: 8px 32px;
-        font-size: 0.95rem;
-        color: #444;
         display: flex;
         align-items: center;
         gap: 10px;
-        cursor: pointer;
+        padding: 8px 0;
+        font-size: 0.95rem;
+        color: #555;
+        text-decoration: none;
         transition: background-color 0.2s ease;
 
         &:hover,
@@ -141,6 +163,12 @@
     text-decoration: none;
     color: #555;
     transition: background-color 0.2s ease;
+
+    i {
+      font-size: 1rem;
+      width: 18px;
+      text-align: center;
+    }
 
     &:hover,
     &:focus {
@@ -179,6 +207,8 @@
 
     i {
       font-size: 1rem;
+      width: 18px;
+      text-align: center;
     }
 
     &:hover,

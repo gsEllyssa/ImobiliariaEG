@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createTenant } from '../services/tenantService';
 import { useNavigate } from 'react-router-dom';
+import '../styles/modules/NewTenant.scss';
 
 export default function NewTenant() {
   const [form, setForm] = useState({
@@ -8,6 +9,9 @@ export default function NewTenant() {
     cpf: '',
     email: '',
     phone: '',
+    birthdate: '',
+    address: '',
+    rg: '',
   });
 
   const navigate = useNavigate();
@@ -16,28 +20,118 @@ export default function NewTenant() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleClear = () => {
+    setForm({
+      name: '',
+      cpf: '',
+      email: '',
+      phone: '',
+      birthdate: '',
+      address: '',
+      rg: '',
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await createTenant(form);
-      alert('✅ Tenant successfully registered!');
+      alert('✅ Inquilino cadastrado com sucesso!');
       navigate('/tenants');
     } catch (err) {
-      alert('❌ Error registering tenant.');
+      alert('❌ Erro ao cadastrar inquilino.');
       console.error(err);
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>New Tenant</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Full name" onChange={handleChange} required />
-        <input name="cpf" placeholder="CPF" onChange={handleChange} required />
-        <input name="email" placeholder="E-mail" onChange={handleChange} />
-        <input name="phone" placeholder="Phone number" onChange={handleChange} />
-        <button type="submit">Save</button>
-      </form>
+    <div className="new-tenant-page">
+      <h2 className="page-title">Perfil do Inquilino</h2>
+
+      <section className="section">
+        <h3 className="section-title">📋 Dados do inquilino</h3>
+        <form className="tenant-form" onSubmit={handleSubmit}>
+          <div className="form-grid">
+            <input
+              name="name"
+              placeholder="Nome *"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="phone"
+              placeholder="Telefone *"
+              value={form.phone}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="birthdate"
+              type="date"
+              placeholder="Data de nascimento *"
+              value={form.birthdate}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="email"
+              placeholder="E-mail *"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="cpf"
+              placeholder="CPF *"
+              value={form.cpf}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="address"
+              placeholder="Endereço *"
+              value={form.address}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="rg"
+              placeholder="RG *"
+              value={form.rg}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="button" className="btn-clear" onClick={handleClear}>
+              Limpar
+            </button>
+            <button type="submit" className="btn-save">
+              Salvar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section className="section">
+        <h3 className="section-title">📎 Documentos do inquilino</h3>
+        <div className="document-grid">
+          {[
+            'Carta de fiança',
+            'Comprovante de residência',
+            'Contrato de locação',
+            'Documento de identificação',
+            'Laudo de vistoria',
+          ].map((label) => (
+            <div className="doc-item" key={label}>
+              <p>{label}</p>
+              <div className="doc-icon">📁➕</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
