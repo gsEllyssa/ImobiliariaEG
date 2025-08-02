@@ -1,8 +1,5 @@
-/* Layout da página */
-@use "../base/variables" as *;
-@use "../base/mixins" as *;
-@use "../base/utilities" as *;
-@use "sass:color";
+@use '../base/index' as *;
+
 .layout-container {
     display: flex;
     height: 100vh;

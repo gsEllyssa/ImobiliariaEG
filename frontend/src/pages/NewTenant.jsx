@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { createTenant } from '../services/tenantService';
 import { useNavigate } from 'react-router-dom';
+import { createTenant } from '../services/tenantService';
 import '../styles/modules/NewTenant.scss';
+
+const DOCUMENTS = [
+  { key: 'idDoc', label: 'Documento de identificação' },
+  { key: 'leaseContract', label: 'Contrato de locação' },
+  { key: 'guaranteeLetter', label: 'Carta de fiança' },
+  { key: 'residenceProof', label: 'Comprovante de residência' },
+  { key: 'inspectionReport', label: 'Laudo de vistoria' },
+];
 
 export default function NewTenant() {
   const [form, setForm] = useState({
@@ -14,6 +22,7 @@ export default function NewTenant() {
     rg: '',
   });
 
+  const [documents, setDocuments] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -30,17 +39,32 @@ export default function NewTenant() {
       address: '',
       rg: '',
     });
+    setDocuments({});
+  };
+
+  const handleFileChange = (key, file) => {
+    setDocuments((prev) => ({ ...prev, [key]: file }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    Object.entries(form).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    Object.entries(documents).forEach(([key, file]) => {
+      if (file) formData.append(key, file);
+    });
+
     try {
-      await createTenant(form);
+      await createTenant(formData);
       alert('✅ Inquilino cadastrado com sucesso!');
       navigate('/tenants');
-    } catch (err) {
+    } catch (error) {
       alert('❌ Erro ao cadastrar inquilino.');
-      console.error(err);
+      console.error(error);
     }
   };
 
@@ -52,65 +76,18 @@ export default function NewTenant() {
         <h3 className="section-title">📋 Dados do inquilino</h3>
         <form className="tenant-form" onSubmit={handleSubmit}>
           <div className="form-grid">
-            <input
-              name="name"
-              placeholder="Nome *"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="phone"
-              placeholder="Telefone *"
-              value={form.phone}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="birthdate"
-              type="date"
-              placeholder="Data de nascimento *"
-              value={form.birthdate}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="email"
-              placeholder="E-mail *"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="cpf"
-              placeholder="CPF *"
-              value={form.cpf}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="address"
-              placeholder="Endereço *"
-              value={form.address}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="rg"
-              placeholder="RG *"
-              value={form.rg}
-              onChange={handleChange}
-              required
-            />
+            <input name="name" placeholder="Nome *" value={form.name} onChange={handleChange} required />
+            <input name="phone" placeholder="Telefone *" value={form.phone} onChange={handleChange} required />
+            <input name="birthdate" type="date" value={form.birthdate} onChange={handleChange} required />
+            <input name="email" placeholder="E-mail *" value={form.email} onChange={handleChange} required />
+            <input name="cpf" placeholder="CPF *" value={form.cpf} onChange={handleChange} required />
+            <input name="address" placeholder="Endereço *" value={form.address} onChange={handleChange} required />
+            <input name="rg" placeholder="RG *" value={form.rg} onChange={handleChange} required />
           </div>
 
           <div className="form-actions">
-            <button type="button" className="btn-clear" onClick={handleClear}>
-              Limpar
-            </button>
-            <button type="submit" className="btn-save">
-              Salvar
-            </button>
+            <button type="button" className="btn-clear" onClick={handleClear}>Limpar</button>
+            <button type="submit" className="btn-save">Salvar</button>
           </div>
         </form>
       </section>
@@ -118,16 +95,22 @@ export default function NewTenant() {
       <section className="section">
         <h3 className="section-title">📎 Documentos do inquilino</h3>
         <div className="document-grid">
-          {[
-            'Carta de fiança',
-            'Comprovante de residência',
-            'Contrato de locação',
-            'Documento de identificação',
-            'Laudo de vistoria',
-          ].map((label) => (
-            <div className="doc-item" key={label}>
-              <p>{label}</p>
-              <div className="doc-icon">📁➕</div>
+          {DOCUMENTS.map(({ key, label }) => (
+            <div className="doc-item" key={key}>
+              <label className="doc-label">{label}</label>
+              <label className="doc-upload">
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                  onChange={(e) => handleFileChange(key, e.target.files[0])}
+                />
+                <div className="doc-icon">
+                  {documents[key] ? '📄' : '📁➕'}
+                </div>
+                {documents[key] && (
+                  <div className="doc-name">{documents[key].name}</div>
+                )}
+              </label>
             </div>
           ))}
         </div>
