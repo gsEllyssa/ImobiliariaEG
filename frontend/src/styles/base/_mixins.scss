@@ -32,6 +32,11 @@
   }
 }
 
+// 🧩 Transição genérica
+@mixin transition($properties...) {
+  transition: $properties 0.3s ease;
+}
+
 // 🧩 Botão padrão com hover dinâmico
 @mixin button-style($bg-color, $text-color: #fff) {
   background-color: $bg-color;

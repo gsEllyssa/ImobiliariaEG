@@ -7,9 +7,9 @@
 // Módulos/Páginas
 @use './modules/Buttons';
 @use './modules/Contracts';
-@use './modules/ContractTemplates';
+@use './modules/ContractTemplateList';       // Renomeado (era ContractTemplates)
+@use './modules/EditContractTemplate';       // Já existente
 @use './modules/ContractView';
-@use './modules/EditContractTemplate';
 @use './modules/Home';
 @use './modules/Login';
 @use './modules/Menu';

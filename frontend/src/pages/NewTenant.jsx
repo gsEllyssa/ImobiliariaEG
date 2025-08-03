@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTenant } from '../services/tenantService';
+import { listTemplates } from '../services/contractTemplateService';
 import '../styles/modules/NewTenant.scss';
 
 const DOCUMENTS = [
@@ -20,10 +21,24 @@ export default function NewTenant() {
     birthdate: '',
     address: '',
     rg: '',
+    templateId: ''
   });
 
   const [documents, setDocuments] = useState({});
+  const [templates, setTemplates] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchTemplates() {
+      try {
+        const data = await listTemplates();
+        setTemplates(data);
+      } catch (error) {
+        console.error('Erro ao carregar modelos:', error);
+      }
+    }
+    fetchTemplates();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,6 +53,7 @@ export default function NewTenant() {
       birthdate: '',
       address: '',
       rg: '',
+      templateId: ''
     });
     setDocuments({});
   };
@@ -83,6 +99,12 @@ export default function NewTenant() {
             <input name="cpf" placeholder="CPF *" value={form.cpf} onChange={handleChange} required />
             <input name="address" placeholder="Endereço *" value={form.address} onChange={handleChange} required />
             <input name="rg" placeholder="RG *" value={form.rg} onChange={handleChange} required />
+            <select name="templateId" value={form.templateId} onChange={handleChange} required>
+              <option value="">Selecione um modelo de contrato</option>
+              {templates.map((t) => (
+                <option key={t._id} value={t._id}>{t.name}</option>
+              ))}
+            </select>
           </div>
 
           <div className="form-actions">

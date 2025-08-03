@@ -15,13 +15,15 @@ import NewTenant from './pages/NewTenant.jsx';
 import Contracts from './pages/Contracts.jsx';
 import NewContract from './pages/NewContract.jsx';
 import ContractView from './pages/ContractView.jsx';
-import ContractTemplates from './pages/ContractTemplates.jsx';
-import EditContractTemplate from './pages/EditContractTemplate.jsx';
 import ContractForm from './pages/ContractForm.jsx';
 import ContractCreate from './pages/NewContract.jsx';
 import Payment from './pages/Payment.jsx';
 import ReceiptView from './pages/ReceiptView.jsx';
 import PaymentHistory from './pages/PaymentHistory.jsx';
+
+// Template pages (corrigidos)
+import ContractTemplateList from './pages/ContractTemplateList.jsx';
+import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
 
 // Global styles
 import './styles/layout/layout.scss';
@@ -36,15 +38,16 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tenants" element={<Tenants />} />
         <Route path="/new-tenant" element={<NewTenant />} />
-        <Route path="/payment" element={<Payment />} /> {/* Página de novo pagamento */}
-        <Route path="/payments" element={<Payment />} /> {/* Página principal de pagamentos */}
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payments" element={<Payment />} />
         <Route path="/payment-history" element={<PaymentHistory />} />
         <Route path="/contracts" element={<Contracts />} />
         <Route path="/new-contract" element={<NewContract />} />
         <Route path="/contract-create" element={<ContractCreate />} />
         <Route path="/contract/:id" element={<ContractView />} />
-        <Route path="/templates" element={<ContractTemplates />} />
-        <Route path="/edit-template/:id" element={<EditContractTemplate />} />
+        <Route path="/templates" element={<ContractTemplateList />} />
+        <Route path="/templates/new" element={<CreateContractTemplate />} />
+        <Route path="/templates/:id" element={<EditContractTemplate />} />
         <Route path="/contract-form" element={<ContractForm />} />
         <Route path="/receipt/:id" element={<ReceiptView />} />
       </Route>
