@@ -39,7 +39,6 @@ export default function Menu() {
       icon: "fa-users",
       label: "Inquilinos",
       path: "/tenants",
-      submenu: [],
     },
     {
       key: "payments",
@@ -54,8 +53,8 @@ export default function Menu() {
       key: "contracts",
       icon: "fa-file-contract",
       label: "Contratos",
+      path: "/contracts",
       submenu: [
-        { to: "/contracts", label: "📑 Listar Contratos" },
         { to: "/templates", label: "📂 Modelos de Contrato" },
       ],
     },
@@ -63,13 +62,13 @@ export default function Menu() {
       key: "receipt",
       icon: "fa-receipt",
       label: "Recibos",
-      submenu: [{ to: "/receipt/1", label: "🧾 Visualizar Recibo (Exemplo)" }],
+      path: "/receipt/1",
     },
     {
       key: "properties",
       icon: "fa-building",
       label: "Imóveis",
-      submenu: [{ to: "/new-property", label: "🏠 Novo Imóvel" }],
+      path: "/new-property",
     },
     {
       key: "reports",
@@ -80,6 +79,7 @@ export default function Menu() {
         { to: "/report-contracts", label: "📄 Contratos" },
         { to: "/report-tenants", label: "🧑‍💼 Inquilinos" },
       ],
+      path: "/report-payments",
     },
   ];
 
@@ -113,57 +113,44 @@ export default function Menu() {
       <nav className="menu-section">
         {menuItems.map((item) => (
           <div key={item.key} className="menu-group">
-            {item.submenu ? (
-              <>
-                <div
-                  className={classNames("menu-label", {
-                    open: openSubmenus[item.key],
-                  })}
-                  onClick={() => {
-                    if (item.path) navigate(item.path);
-                    else toggleSubmenu(item.key);
+            <div
+              className={classNames("menu-label", {
+                active: isActive(item.path),
+              })}
+              onClick={() => {
+                if (item.path) navigate(item.path);
+                if (item.submenu) toggleSubmenu(item.key);
+              }}
+            >
+              <i className={`fa-solid ${item.icon}`}></i>
+              {menuOpen && <span>{item.label}</span>}
+              {menuOpen && item.submenu?.length > 0 && (
+                <i
+                  className={`fa-solid ${
+                    openSubmenus[item.key] ? "fa-angle-up" : "fa-angle-down"
+                  } arrow`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSubmenu(item.key);
                   }}
-                >
-                  <i className={`fa-solid ${item.icon}`}></i>
-                  {menuOpen && <span>{item.label}</span>}
-                  {menuOpen && (
-                    <i
-                      className={`fa-solid ${
-                        openSubmenus[item.key] ? "fa-angle-up" : "fa-angle-down"
-                      } arrow`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleSubmenu(item.key);
-                      }}
-                    ></i>
-                  )}
-                </div>
-                {menuOpen && openSubmenus[item.key] && item.submenu.length > 0 && (
-                  <div className="submenu">
-                    {item.submenu.map((sub) => (
-                      <Link
-                        key={sub.to}
-                        to={sub.to}
-                        className={classNames("menu-item", {
-                          active: isActive(sub.to),
-                        })}
-                      >
-                        {sub.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <Link
-                to={item.path}
-                className={classNames("menu-item", {
-                  active: isActive(item.path),
-                })}
-              >
-                <i className={`fa-solid ${item.icon}`}></i>
-                {menuOpen && <span>{item.label}</span>}
-              </Link>
+                ></i>
+              )}
+            </div>
+
+            {menuOpen && openSubmenus[item.key] && item.submenu?.length > 0 && (
+              <div className="submenu">
+                {item.submenu.map((sub) => (
+                  <Link
+                    key={sub.to}
+                    to={sub.to}
+                    className={classNames("menu-item", {
+                      active: isActive(sub.to),
+                    })}
+                  >
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
             )}
           </div>
         ))}

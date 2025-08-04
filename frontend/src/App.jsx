@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 // Public page
 import Login from './pages/Login.jsx';
+import TestPage from './pages/TestPage.jsx'; // ✅ Aqui
 
 // Private pages
 import Home from './pages/Home.jsx';
@@ -21,9 +22,10 @@ import Payment from './pages/Payment.jsx';
 import ReceiptView from './pages/ReceiptView.jsx';
 import PaymentHistory from './pages/PaymentHistory.jsx';
 
-// Template pages (corrigidos)
+// Contract Templates
 import ContractTemplateList from './pages/ContractTemplateList.jsx';
 import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
+import EditContractTemplate from './pages/EditContractTemplate.jsx';
 
 // Global styles
 import './styles/layout/layout.scss';
@@ -32,26 +34,33 @@ import './styles/main.scss';
 export default function App() {
   return (
     <Routes>
+      {/* Public Route */}
       <Route path="/" element={<Login />} />
+      <Route path="/test" element={<TestPage />} /> {/* ✅ Rota de teste livre */}
 
+      {/* Protected Routes */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/home" element={<Home />} />
         <Route path="/tenants" element={<Tenants />} />
         <Route path="/new-tenant" element={<NewTenant />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/payments" element={<Payment />} />
-        <Route path="/payment-history" element={<PaymentHistory />} />
+
         <Route path="/contracts" element={<Contracts />} />
         <Route path="/new-contract" element={<NewContract />} />
         <Route path="/contract-create" element={<ContractCreate />} />
         <Route path="/contract/:id" element={<ContractView />} />
+        <Route path="/contract-form" element={<ContractForm />} />
+
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payments" element={<Payment />} />
+        <Route path="/payment-history" element={<PaymentHistory />} />
+        <Route path="/receipt/:id" element={<ReceiptView />} />
+
         <Route path="/templates" element={<ContractTemplateList />} />
         <Route path="/templates/new" element={<CreateContractTemplate />} />
         <Route path="/templates/:id" element={<EditContractTemplate />} />
-        <Route path="/contract-form" element={<ContractForm />} />
-        <Route path="/receipt/:id" element={<ReceiptView />} />
       </Route>
 
+      {/* Fallback route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

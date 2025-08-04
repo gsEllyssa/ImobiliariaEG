@@ -1,39 +1,67 @@
-@use '../base/index' as *;
+@use "sass:color";
+@use "../base/variables" as *;
 
-.editor-container {
-  padding: 2rem;
-  max-width: 960px;
+.edit-template-container {
+  max-width: 800px;
   margin: 0 auto;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
-  .editor-title {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 16px;
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: $primary;
+  }
+
+  .form-group {
     margin-bottom: 20px;
-    border: 1px solid $gray;
-    border-radius: $border-radius;
-    color: $text-dark;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fafafa;
+    }
+
+    .ql-editor {
+      min-height: 200px;
+    }
   }
 
-  .ql-editor {
-    min-height: 250px;
-    font-size: 15px;
-    color: $text-dark;
-  }
-
-  .btn-salvar {
-    margin-top: 24px;
-    padding: 12px 24px;
+  .btn-save {
     background-color: $primary;
-    color: white;
-    font-weight: 500;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 16px;
     border: none;
-    border-radius: $border-radius;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: darken($primary, 10%);
+      background-color: color.adjust($primary, $lightness: -10%);
     }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .loading {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
   }
 }

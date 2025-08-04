@@ -1,39 +1,30 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Menu from "./Menu.jsx";
-import Topbar from "./Topbar.jsx";
+import { AnimatePresence, motion } from "framer-motion";
+import Menu from "./Menu";
+import Topbar from "./Topbar";
 import "../styles/layout/layout.scss";
 
 export default function Layout() {
   const location = useLocation();
 
-  // Exemplo de extração dinâmica de título com base na rota
-  const routeMap = {
-    "/home": { icon: "faUserCircle", title: "Início", subtitle: "Visão geral" },
-    "/tenants": { icon: "faUserCircle", title: "Inquilinos", subtitle: "Listagem" },
-    "/contracts": { icon: "faUserCircle", title: "Contratos", subtitle: "Gerenciar" },
-    "/payments": { icon: "faUserCircle", title: "Pagamentos", subtitle: "Histórico" },
-    // Adicione outras rotas conforme necessário
-  };
-
-  const currentRoute = routeMap[location.pathname] || {
-    icon: "faUserCircle",
-    title: "Página",
-    subtitle: "Detalhes",
-  };
-
   return (
     <div className="layout-container">
       <Menu />
       <div className="page-content-area">
-        <Topbar
-          icon={currentRoute.icon}
-          title={currentRoute.title}
-          subtitle={currentRoute.subtitle}
-        />
-        <main className="content">
-          <Outlet />
-        </main>
+        <Topbar icon="faUserCircle" title="Página" subtitle="Conteúdo" />
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={location.pathname}
+            className="content"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Outlet />
+          </motion.main>
+        </AnimatePresence>
       </div>
     </div>
   );

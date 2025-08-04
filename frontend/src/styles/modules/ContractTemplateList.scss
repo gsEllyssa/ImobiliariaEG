@@ -1,4 +1,5 @@
-@use '../base/index' as *;
+@use "sass:color";
+@use "../base/index" as *;
 
 .template-list-page {
   padding: 2rem;
@@ -26,7 +27,7 @@
       transition: background 0.3s;
 
       &:hover {
-        background-color: darken($primary, 8%);
+        background-color: color.adjust($primary, $lightness: -8%);
       }
     }
   }
@@ -73,14 +74,14 @@
             transition: background 0.3s;
 
             &:hover {
-              background-color: darken($primary, 10%);
+              background-color: color.adjust($primary, $lightness: -10%);
             }
 
             &:last-child {
               background-color: $danger;
 
               &:hover {
-                background-color: darken($danger, 10%);
+                background-color: color.adjust($danger, $lightness: -10%);
               }
             }
           }
