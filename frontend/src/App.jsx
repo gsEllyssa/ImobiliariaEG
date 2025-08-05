@@ -7,7 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 // Public page
 import Login from './pages/Login.jsx';
-import TestPage from './pages/TestPage.jsx'; // ✅ Aqui
+import TestPage from './pages/TestPage.jsx';
 
 // Private pages
 import Home from './pages/Home.jsx';
@@ -27,18 +27,16 @@ import ContractTemplateList from './pages/ContractTemplateList.jsx';
 import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
 import EditContractTemplate from './pages/EditContractTemplate.jsx';
 
-// Global styles
-import './styles/layout/layout.scss';
-import './styles/main.scss';
+// Global styles (apenas Tailwind ou o novo que estiver usando)
+import './styles/tailwind.css'; // ✅ mantém o Tailwind
+// import './styles/main.scss'; // ❌ se estiver migrando do SCSS, pode remover futuramente
 
 export default function App() {
   return (
     <Routes>
-      {/* Public Route */}
       <Route path="/" element={<Login />} />
-      <Route path="/test" element={<TestPage />} /> {/* ✅ Rota de teste livre */}
+      <Route path="/test" element={<TestPage />} />
 
-      {/* Protected Routes */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/home" element={<Home />} />
         <Route path="/tenants" element={<Tenants />} />
@@ -60,7 +58,6 @@ export default function App() {
         <Route path="/templates/:id" element={<EditContractTemplate />} />
       </Route>
 
-      {/* Fallback route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

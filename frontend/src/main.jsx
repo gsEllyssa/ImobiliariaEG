@@ -1,13 +1,12 @@
-// src/main.jsx (ou src/index.jsx)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
+import { AuthProvider } from './contexts/AuthContext';
 
-import { AuthProvider } from './contexts/AuthContext'; // ✅ Contexto de autenticação
-
-import './styles/layout/layout.scss';
-import './styles/main.scss';
+import './styles/tailwind.css'; // ✅ Tailwind primeiro
+import './styles/main.scss'; // ✅ SCSS normal
+// Remova o layout.scss se ele não existir
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

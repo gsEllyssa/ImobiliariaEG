@@ -1,9 +1,6 @@
 // Importa todas as bases via arquivo centralizador
 @use './base/index' as *;
 
-// Layout principal (Topbar, Menu, estrutura da página)
-@use './layout/layout';
-
 // Módulos/Páginas
 @use './modules/Buttons';
 @use './modules/Contracts';
