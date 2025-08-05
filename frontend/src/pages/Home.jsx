@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/modules/Home.scss";
 
 export default function Home() {
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -8,21 +7,35 @@ export default function Home() {
   const age = user.idade || "--";
 
   return (
-    <main className="content">
-      <form className="filters">
-        <input type="date" aria-label="Data" />
-        <select aria-label="Status">
+    <main className="flex-1 p-8 bg-white text-gray-800">
+      {/* Filtros */}
+      <form className="flex flex-wrap gap-3 mb-8">
+        <input
+          type="date"
+          aria-label="Data"
+          className="min-w-[160px] px-4 py-2 border border-gray-300 rounded-md text-sm"
+        />
+        <select
+          aria-label="Status"
+          className="min-w-[160px] px-4 py-2 border border-gray-300 rounded-md text-sm"
+        >
           <option value="">Status</option>
           <option value="ativo">Ativo</option>
           <option value="inativo">Inativo</option>
         </select>
-        <select aria-label="Meio de Pagamento">
+        <select
+          aria-label="Meio de Pagamento"
+          className="min-w-[160px] px-4 py-2 border border-gray-300 rounded-md text-sm"
+        >
           <option value="">Meio de Pagamento</option>
           <option value="pix">Pix</option>
           <option value="boleto">Boleto</option>
           <option value="cartao">Cartão</option>
         </select>
-        <select aria-label="Imóvel">
+        <select
+          aria-label="Imóvel"
+          className="min-w-[160px] px-4 py-2 border border-gray-300 rounded-md text-sm"
+        >
           <option value="">Imóvel</option>
           <option value="apto">Apartamento</option>
           <option value="casa">Casa</option>
@@ -31,18 +44,20 @@ export default function Home() {
           type="text"
           placeholder="Pesquisar por nome ou imóvel"
           aria-label="Pesquisar"
+          className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-md text-sm"
         />
       </form>
 
-      <section className="welcome">
-        <h1>Bem-vindo(a), {name}!</h1>
-        <p>
+      {/* Boas-vindas */}
+      <section className="bg-white rounded-md shadow-sm p-6 mb-12">
+        <h1 className="text-lg font-semibold mb-4">Bem-vindo(a), {name}!</h1>
+        <p className="text-sm mb-2">
           <strong>Email:</strong> {email}
         </p>
-        <p>
+        <p className="text-sm mb-2">
           <strong>Idade:</strong> {age} anos
         </p>
-        <p className="success">✅ Login efetuado com sucesso.</p>
+        <p className="text-green-600 font-medium text-sm">✅ Login efetuado com sucesso.</p>
       </section>
     </main>
   );

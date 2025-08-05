@@ -10,7 +10,6 @@ import {
   faExpand,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
-import '../styles/modules/Topbar.scss';
 
 export default function Topbar({ title, subtitle }) {
   const navigate = useNavigate();
@@ -22,25 +21,51 @@ export default function Topbar({ title, subtitle }) {
   };
 
   return (
-    <div className="topbar">
-      <div className="topbar-left">
-        <span className="topbar-title">{title}</span>
-        <span className="topbar-separator">/</span>
-        <span className="topbar-subtitle">{subtitle}</span>
+    <div className="sticky top-0 z-10 w-full bg-white border-b border-gray-200 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      {/* Esquerda */}
+      <div className="flex items-center gap-3">
+        <span className="font-semibold text-lg text-gray-800">{title}</span>
+        <span className="text-gray-400 font-light">/</span>
+        <span className="text-sm text-gray-500">{subtitle}</span>
       </div>
 
-      <div className="topbar-right">
-        <div className="search-box">
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
-          <input type="text" placeholder="Buscar..." />
+      {/* Direita */}
+      <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
+        <div className="flex items-center border border-gray-200 bg-gray-100 rounded-full px-3 py-1 focus-within:border-blue-500 focus-within:bg-white transition-colors">
+          <FontAwesomeIcon icon={faSearch} className="text-gray-400 text-sm mr-2" />
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="bg-transparent outline-none text-sm text-gray-800 placeholder-gray-400 w-40"
+          />
         </div>
 
-        <FontAwesomeIcon icon={faSun} className="topbar-action" title="Modo claro/escuro" />
-        <FontAwesomeIcon icon={faClockRotateLeft} className="topbar-action" title="Histórico" />
-        <FontAwesomeIcon icon={faBell} className="topbar-action" title="Notificações" />
-        <FontAwesomeIcon icon={faExpand} className="topbar-action" title="Tela cheia" />
+        <FontAwesomeIcon
+          icon={faSun}
+          className="text-gray-500 hover:text-blue-600 cursor-pointer text-sm"
+          title="Modo claro/escuro"
+        />
+        <FontAwesomeIcon
+          icon={faClockRotateLeft}
+          className="text-gray-500 hover:text-blue-600 cursor-pointer text-sm"
+          title="Histórico"
+        />
+        <FontAwesomeIcon
+          icon={faBell}
+          className="text-gray-500 hover:text-blue-600 cursor-pointer text-sm"
+          title="Notificações"
+        />
+        <FontAwesomeIcon
+          icon={faExpand}
+          className="text-gray-500 hover:text-blue-600 cursor-pointer text-sm"
+          title="Tela cheia"
+        />
 
-        <button className="logout-button" onClick={handleLogout} title="Sair">
+        <button
+          onClick={handleLogout}
+          title="Sair"
+          className="text-gray-500 hover:text-red-600 cursor-pointer text-sm transition-colors"
+        >
           <FontAwesomeIcon icon={faRightFromBracket} />
         </button>
       </div>

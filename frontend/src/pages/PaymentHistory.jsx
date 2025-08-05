@@ -3,7 +3,6 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import Topbar from '../components/Topbar';
 import { faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
-import '../styles/modules/PaymentHistory.scss';
 
 export default function PaymentHistory() {
   const [payments, setPayments] = useState([]);
@@ -29,53 +28,62 @@ export default function PaymentHistory() {
     <Layout>
       <Topbar
         icon={faFileInvoiceDollar}
-        title="Payment History"
-        subtitle="All payments received"
+        title="Histórico de Pagamentos"
+        subtitle="Todos os pagamentos recebidos"
       />
 
-      <div className="payment-history">
+      <div className="p-6">
         <input
-          className="search-input"
+          className="w-full max-w-sm px-4 py-2 mb-6 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           type="text"
-          placeholder="Search by tenant"
+          placeholder="Buscar por inquilino"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <table className="payment-table">
-          <thead>
-            <tr>
-              <th>Tenant</th>
-              <th>Amount</th>
-              <th>Method</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Receipt</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length > 0 ? (
-              filtered.map((p) => (
-                <tr key={p._id}>
-                  <td>{p.tenant?.name || '---'}</td>
-                  <td>R$ {Number(p.amount).toFixed(2)}</td>
-                  <td>{p.method}</td>
-                  <td>{new Date(p.paymentDate).toLocaleDateString('pt-BR')}</td>
-                  <td>{p.status || 'Paid'}</td>
-                  <td>
-                    <a href={`/receipt/${p._id}`} className="receipt-link">
-                      View Receipt
-                    </a>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm text-left bg-white border border-gray-200 rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-4 py-3 font-semibold text-gray-700">Inquilino</th>
+                <th className="px-4 py-3 font-semibold text-gray-700">Valor</th>
+                <th className="px-4 py-3 font-semibold text-gray-700">Método</th>
+                <th className="px-4 py-3 font-semibold text-gray-700">Data</th>
+                <th className="px-4 py-3 font-semibold text-gray-700">Status</th>
+                <th className="px-4 py-3 font-semibold text-gray-700">Recibo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length > 0 ? (
+                filtered.map((p) => (
+                  <tr key={p._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-700">{p.tenant?.name || '---'}</td>
+                    <td className="px-4 py-3 text-gray-700">R$ {Number(p.amount).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-gray-700">{p.method}</td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {new Date(p.paymentDate).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">{p.status || 'Pago'}</td>
+                    <td className="px-4 py-3">
+                      <a
+                        href={`/receipt/${p._id}`}
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Visualizar Recibo
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="px-4 py-4 text-center text-gray-500">
+                    Nenhum pagamento encontrado.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6">No payments found.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

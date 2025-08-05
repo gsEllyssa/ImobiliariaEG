@@ -14,7 +14,7 @@ export default function ReceiptView() {
         const response = await axios.get(`/api/receipts/${id}`);
         setReceipt(response.data);
       } catch (err) {
-        setError('Error loading receipt.');
+        setError('Erro ao carregar o recibo.');
       } finally {
         setLoading(false);
       }
@@ -23,40 +23,35 @@ export default function ReceiptView() {
     fetchReceipt();
   }, [id]);
 
-  if (loading) return <p style={{ padding: '2rem' }}>Loading receipt...</p>;
-  if (error) return <p style={{ padding: '2rem', color: 'red' }}>{error}</p>;
-  if (!receipt) return <p style={{ padding: '2rem' }}>Receipt not found.</p>;
+  if (loading)
+    return <p className="p-8 text-gray-600 text-sm">Carregando recibo...</p>;
+  if (error)
+    return <p className="p-8 text-red-600 text-sm">{error}</p>;
+  if (!receipt)
+    return <p className="p-8 text-gray-600 text-sm">Recibo não encontrado.</p>;
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 800, margin: '0 auto', backgroundColor: '#fff', borderRadius: 10, boxShadow: '0 0 10px rgba(0,0,0,0.05)' }}>
-      <h2 style={{ marginBottom: '1rem' }}>📄 Payment Receipt</h2>
+    <div className="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8 mt-10 space-y-4">
+      <h2 className="text-2xl font-bold mb-4">📄 Recibo de Pagamento</h2>
 
-      <p><strong>Receipt ID:</strong> {receipt._id}</p>
-      <p><strong>Tenant:</strong> {receipt.tenant?.name}</p>
-      <p><strong>Contract:</strong> {receipt.contract?.title || receipt.contract}</p>
-      <p><strong>Payment Date:</strong> {new Date(receipt.paymentDate).toLocaleDateString('en-GB')}</p>
-      <p><strong>Amount:</strong> R$ {Number(receipt.amount).toFixed(2)}</p>
-      <p><strong>Method:</strong> {receipt.method || 'Not specified'}</p>
+      <p><span className="font-semibold">ID do Recibo:</span> {receipt._id}</p>
+      <p><span className="font-semibold">Inquilino:</span> {receipt.tenant?.name}</p>
+      <p><span className="font-semibold">Contrato:</span> {receipt.contract?.title || receipt.contract}</p>
+      <p><span className="font-semibold">Data do Pagamento:</span> {new Date(receipt.paymentDate).toLocaleDateString('pt-BR')}</p>
+      <p><span className="font-semibold">Valor:</span> R$ {Number(receipt.amount).toFixed(2)}</p>
+      <p><span className="font-semibold">Método:</span> {receipt.method || 'Não especificado'}</p>
 
-      <hr style={{ margin: '2rem 0' }} />
+      <hr className="my-6 border-t border-gray-200" />
 
-      <p style={{ fontStyle: 'italic', color: '#666' }}>
-        This receipt confirms the payment related to the specified contract. Please keep it as proof of payment.
+      <p className="text-sm italic text-gray-600">
+        Este recibo confirma o pagamento relacionado ao contrato especificado. Guarde-o como comprovante.
       </p>
 
       <button
-        style={{
-          marginTop: '2rem',
-          padding: '10px 20px',
-          backgroundColor: '#0d6efd',
-          color: 'white',
-          border: 'none',
-          borderRadius: 5,
-          cursor: 'pointer'
-        }}
-        onClick={() => alert('🔧 Coming soon: PDF download feature!')}
+        className="mt-6 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        onClick={() => alert('🔧 Em breve: funcionalidade de download do PDF!')}
       >
-        📥 Download PDF
+        📥 Baixar PDF
       </button>
     </div>
   );

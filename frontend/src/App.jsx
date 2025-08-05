@@ -17,7 +17,6 @@ import Contracts from './pages/Contracts.jsx';
 import NewContract from './pages/NewContract.jsx';
 import ContractView from './pages/ContractView.jsx';
 import ContractForm from './pages/ContractForm.jsx';
-import ContractCreate from './pages/NewContract.jsx';
 import Payment from './pages/Payment.jsx';
 import ReceiptView from './pages/ReceiptView.jsx';
 import PaymentHistory from './pages/PaymentHistory.jsx';
@@ -27,16 +26,17 @@ import ContractTemplateList from './pages/ContractTemplateList.jsx';
 import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
 import EditContractTemplate from './pages/EditContractTemplate.jsx';
 
-// Global styles (apenas Tailwind ou o novo que estiver usando)
-import './styles/tailwind.css'; // ✅ mantém o Tailwind
-// import './styles/main.scss'; // ❌ se estiver migrando do SCSS, pode remover futuramente
+// Global styles (apenas Tailwind agora)
+import './styles/tailwind.css';
 
 export default function App() {
   return (
     <Routes>
+      {/* Public pages */}
       <Route path="/" element={<Login />} />
       <Route path="/test" element={<TestPage />} />
 
+      {/* Protected routes with layout */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/home" element={<Home />} />
         <Route path="/tenants" element={<Tenants />} />
@@ -44,7 +44,6 @@ export default function App() {
 
         <Route path="/contracts" element={<Contracts />} />
         <Route path="/new-contract" element={<NewContract />} />
-        <Route path="/contract-create" element={<ContractCreate />} />
         <Route path="/contract/:id" element={<ContractView />} />
         <Route path="/contract-form" element={<ContractForm />} />
 
@@ -58,6 +57,7 @@ export default function App() {
         <Route path="/templates/:id" element={<EditContractTemplate />} />
       </Route>
 
+      {/* Redirect unknown routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

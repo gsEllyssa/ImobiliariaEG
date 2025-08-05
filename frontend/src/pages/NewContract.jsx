@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createContract } from '../services/contractService';
 import { listTenants } from '../services/tenantService';
 import { listProperties } from '../services/propertyService';
-import '../styles/modules/NewContract.scss';
 
 export default function NewContract() {
   const [tenants, setTenants] = useState([]);
@@ -63,78 +62,194 @@ export default function NewContract() {
         propertyAddress: selectedProperty?.address || ''
       };
       await createContract(fullData);
-      alert('Contract created successfully!');
+      alert('Contrato criado com sucesso!');
       window.location.href = '/contracts';
     } catch (err) {
-      console.error('Error creating contract:', err);
-      alert('Error creating contract');
+      console.error('Erro ao criar contrato:', err);
+      alert('Erro ao criar contrato');
     }
   };
 
   return (
-    <div className="new-contract-page">
-      <h2>New Contract</h2>
-      <form className="contract-form" onSubmit={handleSubmit}>
-        <label>Landlord</label>
-        <input name="landlord" value={form.landlord} onChange={handleChange} required />
+    <div className="p-8 max-w-3xl mx-auto">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">Novo Contrato</h2>
 
-        <label>CPF (Landlord)</label>
-        <input name="landlordCpf" value={form.landlordCpf} onChange={handleChange} required />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Proprietário</label>
+          <input
+            name="landlord"
+            value={form.landlord}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <label>Tenant</label>
-        <select name="tenant" value={form.tenant} onChange={handleChange} required>
-          <option value="">Select a tenant</option>
-          {tenants.map((t) => (
-            <option key={t._id} value={t._id}>{t.name}</option>
-          ))}
-        </select>
+        <div>
+          <label className="block text-sm font-medium mb-1">CPF do Proprietário</label>
+          <input
+            name="landlordCpf"
+            value={form.landlordCpf}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <label>CPF (Tenant)</label>
-        <input name="tenantCpf" value={form.tenantCpf} onChange={handleChange} required />
+        <div>
+          <label className="block text-sm font-medium mb-1">Inquilino</label>
+          <select
+            name="tenant"
+            value={form.tenant}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          >
+            <option value="">Selecione um inquilino</option>
+            {tenants.map((t) => (
+              <option key={t._id} value={t._id}>{t.name}</option>
+            ))}
+          </select>
+        </div>
 
-        <label>Property</label>
-        <select name="property" value={form.property} onChange={handleChange} required>
-          <option value="">Select a property</option>
-          {properties.map((p) => (
-            <option key={p._id} value={p._id}>{p.description}</option>
-          ))}
-        </select>
+        <div>
+          <label className="block text-sm font-medium mb-1">CPF do Inquilino</label>
+          <input
+            name="tenantCpf"
+            value={form.tenantCpf}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <label>Rent Amount</label>
-        <input type="number" name="rentAmount" value={form.rentAmount} onChange={handleChange} required />
+        <div>
+          <label className="block text-sm font-medium mb-1">Imóvel</label>
+          <select
+            name="property"
+            value={form.property}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          >
+            <option value="">Selecione um imóvel</option>
+            {properties.map((p) => (
+              <option key={p._id} value={p._id}>{p.description}</option>
+            ))}
+          </select>
+        </div>
 
-        <label>Duration (e.g. 12 months)</label>
-        <input name="duration" value={form.duration} onChange={handleChange} required />
+        <div>
+          <label className="block text-sm font-medium mb-1">Valor do Aluguel</label>
+          <input
+            type="number"
+            name="rentAmount"
+            value={form.rentAmount}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <label>Start Date</label>
-        <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+        <div>
+          <label className="block text-sm font-medium mb-1">Duração (ex: 12 meses)</label>
+          <input
+            name="duration"
+            value={form.duration}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <label>End Date</label>
-        <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Início</label>
+            <input
+              type="date"
+              name="startDate"
+              value={form.startDate}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-md text-sm"
+            />
+          </div>
 
-        <label>Due Date</label>
-        <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} required />
+          <div>
+            <label className="block text-sm font-medium mb-1">Término</label>
+            <input
+              type="date"
+              name="endDate"
+              value={form.endDate}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-md text-sm"
+            />
+          </div>
 
-        <fieldset>
-          <legend>Guarantees</legend>
-          <label>
-            <input type="checkbox" name="guarantees.guarantor" checked={form.guarantees.guarantor} onChange={handleChange} />
-            Guarantor
-          </label>
-          <label>
-            <input type="checkbox" name="guarantees.deposit" checked={form.guarantees.deposit} onChange={handleChange} />
-            Deposit
-          </label>
-          <label>
-            <input type="checkbox" name="guarantees.insurance" checked={form.guarantees.insurance} onChange={handleChange} />
-            Rent Insurance
-          </label>
+          <div>
+            <label className="block text-sm font-medium mb-1">Vencimento</label>
+            <input
+              type="date"
+              name="dueDate"
+              value={form.dueDate}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-md text-sm"
+            />
+          </div>
+        </div>
+
+        <fieldset className="mt-4 border border-gray-300 rounded-md p-4">
+          <legend className="text-sm font-semibold text-gray-700">Garantias</legend>
+          <div className="flex flex-col sm:flex-row gap-4 mt-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="guarantees.guarantor"
+                checked={form.guarantees.guarantor}
+                onChange={handleChange}
+              />
+              Fiador
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="guarantees.deposit"
+                checked={form.guarantees.deposit}
+                onChange={handleChange}
+              />
+              Caução
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="guarantees.insurance"
+                checked={form.guarantees.insurance}
+                onChange={handleChange}
+              />
+              Seguro Fiança
+            </label>
+          </div>
         </fieldset>
 
-        <label>Notes</label>
-        <textarea name="notes" value={form.notes} onChange={handleChange} />
+        <div>
+          <label className="block text-sm font-medium mb-1">Observações</label>
+          <textarea
+            name="notes"
+            value={form.notes}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md text-sm"
+          />
+        </div>
 
-        <button type="submit">Save Contract</button>
+        <button
+          type="submit"
+          className="mt-4 w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Salvar Contrato
+        </button>
       </form>
     </div>
   );

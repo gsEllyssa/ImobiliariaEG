@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listTemplates, deleteTemplate } from '../services/contractTemplateService';
-import '../styles/modules/ContractTemplateList.scss';
 
 export default function ContractTemplateList() {
   const [templates, setTemplates] = useState([]);
@@ -23,30 +22,48 @@ export default function ContractTemplateList() {
   };
 
   return (
-    <div className="template-list-page">
-      <div className="header">
-        <h2>Modelos de Contrato</h2>
-        <button className="btn-create" onClick={() => navigate('/templates/new')}>
+    <div className="p-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold text-gray-800">Modelos de Contrato</h2>
+        <button
+          onClick={() => navigate('/templates/new')}
+          className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+        >
           + Novo Modelo
         </button>
       </div>
 
-      <table className="template-table">
-        <thead>
+      <table className="w-full border-collapse bg-white rounded-md shadow-sm overflow-hidden text-sm">
+        <thead className="bg-gray-100 text-gray-500 font-semibold">
           <tr>
-            <th>Título</th>
-            <th>Última atualização</th>
-            <th>Ações</th>
+            <th className="text-left px-4 py-3">Título</th>
+            <th className="text-left px-4 py-3">Última atualização</th>
+            <th className="text-left px-4 py-3">Ações</th>
           </tr>
         </thead>
         <tbody>
           {templates.map((template) => (
-            <tr key={template._id}>
-              <td>{template.title}</td>
-              <td>{new Date(template.updatedAt).toLocaleDateString('pt-BR')}</td>
-              <td>
-                <button onClick={() => navigate(`/templates/${template._id}`)}>Editar</button>
-                <button onClick={() => handleDelete(template._id)}>Excluir</button>
+            <tr
+              key={template._id}
+              className="hover:bg-blue-50 transition-colors"
+            >
+              <td className="px-4 py-3 text-gray-800">{template.title}</td>
+              <td className="px-4 py-3 text-gray-800">
+                {new Date(template.updatedAt).toLocaleDateString('pt-BR')}
+              </td>
+              <td className="px-4 py-3 text-gray-800">
+                <button
+                  onClick={() => navigate(`/templates/${template._id}`)}
+                  className="mr-2 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => handleDelete(template._id)}
+                  className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Excluir
+                </button>
               </td>
             </tr>
           ))}
