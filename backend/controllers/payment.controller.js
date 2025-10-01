@@ -1,19 +1,21 @@
 // controllers/payment.controller.js
 
-import Payment from '../models/Payment.js';
-import Contract from '../models/Contract.js';
-import Tenant from '../models/Tenant.js';
+import Payment from "../models/payment.model.js";
+import Contract from "../models/contract.model.js";
+import Tenant from "../models/tenant.model.js";
 
 /**
  * Lista todos os pagamentos do sistema
  */
 export const listPayments = async (req, res) => {
   try {
-    const payments = await Payment.find().populate('tenant').populate('contract');
+    const payments = await Payment.find()
+      .populate("tenant")
+      .populate("contract");
     res.status(200).json(payments);
   } catch (error) {
-    console.error('Erro ao listar pagamentos:', error);
-    res.status(500).json({ error: 'Erro ao buscar pagamentos.' });
+    console.error("Erro ao listar pagamentos:", error);
+    res.status(500).json({ error: "Erro ao buscar pagamentos." });
   }
 };
 
@@ -29,7 +31,9 @@ export const createPayment = async (req, res) => {
     const contract = await Contract.findById(contractId);
 
     if (!tenant || !contract) {
-      return res.status(404).json({ error: 'Inquilino ou contrato não encontrado.' });
+      return res
+        .status(404)
+        .json({ error: "Inquilino ou contrato não encontrado." });
     }
 
     // Criação do pagamento
@@ -38,14 +42,14 @@ export const createPayment = async (req, res) => {
       contract: contractId,
       amount,
       date,
-      description
+      description,
     });
 
     await payment.save();
 
     res.status(201).json(payment);
   } catch (error) {
-    console.error('Erro ao criar pagamento:', error);
-    res.status(400).json({ error: 'Erro ao criar pagamento.' });
+    console.error("Erro ao criar pagamento:", error);
+    res.status(400).json({ error: "Erro ao criar pagamento." });
   }
 };

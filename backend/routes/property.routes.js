@@ -1,14 +1,18 @@
-// routes/property.routes.js
 import express from 'express';
-import * as propertyController from '../controllers/property.controller.js';
+// 1. Importa apenas as funções necessárias, diretamente
+import { listProperties, createProperty } from '../controllers/property.controller.js';
 import { proteger } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
+// 2. Aplica a segurança a todas as rotas de uma vez
+router.use(proteger);
+
+// 3. As chamadas ficam mais diretas
 // GET: Listar todos os imóveis (protegido)
-router.get('/', proteger, propertyController.listProperties);
+router.get('/', listProperties);
 
 // POST: Criar novo imóvel (protegido)
-router.post('/', proteger, propertyController.createProperty);
+router.post('/', createProperty);
 
 export default router;

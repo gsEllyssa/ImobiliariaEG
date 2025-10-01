@@ -1,25 +1,56 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# =============================================================================
+# ARQUIVOS DE AMBIENTE E VARIÁVEIS SENSÍVEIS
+# Nunca envie chaves de API, senhas de banco ou segredos para o repositório.
+# =============================================================================
+.env
+.env.local
+.env.*.local
 
+# =============================================================================
+# DEPENDÊNCIAS
+# Ignora a pasta de pacotes instalados e o arquivo de lock do NPM,
+# pois o padrão do projeto será o Yarn (yarn.lock).
+# =============================================================================
 node_modules
+package-lock.json
+
+# =============================================================================
+# PASTAS DE BUILD E PRODUÇÃO
+# Ignora os arquivos gerados no processo de build e testes.
+# =============================================================================
 dist
 dist-ssr
-*.local
+build
+coverage
 
-# Editor directories and files
+# =============================================================================
+# LOGS
+# Ignora arquivos de log e debug de diferentes ferramentas.
+# =============================================================================
+logs
+*.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+lerna-debug.log
+
+# =============================================================================
+# ARQUIVOS DE SISTEMA OPERACIONAL
+# Ignora arquivos gerados automaticamente pelo macOS e Windows.
+# =============================================================================
+.DS_Store
+Thumbs.db
+
+# =============================================================================
+# ARQUIVOS DE EDITOR E IDE
+# Ignora configurações específicas do ambiente de desenvolvimento de cada pessoa.
+# =============================================================================
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env

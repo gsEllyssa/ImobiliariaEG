@@ -1,4 +1,4 @@
-import Contract from '../models/Contract.js';
+import Contract from "../models/contract.model.js";
 
 // List all contracts
 export const listContracts = async (req, res) => {
@@ -24,8 +24,11 @@ export const createContract = async (req, res) => {
 // Get contract by ID
 export const getContractById = async (req, res) => {
   try {
-    const contract = await Contract.findById(req.params.id).populate("tenantId propertyId");
-    if (!contract) return res.status(404).json({ error: 'Contract not found.' });
+    const contract = await Contract.findById(req.params.id).populate(
+      "tenantId propertyId"
+    );
+    if (!contract)
+      return res.status(404).json({ error: "Contract not found." });
     res.json(contract);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch contract." });
@@ -35,8 +38,10 @@ export const getContractById = async (req, res) => {
 // Update a contract
 export const updateContract = async (req, res) => {
   try {
-    const updated = await Contract.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ error: 'Contract not found.' });
+    const updated = await Contract.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!updated) return res.status(404).json({ error: "Contract not found." });
     res.json(updated);
   } catch (error) {
     res.status(400).json({ error: "Failed to update contract." });

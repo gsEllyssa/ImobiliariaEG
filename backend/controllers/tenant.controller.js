@@ -1,4 +1,4 @@
-import Tenant from "../models/Tenant.js";
+import Tenant from "../models/tenant.model.js";
 
 // List all tenants
 export const listTenants = async (req, res) => {

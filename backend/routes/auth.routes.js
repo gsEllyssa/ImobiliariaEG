@@ -1,57 +1,12 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import { login } from '../controllers/auth.controller.js';
 
 const router = express.Router();
-const caminhoUsuarios = path.resolve('usuarios.json');
-const JWT_SECRET = process.env.JWT_SECRET || 'segredo-super-seguro';
 
-router.post('/login', (req, res) => {
-  try {
-    const { email, password } = req.body;
+// Define que a rota POST /login será controlada pela função 'login'
+router.post('/login', login);
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'E-mail e senha obrigatórios.' });
-    }
-
-    if (!fs.existsSync(caminhoUsuarios)) {
-      return res.status(404).json({ error: 'Nenhum usuário cadastrado ainda.' });
-    }
-
-    const data = fs.readFileSync(caminhoUsuarios, 'utf8');
-    const usuarios = JSON.parse(data);
-    const usuario = usuarios.find((u) => u.email === email);
-
-    if (!usuario) {
-      return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
-    }
-
-    const senhaValida = bcrypt.compareSync(password, usuario.password);
-    if (!senhaValida) {
-      return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
-    }
-
-    const token = jwt.sign(
-      { id: usuario.id, name: usuario.name, email: usuario.email, role: usuario.role },
-      JWT_SECRET,
-      { expiresIn: '8h' }
-    );
-
-    res.json({
-      token,
-      user: {
-        name: usuario.name,
-        email: usuario.email,
-        role: usuario.role,
-      }
-    });
-
-  } catch (erro) {
-    console.error('❌ Erro ao realizar login:', erro);
-    res.status(500).json({ error: 'Erro interno ao processar o login.' });
-  }
-});
+// Se você tiver uma rota de registro, ela viria aqui também
+// router.post('/register', register);
 
 export default router;

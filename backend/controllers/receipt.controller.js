@@ -1,4 +1,4 @@
-import Receipt from "../models/Receipt.js";
+import Receipt from "../models/receipt.model.js";
 
 // List all receipts
 export const listReceipts = async (req, res) => {
