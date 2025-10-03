@@ -1,0 +1,165 @@
+@use "@/styles/base/variables" as *;
+@use "@/styles/base/mixins" as *;
+
+.menuContainer {
+    @include transition(width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: $color-white;
+    border-right: 1px solid #e5e7eb; // border-gray-200
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); // shadow-sm
+  
+    &--open {
+      width: 16rem; // 256px
+    }
+    &--closed {
+      width: 5rem; // 80px
+    }
+  }
+  
+  .header {
+    @include flex-center(space-between);
+    padding: 1rem;
+    border-bottom: 1px solid #f9fafb; // border-gray-100
+    flex-shrink: 0;
+  }
+  
+  .userInfo {
+    @include flex-center($justify: flex-start);
+    gap: 0.75rem;
+    overflow: hidden;
+  
+    .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      object-fit: cover;
+    }
+    .text {
+      white-space: nowrap;
+    }
+    .name {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-gray-700;
+    }
+    .role {
+      font-size: 0.75rem;
+      color: $color-text-muted;
+    }
+  }
+  
+  .toggleButton {
+    @include reset-button;
+    color: $color-text-muted;
+    padding: 0.5rem;
+    &:hover {
+      color: $color-gray-800;
+    }
+  }
+  
+  .nav {
+    flex: 1;
+    padding: 0.5rem;
+    overflow-y: auto;
+  }
+  
+  .menuLink {
+    @include flex-center(space-between);
+    @include transition(background-color);
+    padding: 0.5rem 1rem;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    color: $color-gray-700;
+    margin-bottom: 0.25rem;
+  
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  
+    &--active {
+      background-color: #e5e7eb;
+      font-weight: $font-weight-semibold;
+    }
+  
+    &__content {
+      @include flex-center($justify: flex-start);
+      gap: 0.75rem;
+    }
+    &__icon {
+      width: 1rem;
+      text-align: center;
+    }
+    &__label {
+      white-space: nowrap;
+    }
+  }
+  
+  .submenuToggle {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+  
+  .submenu {
+    margin-left: 2rem;
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    
+    &__link {
+      @include transition(background-color);
+      font-size: $font-size-sm;
+      color: #4b5563;
+      padding: 0.25rem 0.5rem;
+      border-radius: $border-radius-md;
+      text-decoration: none;
+      white-space: nowrap;
+      
+      &:hover {
+        background-color: $color-gray-100;
+      }
+      
+      &--active {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+  
+  .footer {
+    padding: 0.75rem;
+    border-top: 1px solid #f9fafb;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  
+    .footerLink {
+      @include flex-center($justify: flex-start);
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      font-size: $font-size-sm;
+      color: #4b5563;
+      border-radius: $border-radius-md;
+      text-decoration: none;
+      
+      &:hover {
+        background-color: $color-gray-100;
+      }
+    }
+    
+    .logoutButton {
+      @include reset-button;
+      @extend .footerLink;
+      @include transition(background-color);
+      color: #dc2626;
+      width: 100%;
+      text-align: left;
+  
+      &:hover {
+        background-color: #fee2e2;
+      }
+    }
+  }

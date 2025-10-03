@@ -10,6 +10,7 @@
     "dev": "concurrently \"yarn --cwd backend dev\" \"yarn --cwd frontend dev\""
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
     "concurrently": "^8.2.2"
   }
 }

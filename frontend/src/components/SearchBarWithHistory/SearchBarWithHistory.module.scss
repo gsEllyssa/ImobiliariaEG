@@ -1,0 +1,72 @@
+@use "@/styles/base/variables" as *;
+@use "@/styles/base/mixins" as *;
+
+.searchContainer {
+    width: 100%;
+    max-width: 28rem; // max-w-md
+    position: relative;
+  }
+  
+  .inputWrapper {
+    position: relative;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+  
+  .searchInput {
+    @include input-base; // Aplica a base de estilos de input
+    
+    // Sobrescreve/ajusta propriedades específicas
+    padding-left: 2.25rem;
+    background-color: $color-gray-100;
+    border: none;
+  }
+  
+  .suggestionsList {
+    margin-top: 0.5rem;
+    background-color: $color-gray-100;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    box-shadow: $box-shadow-md;
+  }
+  
+  .suggestionItem {
+    @include flex-center($justify: flex-start); // Usa o mixin de flex
+    @include transition((background-color, color)); // Usa o mixin de transição
+  
+    padding: 0.5rem 1rem;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    color: $color-text-muted;
+  
+    &:hover {
+      background-color: #e5e7eb; // gray-200
+    }
+  
+    &--selected {
+      background-color: $color-border;
+      font-weight: $font-weight-semibold;
+      color: $color-gray-800;
+    }
+    
+    .icon {
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+    }
+  }
+  
+  .noSuggestions {
+    padding: 0.5rem 1rem;
+    font-size: $font-size-sm;
+    color: #9ca3af; // gray-400
+    cursor: default;
+  }

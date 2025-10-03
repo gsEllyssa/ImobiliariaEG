@@ -1,0 +1,82 @@
+@use "@/styles/base/variables" as *;
+@use "@/styles/base/mixins" as *;
+
+.progressContainer {
+    @include flex-center(space-between, initial);
+    width: 100%;
+    max-width: 64rem;
+    margin: 1.5rem auto;
+    position: relative;
+    flex-wrap: wrap;
+    row-gap: 1.5rem;
+  
+    @media (min-width: 768px) {
+      flex-wrap: nowrap;
+      gap: 0;
+    }
+  }
+  
+  .step {
+    @include flex-center($direction: column);
+    position: relative;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .circle {
+    @include flex-center;
+    @include transition(all, 0.3s);
+  
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 2px solid $color-border;
+    background-color: $color-white;
+    z-index: 10;
+    
+    .checkIcon {
+      color: $color-white;
+      font-size: $font-size-sm;
+    }
+  }
+  
+  .line {
+    @include transition(background-color, 0.3s);
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    height: 2px;
+    transform: translateY(-50%);
+    width: calc(100% + 1rem); 
+    z-index: 0;
+    background-color: $color-border;
+    display: none;
+  
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+  
+  .label {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: $color-gray-800;
+    font-weight: $font-weight-semibold;
+  }
+  
+  // Lógica de estados usando classes modificadoras
+  .step--current {
+    .circle {
+      border-color: $color-primary;
+    }
+  }
+  
+  .step--completed {
+    .circle {
+      background-color: $color-primary;
+      border-color: $color-primary;
+    }
+    .line {
+      background-color: $color-primary;
+    }
+  }
