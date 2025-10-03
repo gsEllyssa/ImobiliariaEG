@@ -1,22 +1,16 @@
-// src/pages/TestPage.jsx
+import React from "react";
+import { motion } from "framer-motion";
 
-import React from 'react';
-
-const TestPage = () => {
-  // Este componente agora SÓ tem elementos visuais, sem nenhuma lógica.
+export default function TestPage() {
   return (
-    <div className="bg-indigo-600 min-h-screen flex flex-col justify-center items-center">
-      <h1 className="text-6xl font-extrabold text-white tracking-tight">
-        Teste do Tailwind CSS
-      </h1>
-      <p className="mt-4 text-xl text-indigo-200">
-        Se você está vendo esta tela, o problema foi resolvido!
-      </p>
-      <div className="mt-8 p-6 bg-white rounded-lg shadow-xl">
-        <p className="text-gray-800">Este é um card de teste.</p>
-      </div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      style={{ padding: "2rem" }}
+    >
+      <h1>Página de Teste</h1>
+      <p>Se você está vendo isso, Framer Motion funciona corretamente 🎉</p>
+    </motion.div>
   );
-};
-
-export default TestPage;
+}
