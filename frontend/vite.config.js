@@ -17,18 +17,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
-
-  // Configuração para SASS (SCSS)
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // Esta linha injeta automaticamente suas variáveis SASS em todos os
-        // arquivos .scss e .module.scss do projeto.
-        additionalData: `
-          @use "@/styles/base/_variables.scss" as *;
-          @use "@/styles/base/_mixins.scss" as *;
-        `,
-      },
-    },
-  },
 });
