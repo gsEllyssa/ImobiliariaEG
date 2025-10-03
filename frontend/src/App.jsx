@@ -26,6 +26,9 @@ import ContractTemplateList from './pages/ContractTemplateList.jsx';
 import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
 import EditContractTemplate from './pages/EditContractTemplate.jsx';
 
+// Global styles (apenas Tailwind agora)
+import './styles/tailwind.css';
+
 export default function App() {
   return (
     <Routes>
