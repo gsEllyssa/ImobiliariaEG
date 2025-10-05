@@ -1,8 +1,9 @@
+// backend/controllers/property.controller.js
 import Property from "../models/property.model.js";
 
-export const listProperties = async (req, res) => {
+export const listProperties = async (_req, res) => {
   try {
-    const properties = await Property.find();
+    const properties = await Property.find().sort({ createdAt: -1 });
     res.json(properties);
   } catch (error) {
     console.error("Error fetching properties:", error);

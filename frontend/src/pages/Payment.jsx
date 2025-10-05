@@ -7,7 +7,6 @@ import {
   faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
 import { listTenants } from '../services/tenantService';
-import StepProgress from '../components/StepProgress';
 
 export default function Payment() {
   const [step, setStep] = useState(1);
