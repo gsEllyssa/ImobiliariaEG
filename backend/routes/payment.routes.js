@@ -2,13 +2,14 @@
 
 import express from 'express';
 import { listPayments, createPayment } from '../controllers/payment.controller.js';
-import { proteger } from '../middlewares/auth.middleware.js';
+// CORREÇÃO: Importando o middleware com o nome correto
+import { verifyToken } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-// Aplica o middleware "proteger" a TODAS as rotas definidas abaixo neste arquivo.
-// Desta forma, você não precisa repetir "proteger" em cada uma.
-router.use(proteger);
+// Aplica o middleware "verifyToken" a TODAS as rotas definidas abaixo neste arquivo.
+// CORREÇÃO: Usando a função com o nome correto
+router.use(verifyToken);
 
 /**
  * @route   GET /api/pagamentos

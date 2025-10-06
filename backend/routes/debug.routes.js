@@ -1,5 +1,6 @@
 import express from 'express';
-import { proteger } from '../middlewares/auth.middleware.js'; // 1. Importa o middleware de segurança
+// CORREÇÃO: Importando o middleware com o nome correto
+import { verifyToken } from '../middlewares/auth.middleware.js'; 
 
 // Importa todos os models necessários
 import Tenant from '../models/tenant.model.js';
@@ -10,11 +11,11 @@ import Receipt from '../models/receipt.model.js';
 
 const router = express.Router();
 
-// 2. SÓ CRIA ESTAS ROTAS SE O AMBIENTE NÃO FOR DE PRODUÇÃO
+// SÓ CRIA ESTAS ROTAS SE O AMBIENTE NÃO FOR DE PRODUÇÃO
 if (process.env.NODE_ENV !== 'production') {
   
-  // 3. APLICA A SEGURANÇA EM TODAS AS ROTAS DE DEBUG ABAIXO
-  router.use(proteger);
+  // CORREÇÃO: Aplicando a segurança com o nome correto do middleware
+  router.use(verifyToken);
 
   // Debug route: List all tenants
   router.get('/tenants', async (req, res) => {
@@ -35,8 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
       res.status(500).json({ error: 'Error fetching data.' });
     }
   });
-
-  // ... (as outras rotas de listagem seguem o mesmo padrão) ...
   
   router.get("/contracts", async (req, res) => {
     try {

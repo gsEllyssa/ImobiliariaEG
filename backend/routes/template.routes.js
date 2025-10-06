@@ -5,12 +5,14 @@ import {
   createTemplate,
   updateTemplate
 } from '../controllers/template.controller.js';
-import { proteger } from '../middlewares/auth.middleware.js';
+// CORREÇÃO: Importando a função com o nome correto
+import { verifyToken } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
 // Aplica segurança a todas as rotas de templates
-router.use(proteger);
+// CORREÇÃO: Usando a função com o nome correto
+router.use(verifyToken);
 
 // Define as rotas e associa cada uma à sua função no controller
 router.get('/', listTemplates);

@@ -1,38 +1,82 @@
 import User from '../models/user.model.js';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+// Schema de validação com Zod para o registro
+const registerSchema = z.object({
+  name: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres.'),
+  email: z.string().email('Formato de e-mail inválido.'),
+  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres.'),
+});
 
-// Login user
-export async function login(req, res) {
+// Schema de validação com Zod para o login
+const loginSchema = z.object({
+  email: z.string().email('Formato de e-mail inválido.'),
+  password: z.string().min(1, 'A senha é obrigatória.'),
+});
+
+// -----------------------------------------------------------------------------
+// Controller para registrar um novo usuário (A FUNÇÃO QUE ESTÁ FALTANDO)
+// -----------------------------------------------------------------------------
+export const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const validatedData = registerSchema.parse(req.body);
 
-    if (!JWT_SECRET) {
-      return res.status(500).json({ error: 'Chave secreta do JWT não configurada.' });
+    const existingUser = await User.findOne({ email: validatedData.email });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Este e-mail já está em uso.' });
     }
 
-    const user = await User.findOne({ email });
+    const newUser = new User(validatedData);
+    await newUser.save();
+
+    res.status(201).json({ message: 'Usuário criado com sucesso!' });
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ errors: error.flatten().fieldErrors });
+    }
+    res.status(500).json({ message: 'Erro no servidor.', error: error.message });
+  }
+};
+
+// -----------------------------------------------------------------------------
+// Controller para login de usuário
+// -----------------------------------------------------------------------------
+export const login = async (req, res) => {
+  try {
+    const { email, password } = loginSchema.parse(req.body);
+
+    if (!process.env.JWT_SECRET) {
+      throw new Error('Chave secreta do JWT não configurada no servidor.');
+    }
+
+    const user = await User.findOne({ email }).select('+password');
     
-    // Corrigido para 'user.senha' conforme nosso model
-    if (!user || !(await bcrypt.compare(password, user.senha))) {
-      return res.status(401).json({ error: 'Credenciais inválidas.' });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
     }
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
 
     res.json({
       token,
-      name: user.nome, // Corrigido para 'user.nome' conforme nosso model
-      role: user.role
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
     });
+
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ errors: error.flatten().fieldErrors });
+    }
     console.error('Erro no login:', error);
-    res.status(500).json({ error: 'Erro durante o login.' });
+    res.status(500).json({ error: 'Erro interno durante o login.' });
   }
-}
+};

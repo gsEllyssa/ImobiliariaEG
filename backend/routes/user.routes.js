@@ -1,11 +1,15 @@
 import express from 'express';
 import { createAdmin } from '../controllers/user.controller.js';
-import { proteger } from '../middlewares/auth.middleware.js'; // Middleware de segurança
+// Importe ambos os middlewares
+import { verifyToken, checkRole } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
 // Rota para criar um novo administrador
-// A rota está protegida, ou seja, só um admin já logado poderia criar outro.
-router.post('/', proteger, createAdmin);
+// Agora a rota tem uma cadeia de middlewares:
+// 1º: verifyToken - Garante que o usuário está logado.
+// 2º: checkRole(['admin']) - Garante que o usuário logado é um 'admin'.
+// 3º: createAdmin - Se os dois acima passarem, o controller é executado.
+router.post('/', verifyToken, checkRole(['admin']), createAdmin);
 
 export default router;
