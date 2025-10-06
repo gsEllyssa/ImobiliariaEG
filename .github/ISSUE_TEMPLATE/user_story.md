@@ -1,9 +1,3 @@
----
-name: '📝 Nova História de Usuário'
-description: 'Template padrão para detalhar uma nova funcionalidade do projeto.'
-labels: ["story"]
----
-
 ### Descrição / Objetivo
 <!-- Descreva aqui o objetivo da história, seguindo o formato: COMO [TIPO DE USUÁRIO], QUERO [AÇÃO], PARA [OBJETIVO]. -->
 
@@ -26,7 +20,7 @@ labels: ["story"]
 
 ### Abordagem Técnica (Opcional)
 <!-- Descreva brevemente a implementação técnica planejada. Ex: "Criar o endpoint POST /api/contracts", "Desenvolver o componente React <ContractForm />". -->
-- 
+-
 
 ---
 
