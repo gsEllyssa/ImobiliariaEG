@@ -1,10 +1,18 @@
-// server.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import app from './app.js'; // Importa a aplicação configurada do app.js
 
-// Carrega as variáveis de ambiente do arquivo .env
+// 1. Carrega as variáveis de ambiente PRIMEIRO que tudo!
 dotenv.config();
+
+// 2. AGORA importa o restante da aplicação
+import app from './app.js'; 
+
+// Verificação de segurança (Opcional, mas altamente recomendado)
+// Garante que o servidor não inicie sem uma chave secreta definida.
+if (!process.env.JWT_SECRET) {
+  console.error("ERRO FATAL: JWT_SECRET não está definida no arquivo .env");
+  process.exit(1); // Encerra o processo com um código de erro
+}
 
 // Define a porta do servidor e a URL do MongoDB
 const PORT = process.env.PORT || 5050;

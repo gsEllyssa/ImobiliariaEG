@@ -16,7 +16,7 @@ const loginSchema = z.object({
 });
 
 // -----------------------------------------------------------------------------
-// Controller para registrar um novo usuário (A FUNÇÃO QUE ESTÁ FALTANDO)
+// Controller para registrar um novo usuário
 // -----------------------------------------------------------------------------
 export const register = async (req, res) => {
   try {
