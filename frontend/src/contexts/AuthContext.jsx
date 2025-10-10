@@ -1,42 +1,40 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import api from '../services/api'; // Precisamos do 'api' para configurar os headers
+import React, { createContext, useEffect, useState } from 'react';
+import api from '../services/api';
 
-const AuthContext = createContext();
+// Exporta o Context para o hook poder usar
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  // NOVO: Estado para controlar o carregamento inicial da sessão
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false); // Controla o carregamento inicial
 
   useEffect(() => {
-    // A lógica foi melhorada para garantir que 'isReady' seja atualizado
+    // Roda só uma vez para verificar se já existe uma sessão salva
     const checkUserSession = () => {
       try {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
 
         if (storedUser && storedToken) {
-          // Se encontramos um usuário e token, configuramos o header do api
+          // Configura o token no cabeçalho do 'api' para futuras requisições
           api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        // Se der qualquer erro (ex: JSON inválido), limpamos tudo por segurança
         console.error("Falha ao carregar sessão do localStorage:", error);
-        logout();
+        logout(); // Limpa se houver erro
       } finally {
-        // NOVO E CRUCIAL: Ao final de tudo (sucesso ou falha), marcamos como pronto
+        // Marca como pronto para a aplicação poder ser exibida
         setIsReady(true);
       }
     };
 
     checkUserSession();
-  }, []); // Roda apenas uma vez quando o componente é montado
+  }, []);
 
   const login = (userData, token) => {
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', token);
-    // NOVO: Configura o token no header do 'api' no momento do login
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userData);
   };
@@ -44,15 +42,12 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    // NOVO: Remove o token do header do 'api' no momento do logout
     delete api.defaults.headers.common['Authorization'];
     setUser(null);
   };
 
-  // NOVO: Uma forma fácil de verificar se o usuário está autenticado
   const isAuthenticated = !!user;
 
-  // NOVO: Disponibilizamos os novos estados para os componentes
   const value = {
     user,
     login,
@@ -66,9 +61,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-// Hook personalizado não precisa de alteração
-export function useAuth() {
-  return useContext(AuthContext);
 }
