@@ -1,13 +1,14 @@
+// backend/models/user.model.js
+
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs'; // Importe o bcryptjs
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto'; // Importe o crypto para gerar o token
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // ADIÇÃO 4: Mensagens de erro personalizadas
     required: [true, 'O nome é obrigatório.'],
     trim: true,
-    minlength: [2, 'O nome deve ter pelo menos 2 caracteres.'],
   },
   email: {
     type: String,
@@ -15,40 +16,66 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    // ADIÇÃO 4: Validação de formato de e-mail com regex
     match: [/.+\@.+\..+/, 'Por favor, insira um e-mail válido.'],
   },
   password: {
     type: String,
-    required: [true, 'A senha é obrigatória.'],
+    // REMOVIDO: required: true. A senha só será definida na ativação.
     minlength: [6, 'A senha deve ter pelo menos 6 caracteres.'],
-    // ADIÇÃO 2: Oculta a senha por padrão ao buscar usuários
-    select: false,
+    select: false, // Ótima prática!
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
-    default: 'user',
+    enum: ['admin', 'corretor'], // Ajustado para ser mais específico
+    default: 'corretor',
+  },
+  // ---> NOVOS CAMPOS PARA O FLUXO DE CONVITE <---
+  status: {
+    type: String,
+    enum: ['PENDENTE', 'ATIVO'],
+    default: 'PENDENTE',
+  },
+  activationToken: {
+    type: String,
+  },
+  activationTokenExpires: {
+    type: Date,
   },
 }, {
   timestamps: true,
 });
 
-// ADIÇÃO 1: Middleware (hook) para criptografar a senha ANTES de salvar no banco
+// Hook para criptografar a senha ANTES de salvar (perfeito, não precisa mudar)
 userSchema.pre('save', async function(next) {
-  // Executa a função apenas se a senha foi modificada (ou é nova)
   if (!this.isModified('password')) return next();
 
-  // Gera o "salt" e cria o hash da senha
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// ADIÇÃO 3: Método no Schema para comparar a senha enviada no login com a senha no banco
+// Método para comparar senha (perfeito, não precisa mudar)
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  // 'this.password' se refere à senha do documento do usuário encontrado
   return await bcrypt.compare(candidatePassword, this.password);
 };
+
+// ---> NOVO MÉTODO PARA GERAR O TOKEN DE ATIVAÇÃO <---
+userSchema.methods.createActivationToken = function() {
+  // 1. Gerar o token simples
+  const activationToken = crypto.randomBytes(32).toString('hex');
+
+  // 2. Criptografar o token antes de salvar no banco (mais seguro)
+  this.activationToken = crypto
+    .createHash('sha256')
+    .update(activationToken)
+    .digest('hex');
+
+  // 3. Definir o tempo de expiração (ex: 24 horas)
+  this.activationTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+
+  // 4. Retornar o token NÃO criptografado para ser enviado por e-mail
+  return activationToken;
+};
+
 
 export default mongoose.model('User', userSchema);
