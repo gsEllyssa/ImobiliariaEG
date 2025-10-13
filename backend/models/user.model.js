@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto'; // Importe o crypto para gerar o token
+import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -20,16 +20,14 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // REMOVIDO: required: true. A senha só será definida na ativação.
     minlength: [6, 'A senha deve ter pelo menos 6 caracteres.'],
-    select: false, // Ótima prática!
+    select: false,
   },
   role: {
     type: String,
-    enum: ['admin', 'corretor'], // Ajustado para ser mais específico
+    enum: ['admin', 'corretor'],
     default: 'corretor',
   },
-  // ---> NOVOS CAMPOS PARA O FLUXO DE CONVITE <---
   status: {
     type: String,
     enum: ['PENDENTE', 'ATIVO'],
@@ -41,11 +39,18 @@ const userSchema = new mongoose.Schema({
   activationTokenExpires: {
     type: Date,
   },
+  // ---> NOVOS CAMPOS PARA RECUPERAÇÃO DE SENHA <---
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
 }, {
   timestamps: true,
 });
 
-// Hook para criptografar a senha ANTES de salvar (perfeito, não precisa mudar)
+// Hook para criptografar a senha ANTES de salvar
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
 
@@ -54,28 +59,34 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-// Método para comparar senha (perfeito, não precisa mudar)
+// Método para comparar senha
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// ---> NOVO MÉTODO PARA GERAR O TOKEN DE ATIVAÇÃO <---
+// Método para gerar o token de ATIVAÇÃO de conta
 userSchema.methods.createActivationToken = function() {
-  // 1. Gerar o token simples
   const activationToken = crypto.randomBytes(32).toString('hex');
-
-  // 2. Criptografar o token antes de salvar no banco (mais seguro)
-  this.activationToken = crypto
-    .createHash('sha256')
-    .update(activationToken)
-    .digest('hex');
-
-  // 3. Definir o tempo de expiração (ex: 24 horas)
-  this.activationTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
-
-  // 4. Retornar o token NÃO criptografado para ser enviado por e-mail
+  this.activationToken = crypto.createHash('sha256').update(activationToken).digest('hex');
+  this.activationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 horas
   return activationToken;
 };
 
+// ---> NOVO MÉTODO PARA GERAR O TOKEN DE REDEFINIÇÃO DE SENHA <---
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  // Criptografa o token antes de salvar no banco
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // Define a expiração para 10 minutos
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  // Retorna o token NÃO criptografado para ser enviado por e-mail
+  return resetToken;
+};
 
 export default mongoose.model('User', userSchema);

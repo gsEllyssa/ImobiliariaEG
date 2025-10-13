@@ -1,15 +1,19 @@
+// backend/routes/auth.routes.js
+
 import express from 'express';
-// MELHORIA 1: Importar a função 'register' que já criamos
-import { login, register } from '../controllers/auth.controller.js';
+// 1. IMPORTAR A FUNÇÃO 'activateAccount' JUNTO COM AS OUTRAS
+import { login, register, activateAccount } from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
-// Define que a rota POST /login será controlada pela função 'login'
-// Rota para validar credenciais e retornar um Token JWT
+// Rota para login de usuário
 router.post('/login', login);
 
-// MELHORIA 2: Ativar a rota de registro, que já está pronta no controller
-// Rota para criar um novo usuário
+// Rota de registro (que não usaremos no fluxo final, mas pode ficar aqui)
 router.post('/register', register);
+
+// 2. ADICIONAR A ROTA PARA ATIVAÇÃO DE CONTA
+// Esta é a linha que estava faltando!
+router.post('/activate-account', activateAccount);
 
 export default router;
