@@ -1,5 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import PropertiesList from './pages/PropertiesList.jsx';
+import PropertyForm from './pages/PropertyForm.jsx';
+import PropertyEdit from './pages/PropertyEdit.jsx';
 
 // Layout and authentication
 import Layout from './components/Layout.jsx';
@@ -55,6 +58,14 @@ export default function App() {
         <Route path="/templates" element={<ContractTemplateList />} />
         <Route path="/templates/new" element={<CreateContractTemplate />} />
         <Route path="/templates/:id" element={<EditContractTemplate />} />
+
+        <Route path="/properties" element={<PropertiesList />} />
+        <Route path="/properties/new" element={<PropertyForm />} />
+
+        <Route path="/properties" element={<PropertiesList />} />
+        <Route path="/properties/new" element={<PropertyForm />} />
+        <Route path="/properties/:id/edit" element={<PropertyEdit />} />
+
       </Route>
 
       {/* Redirect unknown routes */}
