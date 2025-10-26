@@ -1,48 +1,54 @@
+// backend/middlewares/auth.middleware.js
+
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
-export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+// Middleware 1: Verificar Token e Anexar o Usuário à Requisição
+export const verifyToken = async (req, res, next) => {
+  let token;
 
-  if (!token) {
-    return res.status(401).json({ error: 'Acesso negado. Nenhum token fornecido.' });
+  // O token vem no header no formato 'Bearer TOKEN'
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      // 1. Extrair o token
+      token = req.headers.authorization.split(' ')[1];
+
+      // 2. Verificar o token usando o segredo
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      // 3. Buscar o usuário pelo ID do token e ANEXAR O OBJETO COMPLETO DO USUÁRIO
+      //    (sem a senha) ao objeto 'req'. Esta é a otimização!
+      req.user = await User.findById(decoded.id).select('-password');
+      
+      if (!req.user) {
+        return res.status(401).json({ message: 'Usuário pertencente a este token não existe mais.' });
+      }
+
+      // 4. Tudo certo, passar para o próximo middleware ou controller
+      next();
+    } catch (error) {
+      return res.status(401).json({ message: 'Token inválido ou expirado. Faça o login novamente.' });
+    }
   }
 
-  try {
-    // Vamos usar a variável de ambiente diretamente aqui para garantir
-    const secret = process.env.JWT_SECRET;
-    const decoded = jwt.verify(token, secret);
-    req.userId = decoded.id;
-    next();
-  } catch (error) {
-    
-    return res.status(403).json({ error: 'Token inválido ou expirado.' });
+  if (!token) {
+    return res.status(401).json({ message: 'Acesso negado. Nenhum token fornecido.' });
   }
 };
 
-// ... a função checkRole continua a mesma
+
+// Middleware 2: Verificar se o Usuário tem a Permissão Necessária
 export const checkRole = (roles) => {
-  return async (req, res, next) => {
-    try {
-      const userId = req.userId;
-      if (!userId) {
-        return res.status(401).json({ error: 'Autenticação falhou.' });
-      }
-
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'Usuário não encontrado.' });
-      }
-      
-      if (!roles.includes(user.role)) {
-        return res.status(403).json({ error: 'Acesso negado. Permissões insuficientes.' });
-      }
-      
-      next();
-
-    } catch (error) {
-      res.status(500).json({ error: 'Erro interno na verificação de permissões.' });
+  // 'roles' será um array, ex: ['admin']
+  return (req, res, next) => {
+    // Graças ao 'verifyToken', já temos 'req.user' disponível aqui.
+    // AGORA NÃO PRECISA MAIS BUSCAR NO BANCO!
+    if (!req.user || !roles.includes(req.user.role)) {
+      // Se não houver usuário ou a 'role' dele não estiver na lista de permissões
+      return res.status(403).json({ message: 'Acesso negado. Você não tem permissão para realizar esta ação.' });
     }
+
+    // Permissão OK, pode continuar
+    next();
   };
 };

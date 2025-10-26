@@ -1,13 +1,14 @@
+// backend/models/user.model.js
+
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs'; // Importe o bcryptjs
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // ADIÇÃO 4: Mensagens de erro personalizadas
     required: [true, 'O nome é obrigatório.'],
     trim: true,
-    minlength: [2, 'O nome deve ter pelo menos 2 caracteres.'],
   },
   email: {
     type: String,
@@ -15,40 +16,77 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    // ADIÇÃO 4: Validação de formato de e-mail com regex
     match: [/.+\@.+\..+/, 'Por favor, insira um e-mail válido.'],
   },
   password: {
     type: String,
-    required: [true, 'A senha é obrigatória.'],
     minlength: [6, 'A senha deve ter pelo menos 6 caracteres.'],
-    // ADIÇÃO 2: Oculta a senha por padrão ao buscar usuários
     select: false,
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
-    default: 'user',
+    enum: ['admin', 'corretor'],
+    default: 'corretor',
+  },
+  status: {
+    type: String,
+    enum: ['PENDENTE', 'ATIVO'],
+    default: 'PENDENTE',
+  },
+  activationToken: {
+    type: String,
+  },
+  activationTokenExpires: {
+    type: Date,
+  },
+  // ---> NOVOS CAMPOS PARA RECUPERAÇÃO DE SENHA <---
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
   },
 }, {
   timestamps: true,
 });
 
-// ADIÇÃO 1: Middleware (hook) para criptografar a senha ANTES de salvar no banco
+// Hook para criptografar a senha ANTES de salvar
 userSchema.pre('save', async function(next) {
-  // Executa a função apenas se a senha foi modificada (ou é nova)
   if (!this.isModified('password')) return next();
 
-  // Gera o "salt" e cria o hash da senha
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// ADIÇÃO 3: Método no Schema para comparar a senha enviada no login com a senha no banco
+// Método para comparar senha
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  // 'this.password' se refere à senha do documento do usuário encontrado
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Método para gerar o token de ATIVAÇÃO de conta
+userSchema.methods.createActivationToken = function() {
+  const activationToken = crypto.randomBytes(32).toString('hex');
+  this.activationToken = crypto.createHash('sha256').update(activationToken).digest('hex');
+  this.activationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 horas
+  return activationToken;
+};
+
+// ---> NOVO MÉTODO PARA GERAR O TOKEN DE REDEFINIÇÃO DE SENHA <---
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  // Criptografa o token antes de salvar no banco
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // Define a expiração para 10 minutos
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  // Retorna o token NÃO criptografado para ser enviado por e-mail
+  return resetToken;
 };
 
 export default mongoose.model('User', userSchema);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom"; // 1. Importar o Link
 
 export default function Login() {
   const { login, isAuthenticated, isReady } = useAuth();
@@ -30,7 +30,6 @@ export default function Login() {
     setError(null);
 
     try {
-      // AQUI ESTAVA O ERRO -> O caminho da API foi corrigido
       const response = await api.post("/api/auth/login", {
         email,
         password,
@@ -42,7 +41,8 @@ export default function Login() {
       navigate("/home");
 
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "E-mail ou senha inválidos. Tente novamente.";
+      // Tenta pegar a mensagem de erro específica do backend
+      const errorMessage = err.response?.data?.error || err.response?.data?.message || "E-mail ou senha inválidos. Tente novamente.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -94,6 +94,16 @@ export default function Login() {
             />
           </div>
 
+          {/* 2. ADICIONAR O LINK PARA RECUPERAÇÃO DE SENHA */}
+          <div className="text-right text-sm">
+            <Link 
+              to="/esqueci-minha-senha"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Esqueceu sua senha?
+            </Link>
+          </div>
+
           <button
             type="submit"
             disabled={loading}
@@ -110,4 +120,3 @@ export default function Login() {
     </div>
   );
 }
-
