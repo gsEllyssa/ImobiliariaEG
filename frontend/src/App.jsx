@@ -1,9 +1,6 @@
 import React from 'react';
 // BrowserRouter e AuthProvider NÃO SÃO MAIS IMPORTADOS AQUI
 import { Routes, Route, Navigate } from 'react-router-dom';
-import PropertiesList from './pages/PropertiesList.jsx';
-import PropertyForm from './pages/PropertyForm.jsx';
-import PropertyEdit from './pages/PropertyEdit.jsx';
 
 // Layout e Autenticação
 import Layout from './components/Layout.jsx';
@@ -29,6 +26,9 @@ import PaymentHistory from './pages/PaymentHistory.jsx';
 import ContractTemplateList from './pages/ContractTemplateList.jsx';
 import CreateContractTemplate from './pages/CreateContractTemplate.jsx';
 import EditContractTemplate from './pages/EditContractTemplate.jsx';
+import PropertiesList from './pages/PropertiesList.jsx';
+import PropertyForm from './pages/PropertyForm.jsx';
+import PropertyEdit from './pages/PropertyEdit.jsx';
 
 // Estilos Globais
 import './styles/global.scss';
@@ -61,14 +61,9 @@ export default function App() {
         <Route path="/templates" element={<ContractTemplateList />} />
         <Route path="/templates/new" element={<CreateContractTemplate />} />
         <Route path="/templates/:id" element={<EditContractTemplate />} />
-
-        <Route path="/properties" element={<PropertiesList />} />
-        <Route path="/properties/new" element={<PropertyForm />} />
-
-        <Route path="/properties" element={<PropertiesList />} />
-        <Route path="/properties/new" element={<PropertyForm />} />
-        <Route path="/properties/:id/edit" element={<PropertyEdit />} />
-
+        <Route path="/imoveis" element={<PropertiesList />} />
+        <Route path="/imoveis/novo" element={<PropertyForm />} />
+        <Route path="/imoveis/:id/editar" element={<PropertyEdit />} />
       </Route>
 
       {/* --- REDIRECIONAMENTOS (MODIFICADOS) --- */}
