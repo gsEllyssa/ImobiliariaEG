@@ -4,11 +4,15 @@ import User from '../models/user.model.js';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url'; // <-- ADICIONE ESTA LINHA
 
 // --- CORREÇÃO DO CAMINHO ---
-// Lê a lista de domínios a partir da pasta node_modules,
-// relativo à localização atual do script (que já é 'backend').
-const disposableDomainsPath = path.resolve('node_modules/disposable-email-domains/index.json');
+// Resolve o caminho a partir da localização deste arquivo (__dirname)
+// Sobe dois níveis (de /backend/controllers para a raiz /imobiliaria) 
+// e então acessa a pasta node_modules correta.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const disposableDomainsPath = path.resolve(__dirname, '../../node_modules/disposable-email-domains/index.json');
 const disposableDomains = JSON.parse(fs.readFileSync(disposableDomainsPath, 'utf-8'));
 
 
